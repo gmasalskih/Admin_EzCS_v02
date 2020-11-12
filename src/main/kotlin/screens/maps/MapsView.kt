@@ -37,9 +37,9 @@ private fun MapsViewData(controller: MapsController, viewState: MapsViewState) {
         modifier = Modifier.fillMaxSize()
     ) {
         Text("MapsView")
-        Button(onClick = controller::buttonClick) {
-            Text(viewState.txt)
-        }
+//        Button(onClick = controller::buttonClick) {
+//            Text(viewState.txt)
+//        }
     }
 }
 

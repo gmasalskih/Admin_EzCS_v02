@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.koin.core.inject
-import router.AppState
 import screens.BaseView
 
 class MainMenuView : BaseView<MenuViewState, MainMenuController>() {
