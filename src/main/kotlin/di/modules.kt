@@ -8,8 +8,10 @@ import helper.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
 import providers.firebase.FirebaseAppProvider
 import providers.firebase.StorageProvider
+import router.Navigator
 import router.Router
 import screens.main_menu.MainMenuController
+import screens.main_menu.MainMenuView
 import screens.maps.MapsController
 
 val fbModules = module {
@@ -23,7 +25,7 @@ val fbModules = module {
     single<StorageProvider> { StorageProvider(get(), BUCKET_NAME) }
 }
 val appModule = module {
-    single<Router> { Router }
-    factory { MainMenuController() }
-    factory { MapsController() }
+    single<Router> { Router(entryPoint = Navigator.MainMenu to MainMenuView()) }
+    single { MainMenuController() }
+    single { MapsController() }
 }

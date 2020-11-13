@@ -1,51 +1,35 @@
 package router
 
-import androidx.compose.desktop.Window
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
 import helper.ViewComponent
+import screens.main_menu.MainMenuView
+import screens.maps.MapsView
 
-object Router {
-    private val routerMap = mutableMapOf<AppState, ViewComponent>()
-    private val backStack = mutableListOf<AppState>()
-    private var appState by mutableStateOf<AppState>(AppState.MainMenu)
-    private var isFirstTime = true
-    var backStackSize by mutableStateOf(backStack.size)
+class Router(entryPoint: Pair<Navigator, ViewComponent>) {
+    var currentScreen: ViewComponent by mutableStateOf(entryPoint.second)
         private set
+    private val backStack by mutableStateOf(mutableListOf<Navigator>(entryPoint.first))
 
-    fun addView(target: AppState, view: ViewComponent): Router {
-        routerMap[target] = view
-        return this
-    }
-
-    fun getCurrentScreenName() = appState::class.java.simpleName
-
-    fun init() {
-        if (backStack.isEmpty()) backStack.add(appState)
-    }
-
-    fun navigateTo(target: AppState) {
+    fun navigateTo(target: Navigator) {
+        initCurrentScreen(target)
         backStack.add(target)
-        appState = target
-        backStackSize = backStack.size
-        println("navigateTo pressed - $backStack")
+        println("navigateTo - $target backStack - $backStack}")
     }
 
     fun back() {
         if (backStack.size > 1) {
-            println("back pressed - $backStack")
             backStack.removeLast()
-            appState = backStack.last()
-            backStackSize = backStack.size
+            initCurrentScreen(backStack.last())
             println("back pressed - $backStack")
         }
     }
 
-    @Composable
-    fun render() {
-        println("render - $backStack")
-        routerMap[appState]?.render()
-        println("render - $backStack")
+    private fun initCurrentScreen(target: Navigator) {
+        currentScreen.onDestroy()
+        currentScreen = when (target) {
+            is Navigator.MainMenu -> MainMenuView()
+            is Navigator.Maps -> MapsView(target.param)
+        }
     }
 }

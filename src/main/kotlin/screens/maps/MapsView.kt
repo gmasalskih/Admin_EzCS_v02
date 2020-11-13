@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import org.koin.core.inject
 import screens.BaseView
 
-class MapsView : BaseView<MapsViewState, MapsController>() {
+class MapsView(string: String) : BaseView<MapsViewState, MapsController>() {
     override val controller: MapsController by inject()
 
     @Composable

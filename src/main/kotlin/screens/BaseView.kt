@@ -19,6 +19,10 @@ abstract class BaseView<VS : ViewState, BC : Controller> : KoinComponent {
         }
     }
 
+    fun onDestroy() {
+        println("onDestroy $this")
+    }
+
     @Composable
     protected abstract fun loading()
 
