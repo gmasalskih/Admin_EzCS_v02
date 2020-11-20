@@ -1,7 +1,10 @@
 package screens.maps
 
+import screens.TypeScreenState
 import screens.ViewState
 
 data class MapsViewState(
-    val txt: String = "",
+    override val typeScreenState: TypeScreenState = TypeScreenState.Data,
+    override val title: String = "Maps",
+    override val hasBackArrowButton: Boolean = false,
 ) : ViewState
