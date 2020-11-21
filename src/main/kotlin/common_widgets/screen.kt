@@ -14,9 +14,9 @@ fun <VC : ViewComponent> Screen(viewComponent: VC, content: @Composable () -> Un
     ) {
         //AppBar
         AppBar(
-            viewComponent.controller.viewState.title,
-            viewComponent.controller.router.isNavigableBack(),
-            viewComponent.controller.router
+            viewComponent.controller.getViewState().title,
+            viewComponent.controller.isNavigableBack(),
+            viewComponent.controller::back
         )
         //Content
         Box(

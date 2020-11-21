@@ -13,7 +13,7 @@ import ui.greyAccent
 import ui.verdanaBold
 
 @Composable
-fun AppBar(title: String, hasBackArrowButton: Boolean = false, router: Router) {
+fun AppBar(title: String, hasBackArrowButton: Boolean = false, clickBack: () -> Unit = {}) {
     Surface(
         modifier = Modifier.fillMaxWidth().preferredHeight(appBarSize),
         color = dark
@@ -21,9 +21,9 @@ fun AppBar(title: String, hasBackArrowButton: Boolean = false, router: Router) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (hasBackArrowButton){
+            if (hasBackArrowButton) {
                 Box(
-                    modifier = Modifier.fillMaxHeight().aspectRatio(1f).clickable { router.back() },
+                    modifier = Modifier.fillMaxHeight().aspectRatio(1f).clickable(onClick = clickBack),
                     alignment = Alignment.Center
                 ) {
                     AppIcon(
@@ -35,7 +35,7 @@ fun AppBar(title: String, hasBackArrowButton: Boolean = false, router: Router) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.Center
-            ){
+            ) {
                 Text(
                     text = title,
                     fontFamily = verdanaBold,

@@ -1,26 +1,25 @@
 package screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.onActive
+import androidx.compose.runtime.onDispose
 import common_widgets.Screen
 import utils.Controller
 import org.koin.core.KoinComponent
 
-abstract class BaseView<VS : ViewState, BC : Controller> : KoinComponent {
+abstract class BaseView<BC : Controller> : KoinComponent {
 
     abstract val controller: BC
 
     @Composable
-    fun render() {
-        Screen(this) {
-            renderContent()
-        }
-    }
+    abstract fun render()
 
     @Composable
-    protected abstract fun renderContent()
-
-    fun onDestroy() {
-        println("onDestroy $this")
-        controller.onViewDestroy()
+    protected fun renderContent(content: @Composable () -> Unit) {
+        onActive { controller.onViewCreate() }
+        onDispose { controller.onViewDestroy() }
+        Screen(this) {
+            content()
+        }
     }
 }

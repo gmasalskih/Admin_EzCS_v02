@@ -1,21 +1,22 @@
 package screens.maps
 
 import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import common_widgets.AddCard
 import common_widgets.MapCard
 import org.koin.core.inject
-import router.NavigationTargets
 import screens.BaseView
 
-class MapsView : BaseView<MapsViewState, MapsController>() {
+class MapsView : BaseView<MapsController>() {
     override val controller: MapsController by inject()
 
     private fun navigateToAddMap() {
-        controller.router.navigateTo(NavigationTargets.MapsAdd)
+        controller.navigateToAddMap()
     }
 
     private fun navigateToMap(mapId: String) {
@@ -23,7 +24,7 @@ class MapsView : BaseView<MapsViewState, MapsController>() {
     }
 
     @Composable
-    override fun renderContent() {
+    override fun render() = renderContent {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(20.dp)

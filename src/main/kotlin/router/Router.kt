@@ -30,7 +30,6 @@ class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
     }
 
     private fun initCurrentScreen(target: NavigationTargets) {
-        currentScreen.onDestroy()
         currentScreen = when (target) {
             NavigationTargets.Maps -> MapsView()
             NavigationTargets.MapsAdd -> MapsAddView()

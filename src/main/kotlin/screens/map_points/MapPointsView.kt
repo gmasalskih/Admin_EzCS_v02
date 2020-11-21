@@ -4,7 +4,6 @@ import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,7 +12,7 @@ import common_widgets.MapCard
 import org.koin.core.inject
 import screens.BaseView
 
-class MapPointsView : BaseView<MapPointsViewState, MapPointsController>() {
+class MapPointsView : BaseView<MapPointsController>() {
     override val controller: MapPointsController by inject()
 
     private fun navigateToAddMapPoint() {
@@ -25,7 +24,7 @@ class MapPointsView : BaseView<MapPointsViewState, MapPointsController>() {
     }
 
     @Composable
-    override fun renderContent() {
+    override fun render() = renderContent {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(20.dp)

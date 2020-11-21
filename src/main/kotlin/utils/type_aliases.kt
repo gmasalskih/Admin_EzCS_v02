@@ -5,4 +5,4 @@ import screens.BaseView
 import screens.ViewState
 
 typealias Controller = BaseController<out ViewState>
-typealias ViewComponent = BaseView<out ViewState, out Controller>
+typealias ViewComponent = BaseView<out Controller>
