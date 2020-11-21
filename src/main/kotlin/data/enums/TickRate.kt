@@ -1,4 +1,4 @@
-package helper.enums
+package data.enums
 
 enum class TickRate {
     TICKRATE_64,

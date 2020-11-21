@@ -8,4 +8,5 @@ import router.Router
 abstract class BaseController<VS : ViewState> : KoinComponent {
     abstract var viewState: VS
     val router: Router by inject()
+    abstract fun onViewDestroy()
 }

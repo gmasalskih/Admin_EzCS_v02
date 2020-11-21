@@ -8,10 +8,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.imageResource
 
 @Composable
-fun AppIcon(pathToIcon: String, tint: Color) {
+fun AppIcon(pathToIcon: String, tint: Color, modifier: Modifier = Modifier) {
     Icon(
         asset = imageResource(pathToIcon),
         tint = tint,
-        modifier = Modifier.preferredHeight(iconHeight)
+        modifier = Modifier.preferredHeight(iconHeight).then(modifier)
     )
 }

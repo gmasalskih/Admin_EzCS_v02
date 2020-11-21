@@ -6,5 +6,4 @@ import screens.ViewState
 data class MapsViewState(
     override val typeScreenState: TypeScreenState = TypeScreenState.Data,
     override val title: String = "Maps",
-    override val hasBackArrowButton: Boolean = false,
 ) : ViewState

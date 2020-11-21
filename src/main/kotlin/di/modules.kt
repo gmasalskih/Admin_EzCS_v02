@@ -2,9 +2,9 @@ package di
 
 import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.StorageClient
-import helper.BUCKET_NAME
-import helper.DATABASE_URL
-import helper.FULL_PATH_TO_SECRET_KEY
+import utils.BUCKET_NAME
+import utils.DATABASE_URL
+import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
 import providers.firebase.FirebaseAppProvider
 import providers.firebase.StorageProvider
@@ -13,6 +13,7 @@ import router.Router
 import screens.map_points.MapPointsController
 import screens.maps.MapsController
 import screens.maps.MapsView
+import screens.maps_add.MapsAddController
 
 val fbModules = module {
     single<FirebaseApp> {
@@ -26,6 +27,10 @@ val fbModules = module {
 }
 val appModule = module {
     single<Router> { Router(entryPoint = NavigationTargets.Maps to MapsView()) }
+}
+
+val controllersModule = module {
     single<MapsController> { MapsController() }
     single<MapPointsController> { MapPointsController() }
+    single<MapsAddController> { MapsAddController() }
 }

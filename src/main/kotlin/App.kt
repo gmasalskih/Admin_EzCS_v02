@@ -1,12 +1,11 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import common_widgets.MainMenu
 import di.appModule
+import di.controllersModule
 import di.fbModules
 import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
@@ -21,7 +20,8 @@ object App : KoinComponent {
         startKoin {
             modules(
                 fbModules,
-                appModule
+                appModule,
+                controllersModule
             )
         }
     }
@@ -29,9 +29,9 @@ object App : KoinComponent {
     fun runApp(title: String) = Window(size = IntSize(1280, 800), title = title) {
         AdminEzCSTheme {
             //Background
-            Box(
+            Surface(
                 modifier = Modifier.fillMaxSize(),
-                backgroundColor = light
+                color = light
             ) {
                 Row(
                     modifier = Modifier.fillMaxSize()

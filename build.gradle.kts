@@ -24,6 +24,7 @@ dependencies {
     implementation("org.koin:koin-core:2.1.6")
     implementation("org.slf4j:slf4j-api:1.7.30")
     implementation("org.slf4j:slf4j-simple:1.7.30")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
 }
 
 tasks.withType<KotlinCompile>() {

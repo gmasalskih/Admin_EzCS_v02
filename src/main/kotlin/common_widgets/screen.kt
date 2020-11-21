@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import helper.ViewComponent
+import utils.ViewComponent
 
 
 @Composable
@@ -15,7 +15,7 @@ fun <VC : ViewComponent> Screen(viewComponent: VC, content: @Composable () -> Un
         //AppBar
         AppBar(
             viewComponent.controller.viewState.title,
-            viewComponent.controller.viewState.hasBackArrowButton,
+            viewComponent.controller.router.isNavigableBack(),
             viewComponent.controller.router
         )
         //Content

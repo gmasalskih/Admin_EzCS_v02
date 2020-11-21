@@ -1,7 +1,7 @@
 package providers.firebase
 
 import com.google.firebase.cloud.StorageClient
-import helper.enums.ContentType
+import data.enums.ContentType
 import java.io.File
 import java.io.FileInputStream
 
