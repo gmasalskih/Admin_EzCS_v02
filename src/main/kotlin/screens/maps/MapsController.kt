@@ -7,8 +7,12 @@ import screens.BaseController
 class MapsController : BaseController<MapsViewState>() {
     override var _viewState: MapsViewState by mutableStateOf(MapsViewState())
 
-    fun navigateToAddMap(){
+    fun navigateToAddMap() {
         router.navigateTo(NavigationTargets.MapsAdd)
+    }
+
+    fun navigateToEditMap(mapId: String) {
+        router.navigateTo(NavigationTargets.MapsEdit(mapId))
     }
 
     override fun onViewCreate() {

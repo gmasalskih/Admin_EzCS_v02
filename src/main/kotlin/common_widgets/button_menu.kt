@@ -14,7 +14,7 @@ import ui.greyAccent
 import ui.verdanaBold
 
 @Composable
-fun MenuButton(
+fun ButtonMenu(
     isActive: Boolean = false,
     logoPath: String,
     title: String,
@@ -33,7 +33,7 @@ fun MenuButton(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AppIcon(
+                IconApp(
                     pathToIcon = logoPath,
                     tint = if (isActive) dark else greyAccent
                 )

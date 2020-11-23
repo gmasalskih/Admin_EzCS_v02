@@ -25,7 +25,7 @@ import ui.orangeAccent
 import ui.verdanaBold
 
 @Composable
-fun MapCard(
+fun CardMap(
     modifier: Modifier = Modifier,
     background: String,
     logo: String,

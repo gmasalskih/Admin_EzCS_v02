@@ -13,7 +13,7 @@ fun <VC : ViewComponent> Screen(viewComponent: VC, content: @Composable () -> Un
         modifier = Modifier.fillMaxSize()
     ) {
         //AppBar
-        AppBar(
+        TopBarApp(
             viewComponent.controller.getViewState().title,
             viewComponent.controller.isNavigableBack(),
             viewComponent.controller::back

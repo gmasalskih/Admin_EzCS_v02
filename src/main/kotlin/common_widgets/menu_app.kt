@@ -11,54 +11,54 @@ import router.NavigationTargets
 import router.Router
 import ui.dark
 
-private val menuButtons = listOf(
-    MenuButtons.Maps,
-    MenuButtons.MapPoints,
-    MenuButtons.Weapons,
-    MenuButtons.Competitive,
-    MenuButtons.Wingman,
-    MenuButtons.DangerZone,
-    MenuButtons.ProfileRank
+private val buttonsMenuApp = listOf(
+    ButtonsMenuApp.Maps,
+    ButtonsMenuApp.MapPoints,
+    ButtonsMenuApp.Weapons,
+    ButtonsMenuApp.Competitive,
+    ButtonsMenuApp.Wingman,
+    ButtonsMenuApp.DangerZone,
+    ButtonsMenuApp.ProfileRank
 )
 
-private sealed class MenuButtons(val title: String, val logoPath: String, val navigationTarget: NavigationTargets) {
-    object Maps : MenuButtons(
+private sealed class ButtonsMenuApp(val title: String, val logoPath: String, val navigationTarget: NavigationTargets) {
+    object Maps : ButtonsMenuApp(
         title = "Maps",
         logoPath = "icons/icon_maps.png",
         navigationTarget = NavigationTargets.Maps
     )
 
-    object MapPoints : MenuButtons(
+    object MapPoints : ButtonsMenuApp(
         title = "Map Points",
         logoPath = "icons/icon_map_points.png",
         navigationTarget = NavigationTargets.MapPoints
     )
 
-    object Weapons : MenuButtons(
+    object Weapons : ButtonsMenuApp(
         title = "Weapons",
         logoPath = "icons/icon_weapons.png",
         navigationTarget = NavigationTargets.Weapons
     )
 
-    object Competitive : MenuButtons(
+    object Competitive : ButtonsMenuApp(
         title = "Competitive",
         logoPath = "icons/icon_competitive.png",
         navigationTarget = NavigationTargets.Competitive
     )
 
-    object Wingman : MenuButtons(
+    object Wingman : ButtonsMenuApp(
         title = "Wingman",
         logoPath = "icons/icon_wingman.png",
         navigationTarget = NavigationTargets.Wingman
     )
 
-    object DangerZone : MenuButtons(
+    object DangerZone : ButtonsMenuApp(
         title = "Danger Zone",
         logoPath = "icons/icon_danger_zone.png",
         navigationTarget = NavigationTargets.DangerZone
     )
 
-    object ProfileRank : MenuButtons(
+    object ProfileRank : ButtonsMenuApp(
         title = "Profile Rank",
         logoPath = "icons/icon_profile_rank.png",
         navigationTarget = NavigationTargets.ProfileRank
@@ -66,8 +66,8 @@ private sealed class MenuButtons(val title: String, val logoPath: String, val na
 }
 
 @Composable
-fun MainMenu(router: Router) {
-    var stateButtons: MenuButtons by remember { mutableStateOf(MenuButtons.Maps) }
+fun MenuApp(router: Router) {
+    var stateButtonsMenuApp: ButtonsMenuApp by remember { mutableStateOf(ButtonsMenuApp.Maps) }
     Box(
         modifier = Modifier.fillMaxHeight().preferredWidth(180.dp),
     ) {
@@ -81,18 +81,18 @@ fun MainMenu(router: Router) {
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Logo()
+                LogoApp()
                 ScrollableColumn(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    menuButtons.map {
-                        MenuButton(
-                            isActive = stateButtons == it,
+                    buttonsMenuApp.map {
+                        ButtonMenu(
+                            isActive = stateButtonsMenuApp == it,
                             title = it.title,
                             logoPath = it.logoPath
                         ) {
-                            stateButtons = it
+                            stateButtonsMenuApp = it
                             router.navigateTo(it.navigationTarget, true)
                         }
                     }

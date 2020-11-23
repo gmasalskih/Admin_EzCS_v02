@@ -1,4 +1,4 @@
-package screens.maps_add
+package screens.maps_edit
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Switch
@@ -9,48 +9,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import common_widgets.CardAdd
 import common_widgets.ButtonApp
+import common_widgets.CardImage
 import common_widgets.TextFieldApp
 import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.verdanaRegular
-import utils.fileChooser
-import utils.toValidId
 import utils.toValidName
 
-class MapsAddView : BaseView<MapsAddController>() {
-    override val controller: MapsAddController by inject()
-
-    private fun mapIdChange(mapId: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                mapId = mapId.toValidId()
-            )
-        )
-    }
-
-    private fun mapNameChange(mapName: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                mapName = mapName.toValidName()
-            )
-        )
-    }
-
-    private fun addLogoClick() {
-        fileChooser("Logo")
-    }
-
-    private fun addMapClick() {
-        //TODO("Not yet implemented")
-    }
-
-    private fun addWallpaperClick() {
-        //TODO("Not yet implemented")
-    }
+class MapsEditView(val mapId: String) : BaseView<MapsEditController>() {
+    override val controller: MapsEditController by inject()
 
     private fun competitiveChecked(value: Boolean) {
         controller.setViewState(
@@ -60,12 +30,32 @@ class MapsAddView : BaseView<MapsAddController>() {
         )
     }
 
-    private fun clearBtnClick() {
-        controller.clearViewState()
+    private fun submitBtnClick() {
+        controller.setViewState(
+            controller.getViewState().copy(
+                pathToLogo = "https://golaya-pizda.com/wp-content/uploads/2017/06/chastnoe-foto-403.jpg"
+            )
+        )
     }
 
-    private fun submitBtnClick() {
+    private fun addWallpaperClick() {
         //TODO("Not yet implemented")
+    }
+
+    private fun addMapClick() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun onClickLogo() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun onMapNameChange(mapName: String) {
+        controller.setViewState(
+            controller.getViewState().copy(
+                mapName = mapName.toValidName()
+            )
+        )
     }
 
     @Composable
@@ -84,31 +74,37 @@ class MapsAddView : BaseView<MapsAddController>() {
                     //Map ID
                     TextFieldApp(
                         value = controller.getViewState().mapId,
-                        label = "Enter map ID",
-                        onTextChanged = ::mapIdChange
+                        label = "Map ID",
+                        onTextChanged = {}
                     )
                     //Map name
                     TextFieldApp(
                         value = controller.getViewState().mapName,
-                        label = "Enter map name",
-                        onTextChanged = ::mapNameChange
+                        label = "Map name",
+                        onTextChanged = ::onMapNameChange
                     )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    CardAdd(
-                        title = "add logo",
-                        click = ::addLogoClick
+                    //logo
+                    CardImage(
+                        pathToImage = controller.getViewState().pathToLogo,
+                        fileName = controller.getViewState().pathToLogo.split("/").last(),
+                        onClick = ::onClickLogo
                     )
-                    CardAdd(
-                        title = "add map",
-                        click = ::addMapClick
+                    //map
+                    CardImage(
+                        pathToImage = controller.getViewState().pathToMapImg,
+                        fileName = controller.getViewState().pathToMapImg.split("/").last(),
+                        onClick = ::onClickLogo
                     )
-                    CardAdd(
-                        title = "add wallpaper",
-                        click = ::addWallpaperClick
+                    //wallpaper
+                    CardImage(
+                        pathToImage = controller.getViewState().pathToWallpaper,
+                        fileName = controller.getViewState().pathToWallpaper.split("/").last(),
+                        onClick = ::onClickLogo
                     )
                 }
                 Row(
@@ -131,21 +127,12 @@ class MapsAddView : BaseView<MapsAddController>() {
                     )
                 }
             }
-            Row(
-                modifier = Modifier.align(Alignment.BottomEnd),
-                horizontalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                ButtonApp(
-                    label = "clear",
-                    color = greyAccent,
-                    onClick = ::clearBtnClick
-                )
-                ButtonApp(
-                    label = "submit",
-                    color = orangeAccent,
-                    onClick = ::submitBtnClick
-                )
-            }
+            ButtonApp(
+                label = "submit",
+                color = orangeAccent,
+                onClick = ::submitBtnClick,
+                modifier = Modifier.align(Alignment.BottomEnd)
+            )
         }
     }
 }

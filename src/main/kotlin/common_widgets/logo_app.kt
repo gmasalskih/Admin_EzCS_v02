@@ -13,7 +13,7 @@ import ui.orangeAccent
 import ui.verdanaBold
 
 @Composable
-fun Logo() {
+fun LogoApp() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()

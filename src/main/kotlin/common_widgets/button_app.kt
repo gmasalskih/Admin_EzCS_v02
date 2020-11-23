@@ -17,7 +17,7 @@ import ui.dark
 import ui.verdanaBold
 
 @Composable
-fun Btn(label: String, color: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun ButtonApp(label: String, color: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.size(100.dp, 40.dp).then(modifier).clickable(onClick = onClick),
         color = color,

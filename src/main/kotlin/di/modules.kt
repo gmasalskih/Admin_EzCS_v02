@@ -14,6 +14,7 @@ import screens.map_points.MapPointsController
 import screens.maps.MapsController
 import screens.maps.MapsView
 import screens.maps_add.MapsAddController
+import screens.maps_edit.MapsEditController
 
 val fbModules = module {
     single<FirebaseApp> {
@@ -33,4 +34,5 @@ val controllersModule = module {
     single<MapsController> { MapsController() }
     single<MapPointsController> { MapPointsController() }
     single<MapsAddController> { MapsAddController() }
+    single<MapsEditController> { MapsEditController() }
 }

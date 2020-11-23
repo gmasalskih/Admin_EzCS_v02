@@ -18,7 +18,7 @@ import ui.light
 import ui.verdanaBold
 
 @Composable
-fun AddCard(title: String, click: () -> Unit) {
+fun CardAdd(title: String, click: () -> Unit) {
     Card(
         modifier = Modifier.size(100.dp, 150.dp).clickable(onClick = click),
         backgroundColor = greyAccent,
@@ -28,7 +28,7 @@ fun AddCard(title: String, click: () -> Unit) {
         Box(
             modifier = Modifier.fillMaxSize().padding(10.dp)
         ) {
-            AppIcon(
+            IconApp(
                 pathToIcon = "icons/icon_add.png",
                 tint = light,
                 modifier = Modifier.align(Alignment.Center)

@@ -3,7 +3,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
-import common_widgets.MainMenu
+import common_widgets.MenuApp
 import di.appModule
 import di.controllersModule
 import di.fbModules
@@ -37,7 +37,7 @@ object App : KoinComponent {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     //Menu
-                    MainMenu(router)
+                    MenuApp(router)
                     // Content
                     router.currentScreen.render()
                 }

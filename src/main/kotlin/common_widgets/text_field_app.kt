@@ -14,7 +14,7 @@ import ui.textStyleField
 import ui.verdanaRegular
 
 @Composable
-fun DecoratedTextField(value: String, label: String, modifier: Modifier = Modifier, onTextChanged: (String) -> Unit) {
+fun TextFieldApp(value: String, label: String, modifier: Modifier = Modifier, onTextChanged: (String) -> Unit) {
     TextField(
         value = value,
         onValueChange = onTextChanged,

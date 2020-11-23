@@ -6,6 +6,7 @@ import utils.ViewComponent
 import screens.map_points.MapPointsView
 import screens.maps.MapsView
 import screens.maps_add.MapsAddView
+import screens.maps_edit.MapsEditView
 
 class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
     var currentScreen: ViewComponent by mutableStateOf(entryPoint.second)
@@ -31,14 +32,15 @@ class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
 
     private fun initCurrentScreen(target: NavigationTargets) {
         currentScreen = when (target) {
-            NavigationTargets.Maps -> MapsView()
-            NavigationTargets.MapsAdd -> MapsAddView()
-            NavigationTargets.MapPoints -> MapPointsView()
-            NavigationTargets.Weapons -> MapsView()
-            NavigationTargets.Competitive -> MapsView()
-            NavigationTargets.Wingman -> MapsView()
-            NavigationTargets.DangerZone -> MapsView()
-            NavigationTargets.ProfileRank -> MapsView()
+            is NavigationTargets.Maps -> MapsView()
+            is NavigationTargets.MapsAdd -> MapsAddView()
+            is NavigationTargets.MapsEdit -> MapsEditView(target.mapId)
+            is NavigationTargets.MapPoints -> MapPointsView()
+            is NavigationTargets.Weapons -> MapsView()
+            is NavigationTargets.Competitive -> MapsView()
+            is NavigationTargets.Wingman -> MapsView()
+            is NavigationTargets.DangerZone -> MapsView()
+            is NavigationTargets.ProfileRank -> MapsView()
         }
     }
 }

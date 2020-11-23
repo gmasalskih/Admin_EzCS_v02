@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.imageResource
 
 @Composable
-fun AppIcon(pathToIcon: String, tint: Color, modifier: Modifier = Modifier) {
+fun IconApp(pathToIcon: String, tint: Color, modifier: Modifier = Modifier) {
     Icon(
         asset = imageResource(pathToIcon),
         tint = tint,

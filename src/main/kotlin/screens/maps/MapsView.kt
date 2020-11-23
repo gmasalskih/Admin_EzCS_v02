@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import common_widgets.AddCard
-import common_widgets.MapCard
+import common_widgets.CardAdd
+import common_widgets.CardMap
 import org.koin.core.inject
 import screens.BaseView
 
@@ -20,7 +20,7 @@ class MapsView : BaseView<MapsController>() {
     }
 
     private fun navigateToMap(mapId: String) {
-
+        controller.navigateToEditMap(mapId)
     }
 
     @Composable
@@ -29,13 +29,13 @@ class MapsView : BaseView<MapsController>() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            AddCard(title = "add map", click = ::navigateToAddMap)
+            CardAdd(title = "add map", click = ::navigateToAddMap)
             ScrollableRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 repeat(10) {
-                    MapCard(
+                    CardMap(
                         background = "background/wallpaper.png",
                         logo = "logo/logo.png",
                         name = "Dust II",

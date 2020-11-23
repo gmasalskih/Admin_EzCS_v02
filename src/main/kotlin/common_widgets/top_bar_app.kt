@@ -7,13 +7,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import router.Router
 import ui.dark
 import ui.greyAccent
 import ui.verdanaBold
 
 @Composable
-fun AppBar(title: String, hasBackArrowButton: Boolean = false, clickBack: () -> Unit = {}) {
+fun TopBarApp(title: String, hasBackArrowButton: Boolean = false, clickBack: () -> Unit = {}) {
     Surface(
         modifier = Modifier.fillMaxWidth().preferredHeight(appBarSize),
         color = dark
@@ -26,7 +25,7 @@ fun AppBar(title: String, hasBackArrowButton: Boolean = false, clickBack: () -> 
                     modifier = Modifier.fillMaxHeight().aspectRatio(1f).clickable(onClick = clickBack),
                     alignment = Alignment.Center
                 ) {
-                    AppIcon(
+                    IconApp(
                         pathToIcon = "icons/back_arrow.png",
                         tint = greyAccent
                     )
