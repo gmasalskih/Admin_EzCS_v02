@@ -5,18 +5,20 @@ import org.koin.core.inject
 import router.Router
 
 abstract class BaseController<VS : ViewState> : KoinComponent {
-    protected abstract var _viewState: VS
+    protected abstract var _state: VS
     protected val router: Router by inject()
 
-    fun getViewState() = _viewState
+    fun getViewState() = _state
     fun setViewState(viewState: VS) {
-        _viewState = viewState
+        _state = viewState
     }
 
     fun isNavigableBack() = router.isNavigableBack()
     fun back() = router.back()
-    abstract fun clearViewState()
 
-    abstract fun onViewCreate()
-    abstract fun onViewDestroy()
+    open fun onViewCreate() {/* STUB */
+    }
+
+    open fun onViewDestroy() {/* STUB */
+    }
 }

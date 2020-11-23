@@ -4,9 +4,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import common_widgets.MenuApp
-import di.appModule
-import di.controllersModule
-import di.fbModules
+import di.*
 import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.inject
@@ -21,7 +19,13 @@ object App : KoinComponent {
             modules(
                 fbModules,
                 appModule,
-                controllersModule
+                competitiveModule,
+                dangerZoneModule,
+                mapPointsModule,
+                mapsModule,
+                profileRankModule,
+                weaponsModule,
+                wingmanModule
             )
         }
     }

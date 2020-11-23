@@ -25,43 +25,43 @@ private sealed class ButtonsMenuApp(val title: String, val logoPath: String, val
     object Maps : ButtonsMenuApp(
         title = "Maps",
         logoPath = "icons/icon_maps.png",
-        navigationTarget = NavigationTargets.Maps
+        navigationTarget = NavigationTargets.MapsMenu
     )
 
     object MapPoints : ButtonsMenuApp(
         title = "Map Points",
         logoPath = "icons/icon_map_points.png",
-        navigationTarget = NavigationTargets.MapPoints
+        navigationTarget = NavigationTargets.MapPointsMenu
     )
 
     object Weapons : ButtonsMenuApp(
         title = "Weapons",
         logoPath = "icons/icon_weapons.png",
-        navigationTarget = NavigationTargets.Weapons
+        navigationTarget = NavigationTargets.WeaponsMenu
     )
 
     object Competitive : ButtonsMenuApp(
         title = "Competitive",
         logoPath = "icons/icon_competitive.png",
-        navigationTarget = NavigationTargets.Competitive
+        navigationTarget = NavigationTargets.CompetitiveMenu
     )
 
     object Wingman : ButtonsMenuApp(
         title = "Wingman",
         logoPath = "icons/icon_wingman.png",
-        navigationTarget = NavigationTargets.Wingman
+        navigationTarget = NavigationTargets.WingmanMenu
     )
 
     object DangerZone : ButtonsMenuApp(
         title = "Danger Zone",
         logoPath = "icons/icon_danger_zone.png",
-        navigationTarget = NavigationTargets.DangerZone
+        navigationTarget = NavigationTargets.DangerZoneMenu
     )
 
     object ProfileRank : ButtonsMenuApp(
         title = "Profile Rank",
         logoPath = "icons/icon_profile_rank.png",
-        navigationTarget = NavigationTargets.ProfileRank
+        navigationTarget = NavigationTargets.ProfileRankMenu
     )
 }
 

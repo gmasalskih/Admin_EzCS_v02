@@ -16,8 +16,14 @@ abstract class BaseView<BC : Controller> : KoinComponent {
 
     @Composable
     protected fun renderContent(content: @Composable () -> Unit) {
-        onActive { controller.onViewCreate() }
-        onDispose { controller.onViewDestroy() }
+        onActive {
+            controller.onViewCreate()
+            println("onActive ${this@BaseView.javaClass.simpleName}")
+        }
+        onDispose {
+            controller.onViewDestroy()
+            println("onDispose ${this@BaseView.javaClass.simpleName}")
+        }
         Screen(this) {
             content()
         }

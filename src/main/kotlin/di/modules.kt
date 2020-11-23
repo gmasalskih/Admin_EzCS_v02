@@ -10,11 +10,28 @@ import providers.firebase.FirebaseAppProvider
 import providers.firebase.StorageProvider
 import router.NavigationTargets
 import router.Router
-import screens.map_points.MapPointsController
-import screens.maps.MapsController
-import screens.maps.MapsView
-import screens.maps_add.MapsAddController
-import screens.maps_edit.MapsEditController
+import screens.competitive.add.CompetitiveAddController
+import screens.competitive.edit.CompetitiveEditController
+import screens.competitive.menu.CompetitiveMenuController
+import screens.danger_zone.add.DangerZoneAddController
+import screens.danger_zone.edit.DangerZoneEditController
+import screens.danger_zone.menu.DangerZoneMenuController
+import screens.map_points.menu.MapPointsMenuController
+import screens.map_points.add.MapPointsAddController
+import screens.map_points.edit.MapPointsEditController
+import screens.maps.menu.MapsMenuController
+import screens.maps.menu.MapsMenuView
+import screens.maps.add.MapsAddController
+import screens.maps.edit.MapsEditController
+import screens.profile_rank.add.ProfileRankAddController
+import screens.profile_rank.edit.ProfileRankEditController
+import screens.profile_rank.menu.ProfileRankMenuController
+import screens.weapons.add.WeaponsAddController
+import screens.weapons.edit.WeaponsEditController
+import screens.weapons.menu.WeaponsMenuController
+import screens.wingman.add.WingmanAddController
+import screens.wingman.edit.WingmanEditController
+import screens.wingman.menu.WingmanMenuController
 
 val fbModules = module {
     single<FirebaseApp> {
@@ -27,12 +44,47 @@ val fbModules = module {
     single<StorageProvider> { StorageProvider(get(), BUCKET_NAME) }
 }
 val appModule = module {
-    single<Router> { Router(entryPoint = NavigationTargets.Maps to MapsView()) }
+    single<Router> { Router(entryPoint = NavigationTargets.MapsMenu to MapsMenuView()) }
 }
 
-val controllersModule = module {
-    single<MapsController> { MapsController() }
-    single<MapPointsController> { MapPointsController() }
+val competitiveModule = module {
+    single<CompetitiveAddController> { CompetitiveAddController() }
+    single<CompetitiveEditController> { CompetitiveEditController() }
+    single<CompetitiveMenuController> { CompetitiveMenuController() }
+}
+
+val dangerZoneModule = module {
+    single<DangerZoneAddController> { DangerZoneAddController() }
+    single<DangerZoneEditController> { DangerZoneEditController() }
+    single<DangerZoneMenuController> { DangerZoneMenuController() }
+}
+
+val mapPointsModule = module {
+    single<MapPointsAddController> { MapPointsAddController() }
+    single<MapPointsEditController> { MapPointsEditController() }
+    single<MapPointsMenuController> { MapPointsMenuController() }
+}
+
+val mapsModule = module {
     single<MapsAddController> { MapsAddController() }
     single<MapsEditController> { MapsEditController() }
+    single<MapsMenuController> { MapsMenuController() }
+}
+
+val profileRankModule = module {
+    single<ProfileRankAddController> { ProfileRankAddController() }
+    single<ProfileRankEditController> { ProfileRankEditController() }
+    single<ProfileRankMenuController> { ProfileRankMenuController() }
+}
+
+val weaponsModule = module {
+    single<WeaponsAddController> { WeaponsAddController() }
+    single<WeaponsEditController> { WeaponsEditController() }
+    single<WeaponsMenuController> { WeaponsMenuController() }
+}
+
+val wingmanModule = module {
+    single<WingmanAddController> { WingmanAddController() }
+    single<WingmanEditController> { WingmanEditController() }
+    single<WingmanMenuController> { WingmanMenuController() }
 }
