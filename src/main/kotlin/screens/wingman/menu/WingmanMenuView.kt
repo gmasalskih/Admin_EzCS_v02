@@ -8,4 +8,9 @@ import screens.BaseView
 
 class WingmanMenuView : BaseView<WingmanMenuController>() {
     override val controller by inject<WingmanMenuController>()
+
+    @Composable
+    override fun setContent() {
+//        TODO("Not yet implemented")
+    }
 }

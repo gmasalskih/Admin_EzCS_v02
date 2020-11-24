@@ -7,4 +7,9 @@ import screens.BaseView
 class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() {
     override val controller by inject<DangerZoneEditController>()
 
+    @Composable
+    override fun setContent() {
+//        TODO("Not yet implemented")
+    }
+
 }

@@ -21,23 +21,21 @@ class MapsMenuView : BaseView<MapsMenuController>() {
         controller.navigateToEditMap(mapId)
     }
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-        setContent {
-            ScrollableRowAdd(
-                modifier = Modifier.fillMaxWidth(),
-                items = 1..3,
-                cardAdd = { CardAdd(label = "add map", onClick = ::navigateToAddMap) },
-                cardItem = {
-                    CardMap(
-                        background = "background/wallpaper.png",
-                        logo = "logo/logo.png",
-                        name = "Dust II",
-                        isCompetitive = true,
-                        onClick = { navigateToMap(it.toString()) }
-                    )
-                }
-            )
-        }
+    @Composable
+    override fun setContent() {
+        ScrollableRowAdd(
+            modifier = Modifier.fillMaxWidth(),
+            items = 1..3,
+            cardAdd = { CardAdd(label = "add map", onClick = ::navigateToAddMap) },
+            cardItem = {
+                CardMap(
+                    background = "background/wallpaper.png",
+                    logo = "logo/logo.png",
+                    name = "Dust II",
+                    isCompetitive = true,
+                    onClick = { navigateToMap(it.toString()) }
+                )
+            }
+        )
     }
 }

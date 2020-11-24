@@ -6,4 +6,9 @@ import screens.BaseView
 
 class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {
     override val controller by inject<ProfileRankMenuController>()
+
+    @Composable
+    override fun setContent() {
+//        TODO("Not yet implemented")
+    }
 }

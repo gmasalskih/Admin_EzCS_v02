@@ -6,4 +6,9 @@ import screens.BaseView
 
 class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
     override val controller by inject<DangerZoneMenuController>()
+
+    @Composable
+    override fun setContent() {
+//        TODO("Not yet implemented")
+    }
 }

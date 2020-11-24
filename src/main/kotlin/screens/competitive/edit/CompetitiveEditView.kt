@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import common_widgets.CardAdd
 import common_widgets.TextFieldApp
 import common_widgets.spacedBy20dp
 import org.koin.core.inject
@@ -35,30 +36,36 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
         )
     }
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-        setContent {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = spacedBy20dp
+    private fun onLogoAdd() {
+
+    }
+
+    @Composable
+    override fun setContent() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = spacedBy20dp
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = spacedBy20dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    //Rank ID
-                    TextFieldApp(
-                        value = controller.getViewState().rankId,
-                        label = "Rank ID",
-                    )
-                    //Rank name
-                    TextFieldApp(
-                        value = controller.getViewState().rankName,
-                        label = "Rank name",
-                        onTextChanged = ::onRankNameChanged
-                    )
-                }
+                //Rank ID
+                TextFieldApp(
+                    value = controller.getViewState().rankId,
+                    label = "Rank ID",
+                )
+                //Rank name
+                TextFieldApp(
+                    value = controller.getViewState().rankName,
+                    label = "Rank name",
+                    onTextChanged = ::onRankNameChanged
+                )
             }
+            CardAdd(
+                label = "Add logo",
+                onClick = ::onLogoAdd
+            )
         }
     }
 }

@@ -60,72 +60,70 @@ class MapsAddView : BaseView<MapsAddController>() {
         //TODO("Not yet implemented")
     }
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-        setContent {
-            Box(
-                modifier = Modifier.fillMaxSize()
+    @Composable
+    override fun setContent() {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
+                verticalArrangement = spacedBy20dp
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
-                    verticalArrangement = spacedBy20dp
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = spacedBy20dp
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = spacedBy20dp
-                    ) {
-                        //Map ID
-                        TextFieldApp(
-                            value = controller.getViewState().mapId,
-                            label = "Enter map ID",
-                            onTextChanged = ::mapIdChange
-                        )
-                        //Map name
-                        TextFieldApp(
-                            value = controller.getViewState().mapName,
-                            label = "Enter map name",
-                            onTextChanged = ::mapNameChange
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = spacedBy20dp
-                    ) {
-                        CardAdd(
-                            label = "add logo",
-                            onClick = ::addLogoClick
-                        )
-                        CardAdd(
-                            label = "add map",
-                            onClick = ::addMapClick
-                        )
-                        CardAdd(
-                            label = "add wallpaper",
-                            onClick = ::addWallpaperClick
-                        )
-                    }
-                    SwitchLable(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = "Competitive",
-                        isChecked = controller.getViewState().isCompetitive,
-                        onCheckedChange = ::competitiveChecked
+                    //Map ID
+                    TextFieldApp(
+                        value = controller.getViewState().mapId,
+                        label = "Enter map ID",
+                        onTextChanged = ::mapIdChange
+                    )
+                    //Map name
+                    TextFieldApp(
+                        value = controller.getViewState().mapName,
+                        label = "Enter map name",
+                        onTextChanged = ::mapNameChange
                     )
                 }
                 Row(
-                    modifier = Modifier.align(Alignment.BottomEnd),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = spacedBy20dp
                 ) {
-                    ButtonApp(
-                        label = "clear",
-                        color = greyAccent,
-                        onClick = ::clearBtnClick
+                    CardAdd(
+                        label = "add logo",
+                        onClick = ::addLogoClick
                     )
-                    ButtonApp(
-                        label = "submit",
-                        color = orangeAccent,
-                        onClick = ::submitBtnClick
+                    CardAdd(
+                        label = "add map",
+                        onClick = ::addMapClick
+                    )
+                    CardAdd(
+                        label = "add wallpaper",
+                        onClick = ::addWallpaperClick
                     )
                 }
+                SwitchLable(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "Competitive",
+                    isChecked = controller.getViewState().isCompetitive,
+                    onCheckedChange = ::competitiveChecked
+                )
+            }
+            Row(
+                modifier = Modifier.align(Alignment.BottomEnd),
+                horizontalArrangement = spacedBy20dp
+            ) {
+                ButtonApp(
+                    label = "clear",
+                    color = greyAccent,
+                    onClick = ::clearBtnClick
+                )
+                ButtonApp(
+                    label = "submit",
+                    color = orangeAccent,
+                    onClick = ::submitBtnClick
+                )
             }
         }
     }

@@ -6,4 +6,9 @@ import screens.BaseView
 
 class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
     override val controller by inject<WingmanEditController>()
+
+    @Composable
+    override fun setContent() {
+//        TODO("Not yet implemented")
+    }
 }

@@ -34,34 +34,32 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
 
     }
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-        setContent {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = spacedBy20dp
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
+    @Composable
+    override fun setContent() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = spacedBy20dp
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = spacedBy20dp
 
-                ) {
-                    TextFieldApp(
-                        value = controller.getViewState().rankId,
-                        label = "Enter rank ID",
-                        onTextChanged = ::onRankIdChanged
-                    )
-                    TextFieldApp(
-                        value = controller.getViewState().rankName,
-                        label = "Enter rank name",
-                        onTextChanged = ::onRankNameChanged
-                    )
-                }
-                CardAdd(
-                    label = "add logo",
-                    onClick = ::onAddLogo
+            ) {
+                TextFieldApp(
+                    value = controller.getViewState().rankId,
+                    label = "Enter rank ID",
+                    onTextChanged = ::onRankIdChanged
+                )
+                TextFieldApp(
+                    value = controller.getViewState().rankName,
+                    label = "Enter rank name",
+                    onTextChanged = ::onRankNameChanged
                 )
             }
+            CardAdd(
+                label = "add logo",
+                onClick = ::onAddLogo
+            )
         }
     }
 }

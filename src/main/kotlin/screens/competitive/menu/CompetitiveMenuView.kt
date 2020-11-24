@@ -20,21 +20,19 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
         controller.navigateToEditCompetitiveRank(id)
     }
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-        setContent {
-            ScrollableRowAdd(
-                modifier = Modifier.fillMaxWidth(),
-                items = 1..6,
-                cardAdd = { CardAdd(label = "Add new rank", onClick = ::onAddNewRank) },
-                cardItem = {
-                    CardWeaponRank(
-                        pathToImage = "assets/01_s1.png",
-                        name = "Silver 1",
-                        onClick = { onEditRank(it.toString()) }
-                    )
-                }
-            )
-        }
+    @Composable
+    override fun setContent() {
+        ScrollableRowAdd(
+            modifier = Modifier.fillMaxWidth(),
+            items = 1..6,
+            cardAdd = { CardAdd(label = "Add new rank", onClick = ::onAddNewRank) },
+            cardItem = {
+                CardWeaponRank(
+                    pathToImage = "assets/01_s1.png",
+                    name = "Silver 1",
+                    onClick = { onEditRank(it.toString()) }
+                )
+            }
+        )
     }
 }

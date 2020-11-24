@@ -6,4 +6,9 @@ import screens.BaseView
 
 class WeaponsMenuView : BaseView<WeaponsMenuController>() {
     override val controller by inject<WeaponsMenuController>()
+
+    @Composable
+    override fun setContent() {
+//        TODO("Not yet implemented")
+    }
 }
