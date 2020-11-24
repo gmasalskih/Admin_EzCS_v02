@@ -2,6 +2,6 @@
 /.gradle/
 /build/
 /src/main/resources/FSKey.json
-/src/main/kotlin/helper/constants.kt
 /.idea/vcs.xml
 /.idea/.gitignore
+/src/main/kotlin/utils/constants.kt
