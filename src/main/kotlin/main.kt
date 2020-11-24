@@ -1,3 +1,7 @@
 fun main() {
-    App.runApp(title = "App")
+    try {
+        App.runApp(title = "App")
+    } catch (e: Throwable) {
+        e.printStackTrace()
+    }
 }

@@ -1,22 +1,12 @@
 package screens.maps.edit
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchConstants
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import common_widgets.ButtonApp
-import common_widgets.CardImage
-import common_widgets.TextFieldApp
+import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
-import ui.greyAccent
 import ui.orangeAccent
-import ui.verdanaRegular
 import utils.toValidName
 
 class MapsEditView(val id: String) : BaseView<MapsEditController>() {
@@ -58,81 +48,70 @@ class MapsEditView(val id: String) : BaseView<MapsEditController>() {
         )
     }
 
-    @Composable
-    override fun render() = renderContent {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+    override fun onViewCreate() {
+        super.onViewCreate()
+        setContent {
+            Box(
+                modifier = Modifier.fillMaxSize()
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp)
+                Column(
+                    modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
+                    verticalArrangement = spacedBy20dp
                 ) {
-                    //Map ID
-                    TextFieldApp(
-                        value = controller.getViewState().mapId,
-                        label = "Map ID",
-                        onTextChanged = {}
-                    )
-                    //Map name
-                    TextFieldApp(
-                        value = controller.getViewState().mapName,
-                        label = "Map name",
-                        onTextChanged = ::onMapNameChange
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    //logo
-                    CardImage(
-                        pathToImage = controller.getViewState().pathToLogo,
-                        fileName = controller.getViewState().pathToLogo.split("/").last(),
-                        onClick = ::onClickLogo
-                    )
-                    //map
-                    CardImage(
-                        pathToImage = controller.getViewState().pathToMapImg,
-                        fileName = controller.getViewState().pathToMapImg.split("/").last(),
-                        onClick = ::onClickLogo
-                    )
-                    //wallpaper
-                    CardImage(
-                        pathToImage = controller.getViewState().pathToWallpaper,
-                        fileName = controller.getViewState().pathToWallpaper.split("/").last(),
-                        onClick = ::onClickLogo
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    Switch(
-                        checked = controller.getViewState().isCompetitive,
-                        onCheckedChange = ::competitiveChecked,
-                        colors = SwitchConstants.defaultColors(
-                            checkedThumbColor = orangeAccent,
-                            uncheckedThumbColor = greyAccent
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = spacedBy20dp
+                    ) {
+                        //Map ID
+                        TextFieldApp(
+                            value = controller.getViewState().mapId,
+                            label = "Map ID",
+                            onTextChanged = {}
                         )
-                    )
-                    Text(
-                        text = "Competitive",
-                        fontFamily = verdanaRegular,
-                        fontSize = 20.sp,
-                        color = if (controller.getViewState().isCompetitive) orangeAccent else greyAccent
+                        //Map name
+                        TextFieldApp(
+                            value = controller.getViewState().mapName,
+                            label = "Map name",
+                            onTextChanged = ::onMapNameChange
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = spacedBy20dp
+                    ) {
+                        //logo
+                        CardImage(
+                            pathToImage = controller.getViewState().pathToLogo,
+                            fileName = controller.getViewState().pathToLogo.split("/").last(),
+                            onClick = ::onClickLogo
+                        )
+                        //map
+                        CardImage(
+                            pathToImage = controller.getViewState().pathToMapImg,
+                            fileName = controller.getViewState().pathToMapImg.split("/").last(),
+                            onClick = ::onClickLogo
+                        )
+                        //wallpaper
+                        CardImage(
+                            pathToImage = controller.getViewState().pathToWallpaper,
+                            fileName = controller.getViewState().pathToWallpaper.split("/").last(),
+                            onClick = ::onClickLogo
+                        )
+                    }
+                    SwitchLable(
+                        label = "Competitive",
+                        isChecked = controller.getViewState().isCompetitive,
+                        modifier = Modifier.fillMaxWidth(),
+                        onCheckedChange = ::competitiveChecked
                     )
                 }
+                ButtonApp(
+                    label = "submit",
+                    color = orangeAccent,
+                    onClick = ::submitBtnClick,
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                )
             }
-            ButtonApp(
-                label = "submit",
-                color = orangeAccent,
-                onClick = ::submitBtnClick,
-                modifier = Modifier.align(Alignment.BottomEnd)
-            )
         }
     }
 }

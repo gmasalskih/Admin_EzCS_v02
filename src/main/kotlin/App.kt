@@ -44,6 +44,7 @@ object App : KoinComponent {
                     MenuApp(router)
                     // Content
                     router.currentScreen.render()
+//                    router.currentScreen.render()
                 }
             }
         }

@@ -25,8 +25,8 @@ fun CardImage(
 ) {
     Card(
         modifier = Modifier.size(100.dp, 150.dp).then(modifier).clickable(onClick = onClick),
-        shape = RoundedCornerShape(5.dp),
-        elevation = 6.dp,
+        shape = roundedCorner5dp,
+        elevation = elevation6dp,
         backgroundColor = greyAccent
     ) {
         Column(
@@ -50,7 +50,7 @@ fun CardImage(
                 Text(
                     text = fileName.toLowerCase(),
                     fontFamily = verdanaBold,
-                    fontSize = 10.sp,
+                    fontSize = fontSize10sp,
                     modifier = Modifier.align(Alignment.Center),
                     color = dark
                 )

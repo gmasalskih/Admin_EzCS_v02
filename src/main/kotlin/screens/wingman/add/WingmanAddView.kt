@@ -6,9 +6,4 @@ import screens.BaseView
 
 class WingmanAddView : BaseView<WingmanAddController>() {
     override val controller by inject<WingmanAddController>()
-
-    @Composable
-    override fun render() = renderContent {
-
-    }
 }

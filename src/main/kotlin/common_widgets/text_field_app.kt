@@ -14,13 +14,13 @@ import ui.textStyleField
 import ui.verdanaRegular
 
 @Composable
-fun TextFieldApp(value: String, label: String, modifier: Modifier = Modifier, onTextChanged: (String) -> Unit) {
+fun TextFieldApp(value: String, label: String, modifier: Modifier = Modifier, onTextChanged: (String) -> Unit = {}) {
     TextField(
         value = value,
         onValueChange = onTextChanged,
         textStyle = TextStyle(
             color = greyAccent,
-            fontSize = 14.sp,
+            fontSize = fontSize14sp,
             fontFamily = verdanaRegular,
         ),
         label = {
@@ -29,10 +29,10 @@ fun TextFieldApp(value: String, label: String, modifier: Modifier = Modifier, on
                 modifier = Modifier.then(modifier),
                 color = greyAccent.copy(alpha = 0.4f),
                 fontFamily = verdanaRegular,
-                fontSize = 12.sp
+                fontSize = fontSize12sp
             )
         },
         modifier = Modifier.preferredWidth(220.dp).then(modifier),
-        shape = RoundedCornerShape(5.dp),
+        shape = roundedCorner5dp,
     )
 }

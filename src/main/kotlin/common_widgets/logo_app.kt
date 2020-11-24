@@ -21,7 +21,7 @@ fun LogoApp() {
         Text(
             text = "Admin EzCS",
             fontFamily = verdanaBold,
-            fontSize = TextUnit.Sp(20),
+            fontSize = fontSize20sp,
             color = orangeAccent,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(vertical = 20.dp)

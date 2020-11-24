@@ -38,7 +38,7 @@ fun TopBarApp(title: String, hasBackArrowButton: Boolean = false, clickBack: () 
                 Text(
                     text = title,
                     fontFamily = verdanaBold,
-                    fontSize = heading,
+                    fontSize = fontSize20sp,
                     color = greyAccent
                 )
             }

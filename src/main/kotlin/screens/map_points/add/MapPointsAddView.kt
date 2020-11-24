@@ -6,9 +6,4 @@ import screens.BaseView
 
 class MapPointsAddView : BaseView<MapPointsAddController>() {
     override val controller by inject<MapPointsAddController>()
-
-    @Composable
-    override fun render() = renderContent {
-
-    }
 }

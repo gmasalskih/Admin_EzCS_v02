@@ -6,9 +6,4 @@ import screens.BaseView
 
 class DangerZoneAddView : BaseView<DangerZoneAddController>() {
     override val controller by inject<DangerZoneAddController>()
-
-    @Composable
-    override fun render() = renderContent {
-
-    }
 }

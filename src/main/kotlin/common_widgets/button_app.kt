@@ -21,7 +21,7 @@ fun ButtonApp(label: String, color: Color, modifier: Modifier = Modifier, onClic
     Surface(
         modifier = Modifier.size(100.dp, 40.dp).then(modifier).clickable(onClick = onClick),
         color = color,
-        shape = RoundedCornerShape(5.dp)
+        shape = roundedCorner5dp
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -29,7 +29,7 @@ fun ButtonApp(label: String, color: Color, modifier: Modifier = Modifier, onClic
             Text(
                 text = label.toUpperCase(),
                 fontFamily = verdanaBold,
-                fontSize = 14.sp,
+                fontSize = fontSize14sp,
                 color = dark,
                 modifier = Modifier.align(Alignment.Center)
             )

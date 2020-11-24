@@ -6,9 +6,4 @@ import screens.BaseView
 
 class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>() {
     override val controller by inject<ProfileRankEditController>()
-
-    @Composable
-    override fun render() = renderContent {
-
-    }
 }

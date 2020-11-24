@@ -75,7 +75,7 @@ fun MenuApp(router: Router) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = dark,
-            elevation = 6.dp
+            elevation = elevation6dp
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),

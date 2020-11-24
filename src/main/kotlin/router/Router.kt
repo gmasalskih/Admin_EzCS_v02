@@ -30,6 +30,10 @@ class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
         private set
     private val backStack by mutableStateOf(mutableListOf<NavigationTargets>(entryPoint.first))
 
+    init {
+        entryPoint.second.onViewCreate()
+    }
+
     fun navigateTo(target: NavigationTargets, onTop: Boolean = false) {
         if (target != backStack.last()) {
             if (onTop) backStack.clear()
@@ -50,6 +54,7 @@ class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
     }
 
     private fun initCurrentScreen(target: NavigationTargets) {
+        currentScreen.onViewDestroy()
         currentScreen = when (target) {
             //Competitive
             is NavigationTargets.CompetitiveAdd -> CompetitiveAddView()
@@ -86,5 +91,6 @@ class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
             is NavigationTargets.WingmanEdit -> WingmanEditView(target.id)
             is NavigationTargets.WingmanMenu -> WingmanMenuView()
         }
+        currentScreen.onViewCreate()
     }
 }

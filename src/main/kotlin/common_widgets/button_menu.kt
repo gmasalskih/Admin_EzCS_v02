@@ -7,7 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import ui.dark
 import ui.greyAccent
@@ -22,7 +21,6 @@ fun ButtonMenu(
 ) {
     Box(
         modifier = Modifier.fillMaxWidth().preferredHeight(80.dp).clickable(onClick = click),
-//        backgroundColor = if (isActive) greyAccent else dark
     ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -41,7 +39,7 @@ fun ButtonMenu(
                     text = title.toUpperCase(),
                     color = if (isActive) dark else greyAccent,
                     fontFamily = verdanaBold,
-                    fontSize = TextUnit.Sp(12)
+                    fontSize = fontSize12sp
                 )
             }
         }
