@@ -21,7 +21,9 @@ fun <T> ScrollableRowAdd(
         ScrollableRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = spacedBy20dp,
-            children = { items.map { item -> cardItem(item) } }
+            children = {
+                items.forEach { item -> cardItem(item) }
+            }
         )
     }
 }

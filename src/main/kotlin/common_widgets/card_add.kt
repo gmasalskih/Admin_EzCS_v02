@@ -1,10 +1,7 @@
 package common_widgets
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +21,7 @@ fun CardAdd(label: String, onClick: () -> Unit) {
         elevation = elevation6dp
     ) {
         Box(
-            modifier = Modifier.fillMaxSize().padding(10.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
             IconApp(
                 pathToIcon = "icons/icon_add.png",
@@ -34,9 +31,9 @@ fun CardAdd(label: String, onClick: () -> Unit) {
             Text(
                 text = label.toUpperCase(),
                 fontFamily = verdanaBold,
-                fontSize = fontSize6sp,
+                fontSize = fontSize8sp,
                 color = light,
-                modifier = Modifier.align(Alignment.BottomCenter)
+                modifier = Modifier.align(Alignment.BottomCenter).offset(y=(-10).dp)
             )
         }
     }

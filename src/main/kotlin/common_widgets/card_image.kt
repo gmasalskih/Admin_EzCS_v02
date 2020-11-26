@@ -2,16 +2,17 @@ package common_widgets
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ui.dark
 import ui.greyAccent
 import ui.verdanaBold
@@ -19,12 +20,13 @@ import ui.verdanaBold
 @Composable
 fun CardImage(
     modifier: Modifier = Modifier,
-    pathToImage: String,
-    fileName: String,
+    pathToFile: String,
+    progressIndicatorColor: Color = dark,
+    onClickDel: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.size(100.dp, 150.dp).then(modifier).clickable(onClick = onClick),
+        modifier = Modifier.size(100.dp, 150.dp).then(modifier),
         shape = roundedCorner5dp,
         elevation = elevation6dp,
         backgroundColor = greyAccent
@@ -34,23 +36,51 @@ fun CardImage(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
-            Box(
-                modifier = Modifier.fillMaxWidth().aspectRatio(1f)
+            if (onClickDel == null) Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
+            else Box(
+                Modifier.weight(weight = 1f, fill = true).aspectRatio(1f).align(Alignment.End)
+                    .clickable(onClick = onClickDel).padding(5.dp)
             ) {
-                ImageUrl(
-                    url = pathToImage,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.FillWidth
+                IconApp(
+                    pathToIcon = "icons/icon_trash.png",
+                    tint = dark
                 )
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth().aspectRatio(1f).clickable(onClick = onClick)
+            ) {
+                when {
+                    pathToFile.toLowerCase().contains("\\.png$".toRegex()) -> {
+                        ImageUrl(
+                            url = pathToFile,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.FillWidth,
+                            progressIndicatorColor = progressIndicatorColor
+                        )
+                    }
+                    pathToFile.toLowerCase().contains("\\.mp4$".toRegex()) -> {
+                        Icon(
+                            modifier = Modifier.padding(10.dp).fillMaxSize(),
+                            asset = imageResource("icons/icon_video.png"),
+                            tint = dark
+                        )
+                    }
+                    else -> {
+                        Icon(
+                            modifier = Modifier.padding(10.dp).fillMaxSize(),
+                            asset = imageResource("icons/icon_err.png"),
+                            tint = dark
+                        )
+                    }
+                }
             }
             Box(
                 modifier = Modifier.weight(1f, true)
             ) {
                 Text(
-                    text = fileName.toLowerCase(),
+                    text = pathToFile.split("/").last().toLowerCase(),
                     fontFamily = verdanaBold,
-                    fontSize = fontSize10sp,
+                    fontSize = fontSize8sp,
                     modifier = Modifier.align(Alignment.Center),
                     color = dark
                 )

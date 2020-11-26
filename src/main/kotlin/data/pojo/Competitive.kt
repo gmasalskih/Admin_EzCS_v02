@@ -4,11 +4,11 @@ import data.enums.FirestoreCollections
 import data.enums.RankTypes
 
 data class Competitive(
-    val collection: FirestoreCollections = FirestoreCollections.RANKS,
-    val contentsPath: String,
-    val description: String,
     val id: String,
-    val logo: String,
     val name: String,
+    val contentsPath: String,
+    val logo: String,
+    val description: String,
+    val collection: FirestoreCollections = FirestoreCollections.RANKS,
     val rankType: RankTypes = RankTypes.COMPETITIVE,
 )

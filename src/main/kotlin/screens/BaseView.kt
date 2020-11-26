@@ -1,5 +1,6 @@
 package screens
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import common_widgets.Screen
 import utils.Controller
@@ -19,11 +20,11 @@ abstract class BaseView<BC : Controller> : KoinComponent {
     @Composable
     protected abstract fun setContent()
 
-    open fun onViewCreate(){
+    open fun onViewCreate() {
         println("onViewCreate ${javaClass.simpleName}")
     }
 
-    open fun onViewDestroy(){
+    open fun onViewDestroy() {
         println("onViewDestroy ${javaClass.simpleName}")
     }
 }

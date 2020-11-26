@@ -33,7 +33,7 @@ class MapsAddView : BaseView<MapsAddController>() {
     }
 
     private fun addLogoClick() {
-        fileChooser("Logo")
+        fileChooser("Logo", "png")
     }
 
     private fun addMapClick() {

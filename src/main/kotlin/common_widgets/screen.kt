@@ -2,15 +2,12 @@ package common_widgets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.onActive
-import androidx.compose.runtime.onDispose
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import utils.ViewComponent
 
-
 @Composable
-fun <VC : ViewComponent> Screen(viewComponent: VC, content: @Composable () -> Unit) {
+inline fun <VC : ViewComponent> Screen(viewComponent: VC, crossinline content: @Composable () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

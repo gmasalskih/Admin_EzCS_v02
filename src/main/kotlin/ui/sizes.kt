@@ -11,11 +11,12 @@ import androidx.compose.ui.unit.sp
 val appBarSize = 66.dp
 val iconHeight = 30.dp
 
+val spacedBy5dp = Arrangement.spacedBy(5.dp)
+val spacedBy10dp = Arrangement.spacedBy(10.dp)
 val spacedBy20dp = Arrangement.spacedBy(20.dp)
 
 //Font Sizes
-val fontSize6sp = 6.sp
-val fontSize10sp = 10.sp
+val fontSize8sp = 8.sp
 val fontSize12sp = 12.sp
 val fontSize14sp = 14.sp
 val fontSize20sp = 20.sp

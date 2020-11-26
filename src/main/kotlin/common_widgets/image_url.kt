@@ -6,11 +6,15 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageAsset
 import androidx.compose.ui.graphics.asImageAsset
 import androidx.compose.ui.layout.ContentScale
 import kotlinx.coroutines.*
 import org.jetbrains.skija.Image
+import ui.dark
+import utils.externalImageResource
+import utils.isValidPathToFile
 import utils.isValidURL
 import java.io.BufferedInputStream
 import java.net.URL
@@ -19,11 +23,13 @@ import java.net.URL
 fun ImageUrl(
     url: String,
     modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit
+    contentScale: ContentScale = ContentScale.Fit,
+    progressIndicatorColor: Color = dark,
 ) {
     val (imageAsset, setImageAsset) = remember { mutableStateOf<ImageAsset?>(null) }
     val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
-    val job = Job()
+    val scope = CoroutineScope(Dispatchers.Main)
+    var bis: BufferedInputStream? = null
     onCommit {
         if (oldUrl != url) {
             setImageAsset(null)
@@ -31,24 +37,37 @@ fun ImageUrl(
         }
     }
     onDispose {
-        job.cancel()
+        scope.cancel()
+        bis?.close()
+        bis = null
     }
-    if (url.isValidURL() && imageAsset == null) {
-        val bis = BufferedInputStream(URL(url).openStream())
-        GlobalScope.launch(job) {
-            withContext(Dispatchers.IO + job) {
-                setImageAsset(Image.makeFromEncoded(bis.readAllBytes()).asImageAsset())
+    if (imageAsset == null) {
+        when {
+            url.isValidURL() -> {
+                scope.launch {
+                    bis = BufferedInputStream(URL(url).openStream())
+                    val asset = withContext(Dispatchers.IO) {
+                        Image.makeFromEncoded(bis?.readAllBytes()).asImageAsset()
+                    }
+                    setImageAsset(asset)
+                }
             }
-            println(Thread.currentThread())
-            bis.close()
+            url.isValidPathToFile() -> {
+                scope.launch {
+                    val asset = withContext(Dispatchers.IO) { externalImageResource(url) }
+                    setImageAsset(asset)
+                }
+            }
         }
     }
-
     Box(
         modifier = Modifier.then(modifier)
     ) {
         if (imageAsset == null) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center),
+                color = progressIndicatorColor
+            )
         } else {
             Image(
                 modifier = Modifier.then(modifier),

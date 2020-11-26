@@ -24,13 +24,13 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
     override fun setContent() {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
-            items = 1..6,
+            items = controller.getViewState().items,
             cardAdd = { CardAdd(label = "Add new rank", onClick = ::onAddNewRank) },
-            cardItem = {
+            cardItem = { competitiveRank ->
                 CardWeaponRank(
-                    pathToImage = "assets/01_s1.png",
-                    name = "Silver 1",
-                    onClick = { onEditRank(it.toString()) }
+                    pathToImage = competitiveRank.logo,
+                    name = competitiveRank.name,
+                    onClick = { onEditRank(competitiveRank.id) }
                 )
             }
         )

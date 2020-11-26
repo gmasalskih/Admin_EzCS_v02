@@ -28,21 +28,11 @@ fun externalImageResource(path: String): ImageAsset {
     return ImageLoader.makeFromEncoded(FileInputStream(File(path)).readAllBytes()).asImageAsset()
 }
 
-fun urlImageResource(url: String, asset: ImageAsset, l: (ImageAsset) -> Unit): ImageAsset {
-    CoroutineScope(Dispatchers.IO).launch {
-        val ia = async(Dispatchers.IO) {
-            delay(5000)
-            ImageLoader.makeFromEncoded(BufferedInputStream(URL(url).openStream()).readAllBytes()).asImageAsset()
-        }.await()
-        l(ia)
-    }
-
-    return asset
-}
-
 fun String.isValidURL() = try {
     URL(this)
     true
 } catch (e: Exception) {
     false
 }
+
+fun String.isValidPathToFile() = File(this).exists()

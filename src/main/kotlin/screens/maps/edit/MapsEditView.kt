@@ -29,6 +29,16 @@ class MapsEditView(val id: String) : BaseView<MapsEditController>() {
         )
     }
 
+    override fun onViewCreate() {
+        super.onViewCreate()
+        controller.onViewCreate()
+    }
+
+    override fun onViewDestroy() {
+        super.onViewDestroy()
+        controller.getViewState()
+    }
+
     private fun addWallpaperClick() {
         //TODO("Not yet implemented")
     }
@@ -81,20 +91,17 @@ class MapsEditView(val id: String) : BaseView<MapsEditController>() {
                 ) {
                     //logo
                     CardImage(
-                        pathToImage = controller.getViewState().pathToLogo,
-                        fileName = controller.getViewState().pathToLogo.split("/").last(),
+                        pathToFile = controller.getViewState().pathToLogo,
                         onClick = ::onClickLogo
                     )
                     //map
                     CardImage(
-                        pathToImage = controller.getViewState().pathToMapImg,
-                        fileName = controller.getViewState().pathToMapImg.split("/").last(),
+                        pathToFile = controller.getViewState().pathToMapImg,
                         onClick = ::onClickLogo
                     )
                     //wallpaper
                     CardImage(
-                        pathToImage = controller.getViewState().pathToWallpaper,
-                        fileName = controller.getViewState().pathToWallpaper.split("/").last(),
+                        pathToFile = controller.getViewState().pathToWallpaper,
                         onClick = ::onClickLogo
                     )
                 }

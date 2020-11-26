@@ -11,12 +11,11 @@ class MapPointsMenuView : BaseView<MapPointsMenuController>() {
     override val controller by inject<MapPointsMenuController>()
 
     private fun navigateToAddMapPoint() {
-        //TODO("Not yet implemented")
+        controller.navigateToAddMapPoint()
     }
 
     private fun navigateToMap(mapID: String) {
-        println(mapID)
-        //TODO("Not yet implemented")
+        controller.navigateToEditMapPoint(mapID)
     }
 
     @Composable

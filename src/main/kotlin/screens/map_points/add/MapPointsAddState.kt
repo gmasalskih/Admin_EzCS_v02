@@ -10,7 +10,7 @@ data class MapPointsAddState(
     override val title: String = "New map point",
     val mapId: String = "",
     val mapPointName: String = "",
-    val grenadeTypes: GrenadeTypes = GrenadeTypes.SMOKE,
+    val grenadeType: GrenadeTypes = GrenadeTypes.SMOKE,
     val listTickRates: List<TickRate> = listOf(),
     val pathToPreviewStartImg: String = "",
     val pathToPreviewEndImg: String = "",
