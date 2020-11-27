@@ -5,4 +5,8 @@ import screens.BaseController
 
 class DangerZoneAddController:BaseController<DangerZoneAddState>() {
     override var _state: DangerZoneAddState by mutableStateOf(DangerZoneAddState())
+
+    fun clearState() {
+        _state = DangerZoneAddState()
+    }
 }

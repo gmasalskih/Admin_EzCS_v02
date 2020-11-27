@@ -2,9 +2,11 @@ package screens.map_points.add
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import common_widgets.*
 import data.enums.GrenadeTypes
 import data.enums.TickRate
