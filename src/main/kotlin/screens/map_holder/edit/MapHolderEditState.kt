@@ -1,15 +1,15 @@
-package screens.maps.edit
+package screens.map_holder.edit
 
 import screens.TypeScreenState
 import screens.ViewState
 
-data class MapsEditState(
+data class MapHolderEditState(
     override val typeScreenState: TypeScreenState = TypeScreenState.Data,
-    val mapId: String = "",
-    val mapName: String = "",
     override val title: String = "Edit map",
+    val id: String = "",
+    val name: String = "",
     val pathToLogo: String = "",
-    val pathToMapImg: String = "",
+    val pathToMap: String = "",
     val pathToWallpaper: String = "",
     val isCompetitive: Boolean = false
 ) : ViewState

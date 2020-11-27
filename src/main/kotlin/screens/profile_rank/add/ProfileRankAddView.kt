@@ -24,46 +24,46 @@ import utils.toValidXP
 class ProfileRankAddView : BaseView<ProfileRankAddController>() {
     override val controller by inject<ProfileRankAddController>()
 
-    private fun onRankIdChanged(rankId: String) {
+    private fun onIdChange(id: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankId = rankId.toValidId()
+                id = id.toValidId()
             )
         )
     }
 
-    private fun onRankNameChanged(rankName: String) {
+    private fun onNameChange(name: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankName = rankName.toValidName()
+                name = name.toValidName()
             )
         )
     }
 
-    private fun onRankXPChanged(rankXP: String) {
+    private fun onXPChange(xp: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankXP = rankXP.toValidXP()
+                xp = xp.toValidXP()
             )
         )
     }
 
-    private fun onAddLogo() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
+    private fun onLogoAdd() {
+        val pathToLogo = fileChooser("Select logo", "png") ?: return
+        if (!controller.getViewState().pathToLogo.contains(pathToLogo)) {
             controller.setViewState(
                 controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
+                    pathToLogo = pathToLogo
                 )
             )
         }
     }
 
-    private fun clearBtnClick() {
+    private fun onClear() {
         controller.clearState()
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
 //        TODO("Not yet implemented")
     }
 
@@ -82,25 +82,25 @@ class ProfileRankAddView : BaseView<ProfileRankAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().rankId,
+                        value = controller.getViewState().id,
                         label = "Enter rank ID",
-                        onTextChanged = ::onRankIdChanged
+                        onTextChanged = ::onIdChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().rankName,
+                        value = controller.getViewState().name,
                         label = "Enter rank name",
-                        onTextChanged = ::onRankNameChanged
+                        onTextChanged = ::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().rankXP,
+                        value = controller.getViewState().xp,
                         label = "Enter rank XP",
-                        onTextChanged = ::onRankXPChanged
+                        onTextChanged = ::onXPChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
                     pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onAddLogo
+                    onClick = ::onLogoAdd
                 )
             }
             Row(
@@ -110,12 +110,12 @@ class ProfileRankAddView : BaseView<ProfileRankAddController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::clearBtnClick
+                    onClick = ::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::submitBtnClick
+                    onClick = ::onSubmit
                 )
             }
         }

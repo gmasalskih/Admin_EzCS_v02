@@ -12,9 +12,9 @@ import screens.map_points.add.MapPointsAddView
 import screens.map_points.edit.MapPointsEditView
 import utils.ViewComponent
 import screens.map_points.menu.MapPointsMenuView
-import screens.maps.menu.MapsMenuView
-import screens.maps.add.MapsAddView
-import screens.maps.edit.MapsEditView
+import screens.map_holder.menu.MapHolderMenuView
+import screens.map_holder.add.MapHolderAddView
+import screens.map_holder.edit.MapHolderEditView
 import screens.profile_rank.add.ProfileRankAddView
 import screens.profile_rank.edit.ProfileRankEditView
 import screens.profile_rank.menu.ProfileRankMenuView
@@ -72,9 +72,9 @@ class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
             is NavigationTargets.MapPointsMenu -> MapPointsMenuView()
 
             //Maps
-            is NavigationTargets.MapsAdd -> MapsAddView()
-            is NavigationTargets.MapsEdit -> MapsEditView(target.id)
-            is NavigationTargets.MapsMenu -> MapsMenuView()
+            is NavigationTargets.MapHolderAdd -> MapHolderAddView()
+            is NavigationTargets.MapHolderEdit -> MapHolderEditView(target.id)
+            is NavigationTargets.MapHolderMenu -> MapHolderMenuView()
 
             //ProfileRank
             is NavigationTargets.ProfileRankAdd -> ProfileRankAddView()

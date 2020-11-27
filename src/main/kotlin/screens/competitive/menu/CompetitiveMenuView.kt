@@ -12,12 +12,12 @@ import screens.BaseView
 class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
     override val controller by inject<CompetitiveMenuController>()
 
-    private fun onAddNewRank() {
-        controller.navigateToAddCompetitiveRank()
+    private fun navigateToCompetitiveAdd() {
+        controller.navigateToCompetitiveAdd()
     }
 
-    private fun onEditRank(id: String) {
-        controller.navigateToEditCompetitiveRank(id)
+    private fun navigateToCompetitiveEdit(id: String) {
+        controller.navigateToCompetitiveEdit(id)
     }
 
     @Composable
@@ -25,12 +25,12 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
             items = controller.getViewState().items,
-            cardAdd = { CardAdd(label = "Add new rank", onClick = ::onAddNewRank) },
+            cardAdd = { CardAdd(label = "Add new rank", onClick = ::navigateToCompetitiveAdd) },
             cardItem = { competitiveRank ->
                 CardWeaponRank(
                     pathToImage = competitiveRank.logo,
                     name = competitiveRank.name,
-                    onClick = { onEditRank(competitiveRank.id) }
+                    onClick = { navigateToCompetitiveEdit(competitiveRank.id) }
                 )
             }
         )

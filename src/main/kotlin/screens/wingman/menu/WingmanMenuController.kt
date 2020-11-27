@@ -7,11 +7,11 @@ import screens.BaseController
 class WingmanMenuController : BaseController<WingmanMenuState>() {
     override var _state: WingmanMenuState by mutableStateOf(WingmanMenuState())
 
-    fun navigateToAddWingmanRank() {
+    fun navigateToWingmanAdd() {
         router.navigateTo(NavigationTargets.WingmanAdd)
     }
 
-    fun navigateToEditWingmanRankRank(id: String) {
+    fun navigateToWingmanEdit(id: String) {
         router.navigateTo(NavigationTargets.WingmanEdit(id))
     }
 }

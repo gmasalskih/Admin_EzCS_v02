@@ -19,10 +19,10 @@ import screens.danger_zone.menu.DangerZoneMenuController
 import screens.map_points.menu.MapPointsMenuController
 import screens.map_points.add.MapPointsAddController
 import screens.map_points.edit.MapPointsEditController
-import screens.maps.menu.MapsMenuController
-import screens.maps.menu.MapsMenuView
-import screens.maps.add.MapsAddController
-import screens.maps.edit.MapsEditController
+import screens.map_holder.menu.MapHolderMenuController
+import screens.map_holder.menu.MapHolderMenuView
+import screens.map_holder.add.MapHolderController
+import screens.map_holder.edit.MapHolderEditController
 import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
@@ -44,7 +44,7 @@ val fbModules = module {
     single<StorageProvider> { StorageProvider(get(), BUCKET_NAME) }
 }
 val appModule = module {
-    single<Router> { Router(entryPoint = NavigationTargets.MapsMenu to MapsMenuView()) }
+    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
 }
 
 val competitiveModule = module {
@@ -66,9 +66,9 @@ val mapPointsModule = module {
 }
 
 val mapsModule = module {
-    single<MapsAddController> { MapsAddController() }
-    single<MapsEditController> { MapsEditController() }
-    single<MapsMenuController> { MapsMenuController() }
+    single<MapHolderController> { MapHolderController() }
+    single<MapHolderEditController> { MapHolderEditController() }
+    single<MapHolderMenuController> { MapHolderMenuController() }
 }
 
 val profileRankModule = module {

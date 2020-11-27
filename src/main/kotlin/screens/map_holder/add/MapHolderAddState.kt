@@ -1,15 +1,15 @@
-package screens.maps.add
+package screens.map_holder.add
 
 import screens.TypeScreenState
 import screens.ViewState
 
-data class MapsAddState(
+data class MapHolderAddState(
     override val typeScreenState: TypeScreenState = TypeScreenState.Data,
     override val title: String = "Add Map",
-    val mapId: String = "",
-    val mapName: String = "",
+    val id: String = "",
+    val name: String = "",
     val pathToLogo: String = "",
-    val pathToMapImg: String = "",
+    val pathToMap: String = "",
     val pathToWallpaper: String = "",
     val isCompetitive: Boolean = false
 ) : ViewState

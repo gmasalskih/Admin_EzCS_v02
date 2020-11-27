@@ -17,23 +17,23 @@ import utils.toValidName
 class CompetitiveAddView : BaseView<CompetitiveAddController>() {
     override val controller by inject<CompetitiveAddController>()
 
-    private fun onRankIdChanged(rankId: String) {
+    private fun onIdChange(competitiveId: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankId = rankId.toValidId()
+                id = competitiveId.toValidId()
             )
         )
     }
 
-    private fun onRankNameChanged(rankName: String) {
+    private fun onNameChange(rankName: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankName = rankName.toValidName()
+                name = rankName.toValidName()
             )
         )
     }
 
-    private fun onAddLogo() {
+    private fun onLogoAdd() {
         val newPathToLogo = fileChooser("Select logo", "png") ?: return
         if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
             controller.setViewState(
@@ -44,11 +44,11 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
         }
     }
 
-    private fun clearBtnClick() {
+    private fun onClear() {
         controller.clearState()
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
 //        TODO("Not yet implemented")
     }
 
@@ -67,20 +67,20 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().rankId,
+                        value = controller.getViewState().id,
                         label = "Enter rank ID",
-                        onTextChanged = ::onRankIdChanged
+                        onTextChanged = ::onIdChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().rankName,
+                        value = controller.getViewState().name,
                         label = "Enter rank name",
-                        onTextChanged = ::onRankNameChanged
+                        onTextChanged = ::onNameChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
                     pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onAddLogo
+                    onClick = ::onLogoAdd
                 )
             }
             Row(
@@ -90,12 +90,12 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::clearBtnClick
+                    onClick = ::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::submitBtnClick
+                    onClick = ::onSubmit
                 )
             }
         }

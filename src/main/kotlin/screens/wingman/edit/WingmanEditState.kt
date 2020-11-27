@@ -6,7 +6,7 @@ import screens.ViewState
 data class WingmanEditState(
     override val typeScreenState: TypeScreenState = TypeScreenState.Data,
     override val title: String = "Edit rank",
-    val rankId: String = "",
-    val rankName: String = "",
+    val id: String = "",
+    val name: String = "",
     val pathToLogo: String = ""
 ) : ViewState

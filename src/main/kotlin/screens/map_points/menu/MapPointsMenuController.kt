@@ -7,11 +7,11 @@ import screens.BaseController
 class MapPointsMenuController : BaseController<MapPointsMenuState>() {
     override var _state: MapPointsMenuState by mutableStateOf(MapPointsMenuState())
 
-    fun navigateToAddMapPoint() {
+    fun navigateToMapPointsAdd() {
         router.navigateTo(NavigationTargets.MapPointsAdd)
     }
 
-    fun navigateToEditMapPoint(id: String) {
+    fun navigateToMapPointsEdit(id: String) {
         router.navigateTo(NavigationTargets.MapPointsEdit(id))
     }
 }

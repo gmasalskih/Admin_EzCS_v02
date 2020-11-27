@@ -7,11 +7,11 @@ import screens.BaseController
 class DangerZoneMenuController : BaseController<DangerZoneMenuState>() {
     override var _state: DangerZoneMenuState by mutableStateOf(DangerZoneMenuState())
 
-    fun navigateToAddDangerZoneRank() {
+    fun navigateToDangerZoneAdd() {
         router.navigateTo(NavigationTargets.DangerZoneAdd)
     }
 
-    fun navigateToEditDangerZoneRank(id: String) {
+    fun navigateToDangerZoneEdit(id: String) {
         router.navigateTo(NavigationTargets.DangerZoneEdit(id))
     }
 }

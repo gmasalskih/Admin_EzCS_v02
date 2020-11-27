@@ -23,23 +23,23 @@ import utils.toValidName
 class WingmanAddView : BaseView<WingmanAddController>() {
     override val controller by inject<WingmanAddController>()
 
-    private fun onRankIdChanged(rankId: String) {
+    private fun onIdChange(id: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankId = rankId.toValidId()
+                id = id.toValidId()
             )
         )
     }
 
-    private fun onRankNameChanged(rankName: String) {
+    private fun onNameChange(name: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankName = rankName.toValidName()
+                name = name.toValidName()
             )
         )
     }
 
-    private fun onAddLogo() {
+    private fun onLogoAdd() {
         val newPathToLogo = fileChooser("Select logo", "png") ?: return
         if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
             controller.setViewState(
@@ -50,11 +50,11 @@ class WingmanAddView : BaseView<WingmanAddController>() {
         }
     }
 
-    private fun clearBtnClick() {
+    private fun onClear() {
         controller.clearState()
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
 //        TODO("Not yet implemented")
     }
 
@@ -73,20 +73,20 @@ class WingmanAddView : BaseView<WingmanAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().rankId,
+                        value = controller.getViewState().id,
                         label = "Enter rank ID",
-                        onTextChanged = ::onRankIdChanged
+                        onTextChanged = ::onIdChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().rankName,
+                        value = controller.getViewState().name,
                         label = "Enter rank name",
-                        onTextChanged = ::onRankNameChanged
+                        onTextChanged = ::onNameChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
                     pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onAddLogo
+                    onClick = ::onLogoAdd
                 )
             }
             Row(
@@ -96,12 +96,12 @@ class WingmanAddView : BaseView<WingmanAddController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::clearBtnClick
+                    onClick = ::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::submitBtnClick
+                    onClick = ::onSubmit
                 )
             }
         }

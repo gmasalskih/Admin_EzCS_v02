@@ -7,11 +7,11 @@ import screens.BaseController
 class CompetitiveMenuController : BaseController<CompetitiveMenuState>() {
     override var _state: CompetitiveMenuState by mutableStateOf(CompetitiveMenuState())
 
-    fun navigateToEditCompetitiveRank(rankId: String) {
+    fun navigateToCompetitiveEdit(rankId: String) {
         router.navigateTo(NavigationTargets.CompetitiveEdit(id = rankId))
     }
 
-    fun navigateToAddCompetitiveRank() {
+    fun navigateToCompetitiveAdd() {
         router.navigateTo(NavigationTargets.CompetitiveAdd)
     }
 }

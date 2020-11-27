@@ -12,12 +12,12 @@ import screens.BaseView
 class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
     override val controller by inject<DangerZoneMenuController>()
 
-    private fun onAddNewRank() {
-        controller.navigateToAddDangerZoneRank()
+    private fun navigateToDangerZoneAdd() {
+        controller.navigateToDangerZoneAdd()
     }
 
-    private fun onEditRank(id: String) {
-        controller.navigateToEditDangerZoneRank(id)
+    private fun navigateToDangerZoneEdit(id: String) {
+        controller.navigateToDangerZoneEdit(id)
     }
 
     @Composable
@@ -25,12 +25,12 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
             items = controller.getViewState().items,
-            cardAdd = { CardAdd(label = "Add new rank", onClick = ::onAddNewRank) },
+            cardAdd = { CardAdd(label = "Add new rank", onClick = ::navigateToDangerZoneAdd) },
             cardItem = { item ->
                 CardWeaponRank(
                     pathToImage = item.logo,
                     name = item.name,
-                    onClick = { onEditRank(item.id) }
+                    onClick = { navigateToDangerZoneEdit(item.id) }
                 )
             }
         )

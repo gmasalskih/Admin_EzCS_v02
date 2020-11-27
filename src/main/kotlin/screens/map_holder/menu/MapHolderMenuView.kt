@@ -1,4 +1,4 @@
-package screens.maps.menu
+package screens.map_holder.menu
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -8,17 +8,16 @@ import common_widgets.CardMap
 import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
-import utils.ViewComponent
 
-class MapsMenuView : BaseView<MapsMenuController>() {
-    override val controller by inject<MapsMenuController>()
+class MapHolderMenuView : BaseView<MapHolderMenuController>() {
+    override val controller by inject<MapHolderMenuController>()
 
-    private fun navigateToAddMap() {
-        controller.navigateToAddMap()
+    private fun navigateToMapsAdd() {
+        controller.navigateToMapsAdd()
     }
 
-    private fun navigateToMap(mapId: String) {
-        controller.navigateToEditMap(mapId)
+    private fun navigateToMapsEdit(id: String) {
+        controller.navigateToMapsEdit(id)
     }
 
     @Composable
@@ -26,14 +25,14 @@ class MapsMenuView : BaseView<MapsMenuController>() {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
             items = 1..3,
-            cardAdd = { CardAdd(label = "add map", onClick = ::navigateToAddMap) },
+            cardAdd = { CardAdd(label = "add map", onClick = ::navigateToMapsAdd) },
             cardItem = {
                 CardMap(
                     background = "background/wallpaper.png",
                     logo = "logo/logo.png",
                     name = "Dust II",
                     isCompetitive = true,
-                    onClick = { navigateToMap(it.toString()) }
+                    onClick = { navigateToMapsEdit(it.toString()) }
                 )
             }
         )

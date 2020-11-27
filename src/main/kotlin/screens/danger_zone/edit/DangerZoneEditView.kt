@@ -22,26 +22,26 @@ class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() 
     override val controller by inject<DangerZoneEditController>()
 
     init {
-        setRankId(id)
+        setId(id)
     }
 
-    private fun setRankId(rankId: String) {
+    private fun setId(rankId: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankId = rankId
+                id = rankId
             )
         )
     }
 
-    private fun onRankNameChanged(rankName: String) {
+    private fun onNameChange(rankName: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankName = rankName.toValidName()
+                name = rankName.toValidName()
             )
         )
     }
 
-    private fun onChangeLogo() {
+    private fun onLogoChange() {
         val newPathToLogo = fileChooser("Select logo", "png") ?: return
         if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
             controller.setViewState(
@@ -52,7 +52,7 @@ class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() 
         }
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
 //        TODO("Not yet implemented")
     }
 
@@ -71,27 +71,27 @@ class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() 
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().rankId,
+                        value = controller.getViewState().id,
                         label = "Rank ID",
                     )
                     //Rank name
                     TextFieldApp(
-                        value = controller.getViewState().rankName,
+                        value = controller.getViewState().name,
                         label = "Rank name",
-                        onTextChanged = ::onRankNameChanged
+                        onTextChanged = ::onNameChange
                     )
                 }
                 CardAddOrImage(
                     label = "Change logo",
                     pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onChangeLogo
+                    onClick = ::onLogoChange
                 )
             }
             ButtonApp(
                 modifier = Modifier.align(Alignment.BottomEnd),
                 label = "submit",
                 color = orangeAccent,
-                onClick = ::submitBtnClick
+                onClick = ::onSubmit
             )
         }
     }

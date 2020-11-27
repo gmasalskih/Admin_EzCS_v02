@@ -2,11 +2,9 @@ package screens.map_points.add
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import common_widgets.*
 import data.enums.GrenadeTypes
 import data.enums.TickRate
@@ -21,7 +19,7 @@ import utils.toValidName
 class MapPointsAddView : BaseView<MapPointsAddController>() {
     override val controller by inject<MapPointsAddController>()
 
-    private fun onMapIdChanged(mapId: String) {
+    private fun onMapIdChange(mapId: String) {
         controller.setViewState(
             controller.getViewState().copy(
                 mapId = mapId.toValidId()
@@ -29,15 +27,15 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
         )
     }
 
-    private fun onMapPointNameChanged(mapPointName: String) {
+    private fun onNameChange(name: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                mapPointName = mapPointName.toValidName()
+                name = name.toValidName()
             )
         )
     }
 
-    private fun onGrenadeTypeSelected(grenadeType: GrenadeTypes) {
+    private fun onGrenadeTypeChange(grenadeType: GrenadeTypes) {
         controller.setViewState(
             controller.getViewState().copy(
                 grenadeType = grenadeType
@@ -45,35 +43,35 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
         )
     }
 
-    private fun onTickrateTypeClick(tickRate: TickRate) {
-        val hasTickRate = controller.getViewState().listTickRates.contains(tickRate)
+    private fun onTickrateTypeChange(tickrateType: TickRate) {
+        val hasTickRate = controller.getViewState().listTickRates.contains(tickrateType)
         controller.setViewState(
             controller.getViewState().copy(
-                listTickRates = if (hasTickRate) controller.getViewState().listTickRates.filter { it != tickRate }
-                else controller.getViewState().listTickRates + listOf(tickRate)
+                listTickRates = if (hasTickRate) controller.getViewState().listTickRates.filter { it != tickrateType }
+                else controller.getViewState().listTickRates + listOf(tickrateType)
             )
         )
     }
 
-    private fun onSelectPreviewStart() {
+    private fun onPreviewStartChange() {
         val pathToImage = fileChooser("Select preview start", "png") ?: return
         controller.setViewState(
             controller.getViewState().copy(
-                pathToPreviewStartImg = pathToImage
+                pathToPreviewStart = pathToImage
             )
         )
     }
 
-    private fun onSelectPreviewEnd() {
+    private fun onPreviewEndChange() {
         val pathToImage = fileChooser("Select preview end", "png") ?: return
         controller.setViewState(
             controller.getViewState().copy(
-                pathToPreviewEndImg = pathToImage
+                pathToPreviewEnd = pathToImage
             )
         )
     }
 
-    private fun onClickAddVideo() {
+    private fun onVideoAdd() {
         val pathToVideo = fileChooser("Select video", "mp4") ?: return
         if (!controller.getViewState().listVideos.contains(pathToVideo)) {
             controller.setViewState(
@@ -84,20 +82,20 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
         }
     }
 
-    private fun onClickVideo(oldPathToVideo: String) {
+    private fun onVideoChange(oldPathToVideo: String) {
         val newPathToVideo = fileChooser("Select video", "mp4") ?: return
         if (!controller.getViewState().listVideos.contains(newPathToVideo)) {
             controller.setViewState(
                 controller.getViewState().copy(
-                    listVideos = controller.getViewState().listVideos.map {
-                        if (it == oldPathToVideo) newPathToVideo else it
+                    listVideos = controller.getViewState().listVideos.map { pathToVideo ->
+                        if (pathToVideo == oldPathToVideo) newPathToVideo else pathToVideo
                     }.toList()
                 )
             )
         }
     }
 
-    private fun onClickAddImage() {
+    private fun onImageAdd() {
         val pathToImage = fileChooser("Select image", "png") ?: return
         if (!controller.getViewState().listImages.contains(pathToImage)) {
             controller.setViewState(
@@ -108,20 +106,20 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
         }
     }
 
-    private fun onClickImage(oldPathToImage: String) {
+    private fun onImageChange(oldPathToImage: String) {
         val newPathToImage = fileChooser("Select image", "png") ?: return
         if (!controller.getViewState().listImages.contains(newPathToImage)) {
             controller.setViewState(
                 controller.getViewState().copy(
-                    listImages = controller.getViewState().listImages.map {
-                        if (it == oldPathToImage) newPathToImage else it
+                    listImages = controller.getViewState().listImages.map { pathToImage ->
+                        if (pathToImage == oldPathToImage) newPathToImage else pathToImage
                     }.toList()
                 )
             )
         }
     }
 
-    private fun onDeleteImage(pathToImage: String) {
+    private fun onImageDelete(pathToImage: String) {
         controller.setViewState(
             controller.getViewState().copy(
                 listImages = controller.getViewState().listImages.filter { it != pathToImage }
@@ -129,7 +127,7 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
         )
     }
 
-    private fun onDeleteVideo(pathToVideo: String) {
+    private fun onVideoDelete(pathToVideo: String) {
         controller.setViewState(
             controller.getViewState().copy(
                 listVideos = controller.getViewState().listVideos.filter { it != pathToVideo }
@@ -137,11 +135,11 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
         )
     }
 
-    private fun clearBtnClick() {
+    private fun onClear() {
         controller.clearState()
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
         //TODO Сделать submitBtnClick
     }
 
@@ -161,34 +159,34 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
                     TextFieldApp(
                         value = controller.getViewState().mapId,
                         label = "Enter map ID",
-                        onTextChanged = ::onMapIdChanged
+                        onTextChanged = ::onMapIdChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().mapPointName,
+                        value = controller.getViewState().name,
                         label = "Enter map point name",
-                        onTextChanged = ::onMapPointNameChanged
+                        onTextChanged = ::onNameChange
                     )
                 }
                 RadioGroupGrenadeTypes(
-                    onTypeSelected = ::onGrenadeTypeSelected,
+                    onTypeSelected = ::onGrenadeTypeChange,
                     grenadeTypeSelected = controller.getViewState().grenadeType
                 )
                 CheckboxGroupTickrateTypes(
                     listTickrateTypes = controller.getViewState().listTickRates,
-                    onTickrateTypeClick = ::onTickrateTypeClick
+                    onTickrateTypeClick = ::onTickrateTypeChange
                 )
                 Row(
                     horizontalArrangement = spacedBy20dp
                 ) {
                     CardAddOrImage(
                         label = "add preview start",
-                        onClick = ::onSelectPreviewStart,
-                        pathToImage = controller.getViewState().pathToPreviewStartImg
+                        onClick = ::onPreviewStartChange,
+                        pathToImage = controller.getViewState().pathToPreviewStart
                     )
                     CardAddOrImage(
                         label = "add preview end",
-                        onClick = ::onSelectPreviewEnd,
-                        pathToImage = controller.getViewState().pathToPreviewEndImg
+                        onClick = ::onPreviewEndChange,
+                        pathToImage = controller.getViewState().pathToPreviewEnd
                     )
                 }
                 ScrollableRowAdd(
@@ -197,14 +195,14 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
                     cardAdd = {
                         CardAdd(
                             label = "add video",
-                            onClick = ::onClickAddVideo
+                            onClick = ::onVideoAdd
                         )
                     },
                     cardItem = { fullPathToVideo ->
                         CardImage(
                             pathToFile = fullPathToVideo,
-                            onClickDel = { onDeleteVideo(fullPathToVideo) },
-                            onClick = { onClickVideo(fullPathToVideo) }
+                            onClickDel = { onVideoDelete(fullPathToVideo) },
+                            onClick = { onVideoChange(fullPathToVideo) }
                         )
                     }
                 )
@@ -214,14 +212,14 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
                     cardAdd = {
                         CardAdd(
                             label = "add image",
-                            onClick = ::onClickAddImage
+                            onClick = ::onImageAdd
                         )
                     },
                     cardItem = { fullPathToImage ->
                         CardImage(
                             pathToFile = fullPathToImage,
-                            onClick = { onClickImage(fullPathToImage) },
-                            onClickDel = { onDeleteImage(fullPathToImage) }
+                            onClick = { onImageChange(fullPathToImage) },
+                            onClickDel = { onImageDelete(fullPathToImage) }
                         )
                     }
                 )
@@ -233,12 +231,12 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::clearBtnClick
+                    onClick = ::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::submitBtnClick
+                    onClick = ::onSubmit
                 )
             }
         }

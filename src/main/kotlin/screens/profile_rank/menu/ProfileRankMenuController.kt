@@ -7,11 +7,11 @@ import screens.BaseController
 class ProfileRankMenuController :BaseController<ProfileRankMenuState>() {
     override var _state: ProfileRankMenuState by mutableStateOf(ProfileRankMenuState())
 
-    fun navigateToAddProfileRank() {
+    fun navigateToProfileRankAdd() {
         router.navigateTo(NavigationTargets.ProfileRankAdd)
     }
 
-    fun navigateToEditProfileRank(id: String) {
+    fun navigateToProfileRankEdit(id: String) {
         router.navigateTo(NavigationTargets.ProfileRankEdit(id))
     }
 }

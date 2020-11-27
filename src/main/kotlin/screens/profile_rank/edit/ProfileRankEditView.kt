@@ -14,10 +14,8 @@ import common_widgets.TextFieldApp
 import common_widgets.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
-import ui.greyAccent
 import ui.orangeAccent
 import utils.fileChooser
-import utils.toValidId
 import utils.toValidName
 import utils.toValidXP
 
@@ -25,45 +23,45 @@ class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>(
     override val controller by inject<ProfileRankEditController>()
 
     init {
-        setRankId(id)
+        setId(id)
     }
 
-    private fun setRankId(rankId: String) {
+    private fun setId(id: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankId = rankId
+                id = id
             )
         )
     }
 
-    private fun onRankNameChanged(rankName: String) {
+    private fun onNameChange(name: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankName = rankName.toValidName()
+                name = name.toValidName()
             )
         )
     }
 
-    private fun onRankXPChanged(rankXP: String) {
+    private fun onXPChange(xp: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                rankXP = rankXP.toValidXP()
+                xp = xp.toValidXP()
             )
         )
     }
 
-    private fun onAddLogo() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
+    private fun onLogoAdd() {
+        val pathToLogo = fileChooser("Select logo", "png") ?: return
+        if (!controller.getViewState().pathToLogo.contains(pathToLogo)) {
             controller.setViewState(
                 controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
+                    pathToLogo = pathToLogo
                 )
             )
         }
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
 //        TODO("Not yet implemented")
     }
 
@@ -82,32 +80,32 @@ class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>(
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().rankId,
+                        value = controller.getViewState().id,
                         label = "Rank ID",
                         onTextChanged = {}
                     )
                     TextFieldApp(
-                        value = controller.getViewState().rankName,
+                        value = controller.getViewState().name,
                         label = "Rank name",
-                        onTextChanged = ::onRankNameChanged
+                        onTextChanged = ::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().rankXP,
+                        value = controller.getViewState().xp,
                         label = "Rank XP",
-                        onTextChanged = ::onRankXPChanged
+                        onTextChanged = ::onXPChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
                     pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onAddLogo
+                    onClick = ::onLogoAdd
                 )
             }
             ButtonApp(
                 modifier = Modifier.align(Alignment.BottomEnd),
                 label = "submit",
                 color = orangeAccent,
-                onClick = ::submitBtnClick
+                onClick = ::onSubmit
             )
         }
     }

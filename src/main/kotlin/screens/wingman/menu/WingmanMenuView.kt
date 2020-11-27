@@ -12,12 +12,12 @@ import screens.BaseView
 class WingmanMenuView : BaseView<WingmanMenuController>() {
     override val controller by inject<WingmanMenuController>()
 
-    private fun onAddNewRank() {
-        controller.navigateToAddWingmanRank()
+    private fun navigateToWingmanAdd() {
+        controller.navigateToWingmanAdd()
     }
 
-    private fun onEditRank(id: String) {
-        controller.navigateToEditWingmanRankRank(id)
+    private fun navigateToWingmanEdit(id: String) {
+        controller.navigateToWingmanEdit(id)
     }
 
     @Composable
@@ -25,12 +25,12 @@ class WingmanMenuView : BaseView<WingmanMenuController>() {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
             items = controller.getViewState().items,
-            cardAdd = { CardAdd(label = "Add new rank", onClick = ::onAddNewRank) },
+            cardAdd = { CardAdd(label = "Add new rank", onClick = ::navigateToWingmanAdd) },
             cardItem = { wingmanRank ->
                 CardWeaponRank(
                     pathToImage = wingmanRank.logo,
                     name = wingmanRank.name,
-                    onClick = { onEditRank(wingmanRank.id) }
+                    onClick = { navigateToWingmanEdit(wingmanRank.id) }
                 )
             }
         )

@@ -7,8 +7,6 @@ import screens.ViewState
 data class WingmanMenuState(
     override val typeScreenState: TypeScreenState = TypeScreenState.Data,
     override val title: String = "Wingman",
-
-
     val items: List<Wingman> = listOf(
         Wingman(
             id = "wingman_1",

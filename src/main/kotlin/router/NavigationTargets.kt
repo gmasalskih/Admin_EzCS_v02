@@ -13,9 +13,9 @@ sealed class NavigationTargets {
     data class MapPointsEdit(val id: String) : NavigationTargets()
     object MapPointsMenu : NavigationTargets()
 
-    object MapsAdd : NavigationTargets()
-    data class MapsEdit(val id: String) : NavigationTargets()
-    object MapsMenu : NavigationTargets()
+    object MapHolderAdd : NavigationTargets()
+    data class MapHolderEdit(val id: String) : NavigationTargets()
+    object MapHolderMenu : NavigationTargets()
 
     object ProfileRankAdd : NavigationTargets()
     data class ProfileRankEdit(val id: String) : NavigationTargets()

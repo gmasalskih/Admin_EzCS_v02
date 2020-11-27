@@ -10,26 +10,26 @@ import screens.BaseView
 class MapPointsMenuView : BaseView<MapPointsMenuController>() {
     override val controller by inject<MapPointsMenuController>()
 
-    private fun navigateToAddMapPoint() {
-        controller.navigateToAddMapPoint()
+    private fun navigateToMapPointsAdd() {
+        controller.navigateToMapPointsAdd()
     }
 
-    private fun navigateToMap(mapID: String) {
-        controller.navigateToEditMapPoint(mapID)
+    private fun navigateToMapPointsEdit(id: String) {
+        controller.navigateToMapPointsEdit(id)
     }
 
     @Composable
     override fun setContent() {
         ScrollableRowAdd(
             items = 1..6,
-            cardAdd = { CardAdd(label = "add map point", onClick = ::navigateToAddMapPoint) },
+            cardAdd = { CardAdd(label = "add map point", onClick = ::navigateToMapPointsAdd) },
             cardItem = {
                 CardMap(
                     background = "background/wallpaper.png",
                     logo = "logo/logo.png",
                     name = "$it",
                     isCompetitive = true,
-                    onClick = { navigateToMap(it.toString()) }
+                    onClick = { navigateToMapPointsEdit(it.toString()) }
                 )
             }
         )

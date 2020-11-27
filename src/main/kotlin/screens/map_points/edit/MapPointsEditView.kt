@@ -20,15 +20,15 @@ import utils.toValidName
 class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
     override val controller by inject<MapPointsEditController>()
 
-    private fun onMapPointNameChanged(mapPointName: String) {
+    private fun onNameChange(name: String) {
         controller.setViewState(
             controller.getViewState().copy(
-                mapPointName = mapPointName.toValidName()
+                name = name.toValidName()
             )
         )
     }
 
-    private fun onGrenadeTypeSelected(grenadeType: GrenadeTypes) {
+    private fun onGrenadeTypeChange(grenadeType: GrenadeTypes) {
         controller.setViewState(
             controller.getViewState().copy(
                 grenadeType = grenadeType
@@ -36,35 +36,35 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
         )
     }
 
-    private fun onTickrateTypeClick(tickRate: TickRate) {
-        val hasTickRate = controller.getViewState().listTickRates.contains(tickRate)
+    private fun onTickrateTypeChange(tickrateType: TickRate) {
+        val hasTickRate = controller.getViewState().listTickRates.contains(tickrateType)
         controller.setViewState(
             controller.getViewState().copy(
-                listTickRates = if (hasTickRate) controller.getViewState().listTickRates.filter { it != tickRate }
-                else controller.getViewState().listTickRates + listOf(tickRate)
+                listTickRates = if (hasTickRate) controller.getViewState().listTickRates.filter { it != tickrateType }
+                else controller.getViewState().listTickRates + listOf(tickrateType)
             )
         )
     }
 
-    private fun onSelectPreviewStart() {
+    private fun onPreviewStartChange() {
         val pathToImage = fileChooser("Select preview start", "png") ?: return
         controller.setViewState(
             controller.getViewState().copy(
-                pathToPreviewStartImg = pathToImage
+                pathToPreviewStart = pathToImage
             )
         )
     }
 
-    private fun onSelectPreviewEnd() {
+    private fun onPreviewEndChange() {
         val pathToImage = fileChooser("Select preview end", "png") ?: return
         controller.setViewState(
             controller.getViewState().copy(
-                pathToPreviewEndImg = pathToImage
+                pathToPreviewEnd = pathToImage
             )
         )
     }
 
-    private fun onClickAddVideo() {
+    private fun onVideoAdd() {
         val pathToVideo = fileChooser("Select video", "mp4") ?: return
         if (!controller.getViewState().listVideos.contains(pathToVideo)) {
             controller.setViewState(
@@ -75,20 +75,20 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
         }
     }
 
-    private fun onClickVideo(oldPathToVideo: String) {
+    private fun onVideoChange(oldPathToVideo: String) {
         val newPathToVideo = fileChooser("Select video", "mp4") ?: return
         if (!controller.getViewState().listVideos.contains(newPathToVideo)) {
             controller.setViewState(
                 controller.getViewState().copy(
-                    listVideos = controller.getViewState().listVideos.map {
-                        if (it == oldPathToVideo) newPathToVideo else it
+                    listVideos = controller.getViewState().listVideos.map { pathToVideo ->
+                        if (pathToVideo == oldPathToVideo) newPathToVideo else pathToVideo
                     }.toList()
                 )
             )
         }
     }
 
-    private fun onClickAddImage() {
+    private fun onImageAdd() {
         val pathToImage = fileChooser("Select image", "png") ?: return
         if (!controller.getViewState().listImages.contains(pathToImage)) {
             controller.setViewState(
@@ -99,20 +99,20 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
         }
     }
 
-    private fun onClickImage(oldPathToImage: String) {
+    private fun onImageChange(oldPathToImage: String) {
         val newPathToImage = fileChooser("Select image", "png") ?: return
         if (!controller.getViewState().listImages.contains(newPathToImage)) {
             controller.setViewState(
                 controller.getViewState().copy(
-                    listImages = controller.getViewState().listImages.map {
-                        if (it == oldPathToImage) newPathToImage else it
+                    listImages = controller.getViewState().listImages.map { pathToImage ->
+                        if (pathToImage == oldPathToImage) newPathToImage else pathToImage
                     }.toList()
                 )
             )
         }
     }
 
-    private fun onDeleteImage(pathToImage: String) {
+    private fun onImageDelete(pathToImage: String) {
         controller.setViewState(
             controller.getViewState().copy(
                 listImages = controller.getViewState().listImages.filter { it != pathToImage }
@@ -120,7 +120,7 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
         )
     }
 
-    private fun onDeleteVideo(pathToVideo: String) {
+    private fun onVideoDelete(pathToVideo: String) {
         controller.setViewState(
             controller.getViewState().copy(
                 listVideos = controller.getViewState().listVideos.filter { it != pathToVideo }
@@ -128,7 +128,7 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
         )
     }
 
-    private fun submitBtnClick() {
+    private fun onSubmit() {
         //TODO Сделать submitBtnClick
     }
 
@@ -151,29 +151,29 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
                         onTextChanged = {}
                     )
                     TextFieldApp(
-                        value = controller.getViewState().mapPointName,
+                        value = controller.getViewState().name,
                         label = "Map point name",
-                        onTextChanged = ::onMapPointNameChanged
+                        onTextChanged = ::onNameChange
                     )
                 }
                 RadioGroupGrenadeTypes(
-                    onTypeSelected = ::onGrenadeTypeSelected,
+                    onTypeSelected = ::onGrenadeTypeChange,
                     grenadeTypeSelected = controller.getViewState().grenadeType
                 )
                 CheckboxGroupTickrateTypes(
                     listTickrateTypes = controller.getViewState().listTickRates,
-                    onTickrateTypeClick = ::onTickrateTypeClick
+                    onTickrateTypeClick = ::onTickrateTypeChange
                 )
                 Row(
                     horizontalArrangement = spacedBy20dp
                 ) {
                     CardImage(
-                        onClick = ::onSelectPreviewStart,
-                        pathToFile = controller.getViewState().pathToPreviewStartImg
+                        onClick = ::onPreviewStartChange,
+                        pathToFile = controller.getViewState().pathToPreviewStart
                     )
                     CardImage(
-                        onClick = ::onSelectPreviewEnd,
-                        pathToFile = controller.getViewState().pathToPreviewEndImg
+                        onClick = ::onPreviewEndChange,
+                        pathToFile = controller.getViewState().pathToPreviewEnd
                     )
                 }
                 ScrollableRowAdd(
@@ -182,14 +182,14 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
                     cardAdd = {
                         CardAdd(
                             label = "Add video",
-                            onClick = ::onClickAddVideo
+                            onClick = ::onVideoAdd
                         )
                     },
                     cardItem = { fullPathToVideo ->
                         CardImage(
                             pathToFile = fullPathToVideo,
-                            onClick = { onClickVideo(fullPathToVideo) },
-                            onClickDel = { onDeleteVideo(fullPathToVideo) }
+                            onClick = { onVideoChange(fullPathToVideo) },
+                            onClickDel = { onVideoDelete(fullPathToVideo) }
                         )
                     }
                 )
@@ -199,14 +199,14 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
                     cardAdd = {
                         CardAdd(
                             label = "Add image",
-                            onClick = ::onClickAddImage
+                            onClick = ::onImageAdd
                         )
                     },
                     cardItem = { fullPathToImage ->
                         CardImage(
                             pathToFile = fullPathToImage,
-                            onClick = { onClickImage(fullPathToImage) },
-                            onClickDel = { onDeleteImage(fullPathToImage) }
+                            onClick = { onImageChange(fullPathToImage) },
+                            onClickDel = { onImageDelete(fullPathToImage) }
                         )
                     }
                 )
@@ -215,7 +215,7 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
                 modifier = Modifier.align(Alignment.BottomEnd),
                 label = "submit",
                 color = orangeAccent,
-                onClick = ::submitBtnClick
+                onClick = ::onSubmit
             )
         }
     }

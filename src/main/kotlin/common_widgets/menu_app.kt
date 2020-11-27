@@ -25,7 +25,7 @@ private sealed class ButtonsMenuApp(val title: String, val logoPath: String, val
     object Maps : ButtonsMenuApp(
         title = "Maps",
         logoPath = "icons/icon_maps.png",
-        navigationTarget = NavigationTargets.MapsMenu
+        navigationTarget = NavigationTargets.MapHolderMenu
     )
 
     object MapPoints : ButtonsMenuApp(
