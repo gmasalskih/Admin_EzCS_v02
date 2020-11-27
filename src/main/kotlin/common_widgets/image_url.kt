@@ -29,7 +29,6 @@ fun ImageUrl(
     val (imageAsset, setImageAsset) = remember { mutableStateOf<ImageAsset?>(null) }
     val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
     val scope = CoroutineScope(Dispatchers.Main)
-    var bis: BufferedInputStream? = null
     onCommit {
         if (oldUrl != url) {
             setImageAsset(null)
@@ -38,16 +37,13 @@ fun ImageUrl(
     }
     onDispose {
         scope.cancel()
-        bis?.close()
-        bis = null
     }
     if (imageAsset == null) {
         when {
             url.isValidURL() -> {
                 scope.launch {
-                    bis = BufferedInputStream(URL(url).openStream())
                     val asset = withContext(Dispatchers.IO) {
-                        Image.makeFromEncoded(bis?.readAllBytes()).asImageAsset()
+                        Image.makeFromEncoded(BufferedInputStream(URL(url).openStream()).readAllBytes()).asImageAsset()
                     }
                     setImageAsset(asset)
                 }

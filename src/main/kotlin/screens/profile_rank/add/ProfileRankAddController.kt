@@ -5,4 +5,8 @@ import screens.BaseController
 
 class ProfileRankAddController:BaseController<ProfileRankAddState>() {
     override var _state: ProfileRankAddState by mutableStateOf(ProfileRankAddState())
+
+    fun clearState(){
+        _state = ProfileRankAddState()
+    }
 }

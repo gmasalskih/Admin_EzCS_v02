@@ -24,6 +24,10 @@ fun String.toValidName(): String {
         .replace("[)]+".toRegex(), ")")
 }
 
+fun String.toValidXP(): String {
+    return this.replace("[^0-9]".toRegex(), "") + "XP"
+}
+
 fun externalImageResource(path: String): ImageAsset {
     return ImageLoader.makeFromEncoded(FileInputStream(File(path)).readAllBytes()).asImageAsset()
 }

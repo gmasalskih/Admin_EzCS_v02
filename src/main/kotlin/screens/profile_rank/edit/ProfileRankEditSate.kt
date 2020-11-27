@@ -5,5 +5,9 @@ import screens.ViewState
 
 data class ProfileRankEditSate(
     override val typeScreenState: TypeScreenState = TypeScreenState.Data,
-    override val title: String = ""
+    override val title: String = "Edit profile rank",
+    val rankId: String = "",
+    val rankName: String = "",
+    val pathToLogo: String = "",
+    val rankXP:String = "",
 ) : ViewState
