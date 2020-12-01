@@ -55,7 +55,7 @@ class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>(
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    pathToImage = controller.getViewState().item.logo,
+                    image = controller.getViewState().item.logo,
                     onClick = controller::onLogoAdd
                 )
             }

@@ -49,17 +49,17 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
 
                     CardAddOrImage(
                         label = "add logo",
-                        pathToImage = controller.getViewState().item.logo,
+                        image = controller.getViewState().item.logo,
                         onClick = controller::onLogoChange
                     )
                     CardAddOrImage(
                         label = "add map",
-                        pathToImage = controller.getViewState().item.map,
+                        image = controller.getViewState().item.map,
                         onClick = controller::onMapChange
                     )
                     CardAddOrImage(
                         label = "add wallpaper",
-                        pathToImage = controller.getViewState().item.wallpaper,
+                        image = controller.getViewState().item.wallpaper,
                         onClick = controller::onWallpaperChange
                     )
                 }

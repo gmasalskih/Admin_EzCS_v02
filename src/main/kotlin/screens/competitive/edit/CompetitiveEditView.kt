@@ -45,7 +45,7 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
                 }
                 CardAddOrImage(
                     label = "Change logo",
-                    pathToImage = controller.getViewState().item.logo,
+                    image = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange
                 )
             }

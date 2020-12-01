@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import common_widgets.CardAdd
-import common_widgets.CardWeaponRank
+import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
@@ -19,7 +19,7 @@ class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToProfileRankAdd) },
             cardItem = { profileRank ->
-                CardWeaponRank(
+                CardRank(
                     pathToImage = profileRank.logo,
                     name = profileRank.name,
                     onClick = { controller.navigateToProfileRankEdit(profileRank.id) }

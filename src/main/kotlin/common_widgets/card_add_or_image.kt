@@ -5,17 +5,17 @@ import androidx.compose.runtime.Composable
 @Composable
 fun CardAddOrImage(
     label: String,
-    pathToImage: String,
+    image: String,
     onClick: () -> Unit,
 ) {
-    if (pathToImage.isBlank()) {
+    if (image.isBlank()) {
         CardAdd(
             label = label,
             onClick = onClick
         )
     } else {
         CardImage(
-            pathToFile = pathToImage,
+            pathToFile = image,
             onClick = onClick,
         )
     }

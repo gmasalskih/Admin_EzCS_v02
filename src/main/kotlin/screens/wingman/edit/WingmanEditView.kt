@@ -50,7 +50,7 @@ class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
                 }
                 CardAddOrImage(
                     label = "Change logo",
-                    pathToImage = controller.getViewState().item.logo,
+                    image = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange
                 )
             }

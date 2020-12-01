@@ -47,7 +47,7 @@ class WingmanAddView : BaseView<WingmanAddController>() {
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    pathToImage = controller.getViewState().item.logo,
+                    image = controller.getViewState().item.logo,
                     onClick = controller::onLogoAdd
                 )
             }

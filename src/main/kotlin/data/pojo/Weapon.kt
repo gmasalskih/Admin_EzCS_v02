@@ -23,13 +23,13 @@ data class Weapon(
     val teams: List<Team> = listOf(),
 
     /** Ссылка на лого */
-    val logo: String = "",
+    val image: String = "",
 
     /** Ссылка на файл отдачи. (gif формат) */
-    val sprayPattern: String = "",
+    val spray: String = "",
 
     /** Ссылка на файл компенсация отдачи. (gif формат) */
-    val recoilCompensation: String = "",
+    val recoil: String = "",
 
 
     /** Бронипробиваемость. по бронированным противникам урон умножается на armorRatio / 2. */
@@ -110,6 +110,6 @@ data class Weapon(
     /** Дополнительная погрешность, рассчитанная на пулю доп */
     val spreadAlt: Double = 0.0,
 
-) : Entity {
+    ) : Entity {
     fun getContentsPath() = "${collection.name}/$id/"
 }

@@ -47,7 +47,7 @@ fun CardImage(
                 modifier = Modifier.fillMaxWidth().aspectRatio(1f).clickable(onClick = onClick)
             ) {
                 when {
-                    pathToFile.toLowerCase().contains("\\.png$".toRegex()) -> {
+                    pathToFile.toLowerCase().contains("(\\.png\$)|(\\.gif\$)".toRegex()) -> {
                         ImageUrl(
                             url = pathToFile,
                             modifier = Modifier.fillMaxSize(),

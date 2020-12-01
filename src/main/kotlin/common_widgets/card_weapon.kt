@@ -1,6 +1,7 @@
 package common_widgets
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -10,13 +11,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import data.enums.Team
 import ui.*
 
 @Composable
-fun CardWeaponRank(
+fun CardWeapon(
     name: String,
-    pathToImage: String,
+    image: String,
+    teams: List<Team>,
     modifier: Modifier = Modifier,
     progressIndicatorColor: Color = orangeAccent,
     onClick: () -> Unit
@@ -31,12 +35,30 @@ fun CardWeaponRank(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            Row(
+                modifier = Modifier.align(alignment = Alignment.TopEnd).padding(5.dp),
+                horizontalArrangement = spacedBy5dp
+            ) {
+                if (teams.contains(Team.T)){
+                    Image(
+                        asset = imageResource("assets/T_logo.png"),
+                        modifier = Modifier.size(10.dp)
+                    )
+                }
+                if (teams.contains(Team.CT)){
+                    Image(
+                        asset = imageResource("assets/CT_logo.png"),
+                        modifier = Modifier.size(10.dp)
+                    )
+                }
+
+            }
             Box(
                 modifier = Modifier.fillMaxWidth().aspectRatio(1f).align(Alignment.TopCenter).padding(10.dp)
             ) {
                 ImageUrl(
                     modifier = Modifier.align(Alignment.Center).fillMaxSize(),
-                    url = pathToImage,
+                    url = image,
                     contentScale = ContentScale.FillWidth,
                     progressIndicatorColor = progressIndicatorColor
                 )

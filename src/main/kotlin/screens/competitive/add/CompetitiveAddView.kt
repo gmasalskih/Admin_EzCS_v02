@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
 import org.koin.core.inject
-import screens.BaseController
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
@@ -43,7 +42,7 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    pathToImage = controller.getViewState().item.logo,
+                    image = controller.getViewState().item.logo,
                     onClick = controller::onLogoAdd
                 )
             }

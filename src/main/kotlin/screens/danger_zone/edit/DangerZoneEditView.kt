@@ -50,7 +50,7 @@ class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() 
                 }
                 CardAddOrImage(
                     label = "Change logo",
-                    pathToImage = controller.getViewState().item.logo,
+                    image = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange
                 )
             }

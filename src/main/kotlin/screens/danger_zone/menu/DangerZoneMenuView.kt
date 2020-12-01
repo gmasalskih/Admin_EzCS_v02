@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import common_widgets.CardAdd
-import common_widgets.CardWeaponRank
+import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
@@ -19,7 +19,7 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToDangerZoneAdd) },
             cardItem = { dangerZone ->
-                CardWeaponRank(
+                CardRank(
                     pathToImage = dangerZone.logo,
                     name = dangerZone.name,
                     onClick = { controller.navigateToDangerZoneEdit(dangerZone.id) }
