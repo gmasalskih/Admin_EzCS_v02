@@ -1,14 +1,13 @@
 package data.pojo
 
+import data.Entity
 import data.enums.FirestoreCollections
-import data.enums.RankTypes
 
 data class DangerZone(
-    val id: String,
-    val name: String,
-    val logo: String,
-    val contentsPath: String,
-    val description: String,
-    val collection: FirestoreCollections = FirestoreCollections.RANKS,
-    val rankType: RankTypes = RankTypes.DANGER_ZONE,
-)
+    val id: String = "",
+    val name: String = "",
+    val logo: String = "",
+    val collection: FirestoreCollections = FirestoreCollections.DANGER_ZONE,
+) : Entity {
+    fun getContentsPath() = "${collection.name}/$id/"
+}

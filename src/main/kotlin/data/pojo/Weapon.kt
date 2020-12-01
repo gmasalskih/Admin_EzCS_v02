@@ -1,104 +1,115 @@
 package data.pojo
 
+import data.Entity
 import data.enums.FirestoreCollections
 import data.enums.Team
 import data.enums.WeaponTypes
 
 data class Weapon(
 
-    /**Бронипробиваемость. по бронированным противникам урон умножается на armorRatio / 2.*/
-    val armorRatio: Double,
+    /** ID */
+    val id: String = "",
 
+    /** Имя */
+    val name: String = "",
+
+    /** Коллекция в фаербейсе */
     val collection: FirestoreCollections = FirestoreCollections.WEAPONS,
 
-    val contentsPath: String,
+    /** Тип оружия */
+    val weaponTypes: WeaponTypes = WeaponTypes.UNKNOWN,
 
-    /**Минимальный интервал между выстрелами следующей пули (измеряется в секундах)*/
-    val cycleTime: Double,
+    /** Принадлежность команде */
+    val teams: List<Team> = listOf(),
 
-    /**Урон*/
-    val damage: Int,
+    /** Ссылка на лого */
+    val logo: String = "",
 
-    val id: String,
+    /** Ссылка на файл отдачи. (gif формат) */
+    val sprayPattern: String = "",
 
-    /**Стоимость оружия*/
-    val inGamePrice: Int,
+    /** Ссылка на файл компенсация отдачи. (gif формат) */
+    val recoilCompensation: String = "",
 
-    /**Неточность сидя*/
-    val inaccuracyCrouch: Double,
 
-    /**Неточность сидя доп.*/
-    val inaccuracyCrouchAlt: Double,
+    /** Бронипробиваемость. по бронированным противникам урон умножается на armorRatio / 2. */
+    val armorRatio: Double = 1.0,
 
-    /**Неточность в движении*/
-    val inaccuracyMove: Double,
+    /** Минимальный интервал между выстрелами следующей пули (измеряется в секундах) */
+    val cycleTime: Double = 0.15,
 
-    /**Неточность в движении доп.*/
-    val inaccuracyMoveAlt: Double,
+    /** Урон */
+    val damage: Int = 42,
 
-    /**Неточность стоя*/
-    val inaccuracyStand: Double,
+    /** Стоимость оружия */
+    val inGamePrice: Int = 300,
 
-    /**Неточность стоя доп.*/
-    val inaccuracyStandAlt: Double,
+    /** Неточность сидя */
+    val inaccuracyCrouch: Double = 0.0,
 
-    /**Награда за убийство*/
-    val killAward: Int,
+    /** Неточность сидя доп. */
+    val inaccuracyCrouchAlt: Double = 0.0,
 
-    val logo: String,
+    /** Неточность в движении */
+    val inaccuracyMove: Double = 0.0,
 
-    /**Максимальная скорость играка с оружием*/
-    val maxPlayerSpeed: Int,
+    /** Неточность в движении доп. */
+    val inaccuracyMoveAlt: Double = 0.0,
 
-    val name: String,
+    /** Неточность стоя */
+    val inaccuracyStand: Double = 0.0,
 
-    /**Коэфицент силы пробивать укрытия*/
-    val penetration: Double,
+    /** Неточность стоя доп. */
+    val inaccuracyStandAlt: Double = 0.0,
 
-    /**Емкость обоймы*/
-    val primaryClipSize: Int,
+    /** Награда за убийство */
+    val killAward: Int = 300,
 
-    /**Максимальное кол-во запасных потронов*/
-    val primaryReserveAmmoMax: Int,
+    /** Максимальная скорость играка с оружием */
+    val maxPlayerSpeed: Int = 1,
 
-    /**Коэфицент потери уроны каждые 500U (12.7м)*/
-    val rangeModifier: Double,
+    /** Коэфицент силы пробивать укрытия */
+    val penetration: Double = 1.0,
 
-    /**величина отдачи по оси X*/
-    val recoilAngleVariance: Int,
+    /** Емкость обоймы */
+    val primaryClipSize: Int = -1,
 
-    /**величина отдачи по оси X доп.*/
-    val recoilAngleVarianceAlt: Int,
+    /** Максимальное кол-во запасных потронов */
+    val primaryReserveAmmoMax: Int = 0,
 
-    val recoilCompensation: String,
+    /** Коэфицент потери уроны каждые 500U (12.7м) */
+    val rangeModifier: Double = 0.98,
 
-    /**количество отдачи*/
-    val recoilMagnitude: Double,
+    /** Величина отдачи по оси X */
+    val recoilAngleVariance: Double = 0.0,
 
-    /**количество отдачи доп.*/
-    val recoilMagnitudeAlt: Double,
+    /** Величина отдачи по оси X доп. */
+    val recoilAngleVarianceAlt: Double = 0.0,
 
-    /**величина отклонения отдачи по оси Y*/
-    val recoilMagnitudeVariance: Int,
+    /** Количество отдачи */
+    val recoilMagnitude: Double = 0.0,
 
-    /**величина отклонения отдачи по оси Y доп.*/
-    val recoilMagnitudeVarianceAlt: Int,
+    /** Количество отдачи доп. */
+    val recoilMagnitudeAlt: Double = 0.0,
 
-    /**Окончательное время востановления прицела сидя*/
-    val recoveryTimeCrouchFinal: Double,
+    /** Величина отклонения отдачи по оси Y */
+    val recoilMagnitudeVariance: Double = 0.0,
 
-    /**Окончательное время востановления прицела стоя*/
-    val recoveryTimeStandFinal: Double,
+    /** Величина отклонения отдачи по оси Y доп. */
+    val recoilMagnitudeVarianceAlt: Double = 0.0,
 
-    val sprayPattern: String,
+    /** Окончательное время востановления прицела сидя */
+    val recoveryTimeCrouchFinal: Double = 1.0,
 
-    /**дополнительная погрешность, рассчитанная на пулю*/
-    val spread: Double,
+    /** Окончательное время востановления прицела стоя */
+    val recoveryTimeStandFinal: Double = 1.0,
 
-    /**дополнительная погрешность, рассчитанная на пулю доп*/
-    val spreadAlt: Double,
+    /** Дополнительная погрешность, рассчитанная на пулю */
+    val spread: Double = 0.0,
 
-    val teams: List<Team>,
+    /** Дополнительная погрешность, рассчитанная на пулю доп */
+    val spreadAlt: Double = 0.0,
 
-    val weaponTypes: WeaponTypes,
-)
+) : Entity {
+    fun getContentsPath() = "${collection.name}/$id/"
+}

@@ -1,8 +1,25 @@
 package screens.wingman.edit
 
 import androidx.compose.runtime.*
+import data.pojo.Wingman
 import screens.BaseController
+import screens.ViewState
+import utils.fileChooser
 
-class WingmanEditController : BaseController<WingmanEditState>() {
-    override var _state: WingmanEditState by mutableStateOf(WingmanEditState())
+class WingmanEditController : BaseController<Wingman>() {
+
+    override var state: ViewState<Wingman> by mutableStateOf(ViewState(title = "Edit rank", item = Wingman()))
+
+    fun setId(id: String) = setViewState(state.copy(item = state.item.copy(id = id)))
+
+    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
+
+    fun onLogoChange() {
+        val newLogo = fileChooser("Select logo", "png") ?: return
+        if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
+    }
+
+    fun onSubmit() {
+//        TODO("Not yet implemented")
+    }
 }

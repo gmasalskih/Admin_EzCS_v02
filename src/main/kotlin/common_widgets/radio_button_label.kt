@@ -3,13 +3,12 @@ package common_widgets
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonConstants
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ui.greyAccent
 import ui.orangeAccent
-import ui.verdanaRegular
+import ui.spacedBy5dp
 
 @Composable
 fun RadioButtonLabel(

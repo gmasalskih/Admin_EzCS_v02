@@ -1,8 +1,5 @@
 package ui
 
-import androidx.compose.material.Typography
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.ResourceFont
 import androidx.compose.ui.text.font.fontFamily
 import androidx.compose.ui.text.platform.font
 

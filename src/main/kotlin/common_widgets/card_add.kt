@@ -8,9 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ui.greyAccent
-import ui.light
-import ui.verdanaBold
+import ui.*
 
 @Composable
 fun CardAdd(label: String, onClick: () -> Unit) {

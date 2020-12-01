@@ -7,6 +7,5 @@ enum class FirestoreCollections {
     WINGMAN,
     PROFILE_RANK,
     COMPETITIVE,
-    RANKS,
     WEAPONS
 }

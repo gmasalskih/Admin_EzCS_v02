@@ -1,6 +1,7 @@
 package screens
 
-interface ViewState {
-    val typeScreenState: TypeScreenState
-    val title:String
-}
+data class ViewState<I>(
+    val typeScreenState: TypeScreenState = TypeScreenState.Data,
+    val title: String = "",
+    val item: I
+)

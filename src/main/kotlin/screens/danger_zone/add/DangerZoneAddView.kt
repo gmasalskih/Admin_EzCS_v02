@@ -11,55 +11,17 @@ import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
 import common_widgets.CardAddOrImage
 import common_widgets.TextFieldApp
-import common_widgets.spacedBy20dp
+import ui.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
-import utils.fileChooser
-import utils.toValidId
-import utils.toValidName
 
 class DangerZoneAddView : BaseView<DangerZoneAddController>() {
     override val controller by inject<DangerZoneAddController>()
 
-    private fun onLogoAdd() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
-                )
-            )
-        }
-    }
-
-    private fun onNameChange(rankName: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                name = rankName.toValidName()
-            )
-        )
-    }
-
-    private fun onIdChange(rankId: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                id = rankId.toValidId()
-            )
-        )
-    }
-
-    private fun onSubmit() {
-//        TODO("Not yet implemented")
-    }
-
-    private fun onClear() {
-        controller.clearState()
-    }
-
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: DangerZoneAddController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -73,20 +35,20 @@ class DangerZoneAddView : BaseView<DangerZoneAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().id,
+                        value = controller.getViewState().item.id,
                         label = "Enter rank ID",
-                        onTextChanged = ::onIdChange
+                        onTextChanged = controller::onIdChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().name,
+                        value = controller.getViewState().item.name,
                         label = "Enter rank name",
-                        onTextChanged = ::onNameChange
+                        onTextChanged = controller::onNameChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onLogoAdd
+                    pathToImage = controller.getViewState().item.logo,
+                    onClick = controller::onLogoAdd
                 )
             }
             Row(
@@ -96,12 +58,12 @@ class DangerZoneAddView : BaseView<DangerZoneAddController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::onClear
+                    onClick = controller::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::onSubmit
+                    onClick = controller::onSubmit
                 )
             }
         }

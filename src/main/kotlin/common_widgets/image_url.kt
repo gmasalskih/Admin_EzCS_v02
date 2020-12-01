@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageAsset
 import androidx.compose.ui.graphics.asImageAsset
 import androidx.compose.ui.layout.ContentScale
@@ -24,6 +25,7 @@ fun ImageUrl(
     url: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
+    colorFilter: ColorFilter? = null,
     progressIndicatorColor: Color = dark,
 ) {
     val (imageAsset, setImageAsset) = remember { mutableStateOf<ImageAsset?>(null) }
@@ -68,7 +70,8 @@ fun ImageUrl(
             Image(
                 modifier = Modifier.then(modifier),
                 asset = imageAsset,
-                contentScale = contentScale
+                contentScale = contentScale,
+                colorFilter = colorFilter
             )
         }
     }

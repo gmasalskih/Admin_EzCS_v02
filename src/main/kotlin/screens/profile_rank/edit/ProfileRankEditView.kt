@@ -11,62 +11,20 @@ import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
 import common_widgets.CardAddOrImage
 import common_widgets.TextFieldApp
-import common_widgets.spacedBy20dp
+import ui.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
-import utils.fileChooser
-import utils.toValidName
-import utils.toValidXP
 
 class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>() {
     override val controller by inject<ProfileRankEditController>()
 
     init {
-        setId(id)
-    }
-
-    private fun setId(id: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                id = id
-            )
-        )
-    }
-
-    private fun onNameChange(name: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                name = name.toValidName()
-            )
-        )
-    }
-
-    private fun onXPChange(xp: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                xp = xp.toValidXP()
-            )
-        )
-    }
-
-    private fun onLogoAdd() {
-        val pathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(pathToLogo)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToLogo = pathToLogo
-                )
-            )
-        }
-    }
-
-    private fun onSubmit() {
-//        TODO("Not yet implemented")
+        controller.setId(id)
     }
 
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: ProfileRankEditController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -80,32 +38,32 @@ class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>(
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().id,
+                        value = controller.getViewState().item.id,
                         label = "Rank ID",
                         onTextChanged = {}
                     )
                     TextFieldApp(
-                        value = controller.getViewState().name,
+                        value = controller.getViewState().item.name,
                         label = "Rank name",
-                        onTextChanged = ::onNameChange
+                        onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().xp,
+                        value = controller.getViewState().item.xp,
                         label = "Rank XP",
-                        onTextChanged = ::onXPChange
+                        onTextChanged = controller::onXPChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onLogoAdd
+                    pathToImage = controller.getViewState().item.logo,
+                    onClick = controller::onLogoAdd
                 )
             }
             ButtonApp(
                 modifier = Modifier.align(Alignment.BottomEnd),
                 label = "submit",
                 color = orangeAccent,
-                onClick = ::onSubmit
+                onClick = controller::onSubmit
             )
         }
     }

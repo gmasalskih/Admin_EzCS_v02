@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ui.dark
+import ui.fontSize12sp
 import ui.greyAccent
 import ui.verdanaBold
 

@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import utils.ViewComponent
+import screens.BaseView
 
 @Composable
-inline fun <VC : ViewComponent> Screen(viewComponent: VC, crossinline content: @Composable () -> Unit) {
+inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

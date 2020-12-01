@@ -6,7 +6,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import data.enums.TickRate
+import ui.fontSize20sp
 import ui.greyAccent
+import ui.spacedBy10dp
 import ui.verdanaRegular
 
 @Composable

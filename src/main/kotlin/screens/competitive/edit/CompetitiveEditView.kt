@@ -9,49 +9,17 @@ import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
-import utils.fileChooser
-import utils.toValidName
+import ui.spacedBy20dp
 
 class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>() {
     override val controller by inject<CompetitiveEditController>()
 
     init {
-        setId(id)
-    }
-
-    private fun setId(rankId: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                id = rankId
-            )
-        )
-    }
-
-    private fun onNameChange(rankName: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                name = rankName.toValidName()
-            )
-        )
-    }
-
-    private fun onLogoChange() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
-                )
-            )
-        }
-    }
-
-    private fun onSubmit() {
-//        TODO("Not yet implemented")
+        controller.setId(id)
     }
 
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: CompetitiveEditController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -65,27 +33,27 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().id,
+                        value = controller.getViewState().item.id,
                         label = "Rank ID",
                     )
                     //Rank name
                     TextFieldApp(
-                        value = controller.getViewState().name,
+                        value = controller.getViewState().item.name,
                         label = "Rank name",
-                        onTextChanged = ::onNameChange
+                        onTextChanged = controller::onNameChange
                     )
                 }
                 CardAddOrImage(
                     label = "Change logo",
-                    pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onLogoChange
+                    pathToImage = controller.getViewState().item.logo,
+                    onClick = controller::onLogoChange
                 )
             }
             ButtonApp(
                 modifier = Modifier.align(Alignment.BottomEnd),
                 label = "submit",
                 color = orangeAccent,
-                onClick = ::onSubmit
+                onClick = controller::onSubmit
             )
         }
     }

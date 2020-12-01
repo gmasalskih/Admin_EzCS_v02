@@ -1,15 +1,14 @@
 package data.pojo
 
+import data.Entity
 import data.enums.FirestoreCollections
-import data.enums.RankTypes
-
 
 data class ProfileRank(
-    val collection: FirestoreCollections = FirestoreCollections.RANKS,
-    val contentsPath:String,
-    var description: String,
-    val id: String,
-    var logo: String,
-    val name: String,
-    val rankType: RankTypes = RankTypes.PROFILE_RANK,
-)
+    val collection: FirestoreCollections = FirestoreCollections.PROFILE_RANK,
+    var xp: String = "",
+    val id: String = "",
+    var logo: String = "",
+    val name: String = "",
+) : Entity {
+    fun getContentsPath() = "${collection.name}/$id/"
+}

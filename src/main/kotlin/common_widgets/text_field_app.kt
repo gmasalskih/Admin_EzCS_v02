@@ -1,17 +1,13 @@
 package common_widgets
 
 import androidx.compose.foundation.layout.preferredWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import ui.greyAccent
-import ui.textStyleField
-import ui.verdanaRegular
+import ui.*
 
 @Composable
 fun TextFieldApp(value: String, label: String, modifier: Modifier = Modifier, onTextChanged: (String) -> Unit = {}) {

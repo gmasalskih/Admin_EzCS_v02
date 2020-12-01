@@ -4,4 +4,5 @@ enum class GrenadeTypes {
     FLASH,
     MOLOTOV,
     SMOKE,
+    UNKNOWN
 }

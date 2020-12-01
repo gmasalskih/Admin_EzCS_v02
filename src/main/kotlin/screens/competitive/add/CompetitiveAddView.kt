@@ -7,53 +7,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
 import org.koin.core.inject
+import screens.BaseController
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
-import utils.fileChooser
-import utils.toValidId
-import utils.toValidName
+import ui.spacedBy20dp
 
 class CompetitiveAddView : BaseView<CompetitiveAddController>() {
     override val controller by inject<CompetitiveAddController>()
 
-    private fun onIdChange(competitiveId: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                id = competitiveId.toValidId()
-            )
-        )
-    }
-
-    private fun onNameChange(rankName: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                name = rankName.toValidName()
-            )
-        )
-    }
-
-    private fun onLogoAdd() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
-                )
-            )
-        }
-    }
-
-    private fun onClear() {
-        controller.clearState()
-    }
-
-    private fun onSubmit() {
-//        TODO("Not yet implemented")
-    }
-
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: CompetitiveAddController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -67,20 +31,20 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().id,
+                        value = controller.getViewState().item.id,
                         label = "Enter rank ID",
-                        onTextChanged = ::onIdChange
+                        onTextChanged = controller::onIdChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().name,
+                        value = controller.getViewState().item.name,
                         label = "Enter rank name",
-                        onTextChanged = ::onNameChange
+                        onTextChanged = controller::onNameChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    pathToImage = controller.getViewState().pathToLogo,
-                    onClick = ::onLogoAdd
+                    pathToImage = controller.getViewState().item.logo,
+                    onClick = controller::onLogoAdd
                 )
             }
             Row(
@@ -90,14 +54,15 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::onClear
+                    onClick = controller::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::onSubmit
+                    onClick = controller::onSubmit
                 )
             }
         }
     }
+
 }

@@ -8,7 +8,7 @@ class WeaponsEditView(val id: String) : BaseView<WeaponsEditController>() {
     override val controller by inject<WeaponsEditController>()
 
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: WeaponsEditController) {
 //        TODO("Not yet implemented")
     }
 }

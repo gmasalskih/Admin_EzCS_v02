@@ -12,25 +12,17 @@ import screens.BaseView
 class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {
     override val controller by inject<ProfileRankMenuController>()
 
-    private fun navigateToProfileRankAdd() {
-        controller.navigateToProfileRankAdd()
-    }
-
-    private fun navigateToProfileRankEdit(id: String) {
-        controller.navigateToProfileRankEdit(id)
-    }
-
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: ProfileRankMenuController) {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().items,
-            cardAdd = { CardAdd(label = "Add new rank", onClick = ::navigateToProfileRankAdd) },
+            items = controller.getViewState().item,
+            cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToProfileRankAdd) },
             cardItem = { profileRank ->
                 CardWeaponRank(
                     pathToImage = profileRank.logo,
                     name = profileRank.name,
-                    onClick = { navigateToProfileRankEdit(profileRank.id) }
+                    onClick = { controller.navigateToProfileRankEdit(profileRank.id) }
                 )
             }
         )

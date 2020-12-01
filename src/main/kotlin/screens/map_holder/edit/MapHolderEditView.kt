@@ -8,78 +8,17 @@ import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
-import utils.fileChooser
-import utils.toValidName
+import ui.spacedBy20dp
 
 class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
     override val controller by inject<MapHolderEditController>()
 
     init {
-        setId(id)
-    }
-
-    private fun setId(id: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                id = id
-            )
-        )
-    }
-
-    private fun onCompetitiveChange(value: Boolean) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                isCompetitive = value
-            )
-        )
-    }
-
-    private fun onSubmit() {
-    }
-
-    private fun onWallpaperChange() {
-        val newPathToWallpaper = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToWallpaper.contains(newPathToWallpaper)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToWallpaper = newPathToWallpaper
-                )
-            )
-        }
-    }
-
-    private fun onMapChange() {
-        val newPathToMap = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToMap.contains(newPathToMap)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToMap = newPathToMap
-                )
-            )
-        }
-    }
-
-    private fun onLogoChange() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
-                )
-            )
-        }
-    }
-
-    private fun onNameChange(name: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                name = name.toValidName()
-            )
-        )
+        controller.setId(id)
     }
 
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: MapHolderEditController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -93,15 +32,14 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                 ) {
                     //Map ID
                     TextFieldApp(
-                        value = controller.getViewState().id,
+                        value = controller.getViewState().item.id,
                         label = "Map ID",
-                        onTextChanged = {}
                     )
                     //Map name
                     TextFieldApp(
-                        value = controller.getViewState().name,
+                        value = controller.getViewState().item.name,
                         label = "Map name",
-                        onTextChanged = ::onNameChange
+                        onTextChanged = controller::onNameChange
                     )
                 }
                 Row(
@@ -111,34 +49,33 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
 
                     CardAddOrImage(
                         label = "add logo",
-                        pathToImage = controller.getViewState().pathToLogo,
-                        onClick = ::onLogoChange
+                        pathToImage = controller.getViewState().item.logo,
+                        onClick = controller::onLogoChange
                     )
                     CardAddOrImage(
                         label = "add map",
-                        pathToImage = controller.getViewState().pathToMap,
-                        onClick = ::onMapChange
+                        pathToImage = controller.getViewState().item.map,
+                        onClick = controller::onMapChange
                     )
                     CardAddOrImage(
                         label = "add wallpaper",
-                        pathToImage = controller.getViewState().pathToWallpaper,
-                        onClick = ::onWallpaperChange
+                        pathToImage = controller.getViewState().item.wallpaper,
+                        onClick = controller::onWallpaperChange
                     )
                 }
                 SwitchLable(
                     label = "Competitive",
-                    isChecked = controller.getViewState().isCompetitive,
+                    isChecked = controller.getViewState().item.isCompetitive,
                     modifier = Modifier.fillMaxWidth(),
-                    onCheckedChange = ::onCompetitiveChange
+                    onCheckedChange = controller::onCompetitiveChange
                 )
             }
             ButtonApp(
                 label = "submit",
                 color = orangeAccent,
-                onClick = ::onSubmit,
+                onClick = controller::onSubmit,
                 modifier = Modifier.align(Alignment.BottomEnd)
             )
         }
     }
-
 }

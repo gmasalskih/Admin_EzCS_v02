@@ -1,7 +1,7 @@
 package router
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
+import screens.BaseView
 import screens.competitive.add.CompetitiveAddView
 import screens.competitive.edit.CompetitiveEditView
 import screens.competitive.menu.CompetitiveMenuView
@@ -10,7 +10,6 @@ import screens.danger_zone.edit.DangerZoneEditView
 import screens.danger_zone.menu.DangerZoneMenuView
 import screens.map_points.add.MapPointsAddView
 import screens.map_points.edit.MapPointsEditView
-import utils.ViewComponent
 import screens.map_points.menu.MapPointsMenuView
 import screens.map_holder.menu.MapHolderMenuView
 import screens.map_holder.add.MapHolderAddView
@@ -25,8 +24,8 @@ import screens.wingman.add.WingmanAddView
 import screens.wingman.edit.WingmanEditView
 import screens.wingman.menu.WingmanMenuView
 
-class Router(entryPoint: Pair<NavigationTargets, ViewComponent>) {
-    var currentScreen: ViewComponent by mutableStateOf(entryPoint.second)
+class Router(entryPoint: Pair<NavigationTargets, BaseView<*>>) {
+    var currentScreen: BaseView<*> by mutableStateOf(entryPoint.second)
         private set
     private val backStack by mutableStateOf(mutableListOf<NavigationTargets>(entryPoint.first))
 

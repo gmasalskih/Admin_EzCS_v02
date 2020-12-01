@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ui.greyAccent
 import ui.orangeAccent
+import ui.spacedBy5dp
 
 @Composable
 fun CheckboxLable(

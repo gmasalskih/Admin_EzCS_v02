@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
+import ui.fontSize20sp
 import ui.greyAccent
 import ui.orangeAccent
 import ui.verdanaRegular
@@ -25,10 +26,3 @@ fun Label(
         fontSize = fontSize
     )
 }
-
-/*
-
-
-
-
- */

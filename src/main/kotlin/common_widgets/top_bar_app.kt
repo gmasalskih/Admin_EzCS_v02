@@ -7,9 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import ui.dark
-import ui.greyAccent
-import ui.verdanaBold
+import ui.*
 
 @Composable
 fun TopBarApp(title: String, hasBackArrowButton: Boolean = false, clickBack: () -> Unit = {}) {

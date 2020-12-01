@@ -1,16 +1,22 @@
 package screens
 
+import androidx.compose.runtime.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import router.Router
 
-abstract class BaseController<VS : ViewState> : KoinComponent {
-    protected abstract var _state: VS
+abstract class BaseController<I> : KoinComponent {
+
+    protected abstract var state: ViewState<I>
     protected val router: Router by inject()
 
-    fun getViewState() = _state
-    fun setViewState(viewState: VS) {
-        _state = viewState
+    fun getViewState() = state
+    fun setViewState(viewState: ViewState<I>) {
+        state = viewState
+    }
+
+    fun setItemState(item: I) {
+        setViewState(state.copy(item = item))
     }
 
     fun isNavigableBack() = router.isNavigableBack()

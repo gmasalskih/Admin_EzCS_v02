@@ -9,80 +9,13 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
-import utils.fileChooser
-import utils.toValidId
-import utils.toValidName
+import ui.spacedBy20dp
 
-class MapHolderAddView : BaseView<MapHolderController>() {
-    override val controller by inject<MapHolderController>()
-
-    private fun onIdChange(id: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                id = id.toValidId()
-            )
-        )
-    }
-
-    private fun onNameChange(name: String) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                name = name.toValidName()
-            )
-        )
-    }
-
-    private fun onLogoAdd() {
-        val newPathToLogo = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToLogo.contains(newPathToLogo)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToLogo = newPathToLogo
-                )
-            )
-        }
-    }
-
-    private fun onMapAdd() {
-        val newPathToMap = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToMap.contains(newPathToMap)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToMap = newPathToMap
-                )
-            )
-        }
-    }
-
-    private fun onWallpaperAdd() {
-        val newPathToWallpaper = fileChooser("Select logo", "png") ?: return
-        if (!controller.getViewState().pathToWallpaper.contains(newPathToWallpaper)) {
-            controller.setViewState(
-                controller.getViewState().copy(
-                    pathToWallpaper = newPathToWallpaper
-                )
-            )
-        }
-    }
-
-    private fun onCompetitiveChange(value: Boolean) {
-        controller.setViewState(
-            controller.getViewState().copy(
-                isCompetitive = value
-            )
-        )
-    }
-
-    private fun onClear() {
-        controller.clearState()
-    }
-
-    private fun onSubmit() {
-        //TODO("Not yet implemented")
-    }
+class MapHolderAddView : BaseView<MapHolderAddController>() {
+    override val controller by inject<MapHolderAddController>()
 
     @Composable
-    override fun setContent() {
+    override fun setContent(controller: MapHolderAddController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -96,15 +29,15 @@ class MapHolderAddView : BaseView<MapHolderController>() {
                 ) {
                     //Map ID
                     TextFieldApp(
-                        value = controller.getViewState().id,
+                        value = controller.getViewState().item.id,
                         label = "Enter map ID",
-                        onTextChanged = ::onIdChange
+                        onTextChanged = controller::onIdChange
                     )
                     //Map name
                     TextFieldApp(
-                        value = controller.getViewState().name,
+                        value = controller.getViewState().item.name,
                         label = "Enter map name",
-                        onTextChanged = ::onNameChange
+                        onTextChanged = controller::onNameChange
                     )
                 }
                 Row(
@@ -113,25 +46,25 @@ class MapHolderAddView : BaseView<MapHolderController>() {
                 ) {
                     CardAddOrImage(
                         label = "add logo",
-                        pathToImage = controller.getViewState().pathToLogo,
-                        onClick = ::onLogoAdd
+                        pathToImage = controller.getViewState().item.logo,
+                        onClick = controller::onLogoAdd
                     )
                     CardAddOrImage(
                         label = "add map",
-                        pathToImage = controller.getViewState().pathToMap,
-                        onClick = ::onMapAdd
+                        pathToImage = controller.getViewState().item.map,
+                        onClick = controller::onMapAdd
                     )
                     CardAddOrImage(
                         label = "add wallpaper",
-                        pathToImage = controller.getViewState().pathToWallpaper,
-                        onClick = ::onWallpaperAdd
+                        pathToImage = controller.getViewState().item.wallpaper,
+                        onClick = controller::onWallpaperAdd
                     )
                 }
                 SwitchLable(
                     modifier = Modifier.fillMaxWidth(),
                     label = "Competitive",
-                    isChecked = controller.getViewState().isCompetitive,
-                    onCheckedChange = ::onCompetitiveChange
+                    isChecked = controller.getViewState().item.isCompetitive,
+                    onCheckedChange = controller::onCompetitiveChange
                 )
             }
             Row(
@@ -141,12 +74,12 @@ class MapHolderAddView : BaseView<MapHolderController>() {
                 ButtonApp(
                     label = "clear",
                     color = greyAccent,
-                    onClick = ::onClear
+                    onClick = controller::onClear
                 )
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    onClick = ::onSubmit
+                    onClick = controller::onSubmit
                 )
             }
         }

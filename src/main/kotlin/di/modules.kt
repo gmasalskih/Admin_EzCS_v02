@@ -21,7 +21,7 @@ import screens.map_points.add.MapPointsAddController
 import screens.map_points.edit.MapPointsEditController
 import screens.map_holder.menu.MapHolderMenuController
 import screens.map_holder.menu.MapHolderMenuView
-import screens.map_holder.add.MapHolderController
+import screens.map_holder.add.MapHolderAddController
 import screens.map_holder.edit.MapHolderEditController
 import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
@@ -66,7 +66,7 @@ val mapPointsModule = module {
 }
 
 val mapsModule = module {
-    single<MapHolderController> { MapHolderController() }
+    single<MapHolderAddController> { MapHolderAddController() }
     single<MapHolderEditController> { MapHolderEditController() }
     single<MapHolderMenuController> { MapHolderMenuController() }
 }

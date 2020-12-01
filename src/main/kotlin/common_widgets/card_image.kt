@@ -11,11 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
-import ui.dark
-import ui.greyAccent
-import ui.verdanaBold
+import ui.*
 
 @Composable
 fun CardImage(
