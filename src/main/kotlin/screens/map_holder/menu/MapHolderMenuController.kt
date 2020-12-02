@@ -1,38 +1,21 @@
 package screens.map_holder.menu
 
 import androidx.compose.runtime.*
+import data.enums.FirestoreCollections
 import data.pojo.MapHolder
+import kotlinx.coroutines.*
+import org.koin.core.inject
+import providers.firebase.FirestoreProvider
+import providers.firebase.StorageProvider
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState
 
 class MapHolderMenuController : BaseController<List<MapHolder>>() {
-
-    override var state: ViewState<List<MapHolder>> by mutableStateOf(
-        ViewState(
-            title = "Maps",
-            item = listOf(
-                MapHolder(
-                    id = "dust2",
-                    name = "Dust II",
-                    logo = "https://firebasestorage.googleapis.com/v0/b/ez-cs-f7e97.appspot.com/o/MAPS%2Fdust2%2Flogo.png?alt=media&token=102190cb-5c9a-4c51-aefb-bcedf17f6ddb",
-                    wallpaper = "https://firebasestorage.googleapis.com/v0/b/ez-cs-f7e97.appspot.com/o/MAPS%2Fdust2%2Fwallpaper.png?alt=media&token=4477240b-c7af-4baf-a7f6-5de44fa8c2e0"
-                ),
-                MapHolder(
-                    id = "mirage",
-                    name = "Mirage",
-                    logo = "https://firebasestorage.googleapis.com/v0/b/ez-cs-f7e97.appspot.com/o/MAPS%2Fmirage%2Flogo.png?alt=media&token=fb05ab64-6970-40ff-8306-0da7c72ce836",
-                    wallpaper = "https://firebasestorage.googleapis.com/v0/b/ez-cs-f7e97.appspot.com/o/MAPS%2Fmirage%2Fwallpaper.png?alt=media&token=3feffd60-9d20-44c4-8b0a-9cf162e1e5da"
-                ),
-                MapHolder(
-                    id = "inferno",
-                    name = "Inferno",
-                    logo = "https://firebasestorage.googleapis.com/v0/b/ez-cs-f7e97.appspot.com/o/MAPS%2Finferno%2Flogo.png?alt=media&token=5885b076-ea2c-46c3-abb8-c7d63a18ce3f",
-                    wallpaper = "https://firebasestorage.googleapis.com/v0/b/ez-cs-f7e97.appspot.com/o/MAPS%2Finferno%2Fwallpaper.png?alt=media&token=26cddd13-9ef4-4bda-b7b8-aa2fbeccf11c"
-                ),
-            )
-        )
-    )
+    private var cs = CoroutineScope(Dispatchers.Main)
+    private val firestoreProvider by inject<FirestoreProvider>()
+    private val storageProvider by inject<StorageProvider>()
+    override var state: ViewState<List<MapHolder>> by mutableStateOf(ViewState(title = "Maps", item = listOf()))
 
     fun navigateToMapHolderAdd() {
         router.navigateTo(NavigationTargets.MapHolderAdd)
@@ -40,5 +23,32 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
 
     fun navigateToMapHolderEdit(mapId: String) {
         router.navigateTo(NavigationTargets.MapHolderEdit(mapId))
+    }
+
+    private fun initState() = cs.launch {
+        showLoading()
+        val maps = withContext(Dispatchers.IO) {
+            firestoreProvider.getCollectionItems(FirestoreCollections.MAPS.name, MapHolder::class.java)
+                .map { mapHolder ->
+                    mapHolder.copy(
+                        logo = storageProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
+                        wallpaper = storageProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
+                    )
+                }.toList()
+        }
+        setItemState(maps)
+        showData()
+    }
+
+    override fun onViewCreate() {
+        super.onViewCreate()
+        cs = CoroutineScope(Dispatchers.Main)
+        initState()
+    }
+
+    override fun onViewDestroy() {
+        super.onViewDestroy()
+        setItemState(listOf())
+        cs.cancel()
     }
 }

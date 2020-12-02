@@ -30,28 +30,30 @@ fun ImageUrl(
 ) {
     val (imageAsset, setImageAsset) = remember { mutableStateOf<ImageAsset?>(null) }
     val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
-    val scope = CoroutineScope(Dispatchers.Main)
+    val scope = rememberCoroutineScope()
+    var job by remember { mutableStateOf<Job?>(null) }
     onCommit {
         if (oldUrl != url) {
             setImageAsset(null)
             setOldUrl(url)
         }
     }
-    onDispose {
-        scope.cancel()
-    }
+    onDispose { job?.cancel() }
     if (imageAsset == null) {
         when {
             url.isValidURL() -> {
-                scope.launch {
+                job?.cancel()
+                job = scope.launch {
                     val asset = withContext(Dispatchers.IO) {
                         Image.makeFromEncoded(BufferedInputStream(URL(url).openStream()).readAllBytes()).asImageAsset()
                     }
                     setImageAsset(asset)
                 }
+
             }
             url.isValidPathToFile() -> {
-                scope.launch {
+                job?.cancel()
+                job = scope.launch {
                     val asset = withContext(Dispatchers.IO) { externalImageResource(url) }
                     setImageAsset(asset)
                 }

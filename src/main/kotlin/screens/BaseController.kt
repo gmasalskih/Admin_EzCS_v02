@@ -22,6 +22,14 @@ abstract class BaseController<I> : KoinComponent {
     fun isNavigableBack() = router.isNavigableBack()
     fun back() = router.back()
 
+    protected fun showLoading(){
+        setViewState(state.copy(typeScreenState = TypeScreenState.Loading))
+    }
+
+    protected fun showData(){
+        setViewState(state.copy(typeScreenState = TypeScreenState.Data))
+    }
+
     open fun onViewCreate() {/* STUB */
     }
 

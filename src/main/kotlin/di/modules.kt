@@ -7,6 +7,7 @@ import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
 import providers.firebase.FirebaseAppProvider
+import providers.firebase.FirestoreProvider
 import providers.firebase.StorageProvider
 import router.NavigationTargets
 import router.Router
@@ -42,6 +43,7 @@ val fbModules = module {
     }
     single<StorageClient> { StorageClient.getInstance(get()) }
     single<StorageProvider> { StorageProvider(get(), BUCKET_NAME) }
+    single<FirestoreProvider> { FirestoreProvider(get()) }
 }
 val appModule = module {
     single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
