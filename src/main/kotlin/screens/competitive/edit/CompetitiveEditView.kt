@@ -15,7 +15,7 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
     override val controller by inject<CompetitiveEditController>()
 
     init {
-        controller.setId(id)
+//        controller.setId(id)
     }
 
     @Composable
@@ -33,7 +33,7 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Rank ID",
                     )
                     //Rank name

@@ -18,7 +18,7 @@ class CompetitiveAddController : BaseController<Competitive>() {
         state = ViewState(title = "Add new competitive rank", item = Competitive())
     }
 
-    fun onIdChange(id: String) = setViewState(state.copy(item = state.item.copy(id = id)))
+
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 

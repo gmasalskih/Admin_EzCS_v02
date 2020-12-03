@@ -1,4 +1,4 @@
-package screens.map_points.add
+package screens.map_point.add
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
@@ -12,11 +12,11 @@ import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
 
-class MapPointsAddView : BaseView<MapPointsAddController>() {
-    override val controller by inject<MapPointsAddController>()
+class MapPointAddView : BaseView<MapPointAddController>() {
+    override val controller by inject<MapPointAddController>()
 
     @Composable
-    override fun setContent(controller: MapPointsAddController) {
+    override fun setContent(controller: MapPointAddController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -44,7 +44,7 @@ class MapPointsAddView : BaseView<MapPointsAddController>() {
                     grenadeTypeSelected = controller.getViewState().item.grenadeType
                 )
                 CheckboxGroupTickrateTypes(
-                    listTickrateTypes = controller.getViewState().item.tickRate,
+                    listTickrateTypes = controller.getViewState().item.tickrateTypes,
                     onTickrateTypeClick = controller::onTickrateChange
                 )
                 Row(

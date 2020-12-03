@@ -13,14 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
-import data.enums.Team
+import data.types.TeamType
 import ui.*
 
 @Composable
 fun CardWeapon(
     name: String,
     image: String,
-    teams: List<Team>,
+    teamTypes: List<TeamType>,
     modifier: Modifier = Modifier,
     progressIndicatorColor: Color = orangeAccent,
     onClick: () -> Unit
@@ -39,13 +39,13 @@ fun CardWeapon(
                 modifier = Modifier.align(alignment = Alignment.TopEnd).padding(5.dp),
                 horizontalArrangement = spacedBy5dp
             ) {
-                if (teams.contains(Team.T)){
+                if (teamTypes.contains(TeamType.T)){
                     Image(
                         asset = imageResource("assets/T_logo.png"),
                         modifier = Modifier.size(10.dp)
                     )
                 }
-                if (teams.contains(Team.CT)){
+                if (teamTypes.contains(TeamType.CT)){
                     Image(
                         asset = imageResource("assets/CT_logo.png"),
                         modifier = Modifier.size(10.dp)

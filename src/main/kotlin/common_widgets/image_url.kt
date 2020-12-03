@@ -20,6 +20,42 @@ import utils.isValidURL
 import java.io.BufferedInputStream
 import java.net.URL
 
+private class ImageLoader {
+    private val errAsset = externalImageResource("src/main/resources/icons/icon_err.png")
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    suspend fun loadImage(url: String) = when {
+        url.isValidURL() -> {
+
+            try {
+                withContext(Dispatchers.IO) {
+                    URL(url).openStream().use { inputStream ->
+                        BufferedInputStream(inputStream).use { bufferedInputStream ->
+                            println("ImageLoader")
+                            Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageAsset()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                println("ImageLoader - ${e.message}")
+                errAsset
+            }
+        }
+        url.isValidPathToFile() -> {
+            try {
+                withContext(Dispatchers.IO) { externalImageResource(url) }
+            } catch (e: Exception) {
+                println("ImageLoader - ${e.message}")
+                errAsset
+            }
+        }
+        else -> {
+            println("ImageLoader - url is:$url")
+            errAsset
+        }
+    }
+}
+
 @Composable
 fun ImageUrl(
     url: String,
@@ -28,36 +64,24 @@ fun ImageUrl(
     colorFilter: ColorFilter? = null,
     progressIndicatorColor: Color = dark,
 ) {
-    val (imageAsset, setImageAsset) = remember { mutableStateOf<ImageAsset?>(null) }
-    val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
+    val (imageAsset, setImageAsset) = remember(url) { mutableStateOf<ImageAsset?>(null) }
+//    val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
     val scope = rememberCoroutineScope()
     var job by remember { mutableStateOf<Job?>(null) }
     onCommit {
-        if (oldUrl != url) {
-            setImageAsset(null)
-            setOldUrl(url)
-        }
+//        if (oldUrl != url) {
+//            setImageAsset(null)
+//            setOldUrl(url)
+//        }
     }
-    onDispose { job?.cancel() }
+    onDispose {
+        job?.cancel()
+        job = null
+    }
     if (imageAsset == null) {
-        when {
-            url.isValidURL() -> {
-                job?.cancel()
-                job = scope.launch {
-                    val asset = withContext(Dispatchers.IO) {
-                        Image.makeFromEncoded(BufferedInputStream(URL(url).openStream()).readAllBytes()).asImageAsset()
-                    }
-                    setImageAsset(asset)
-                }
-
-            }
-            url.isValidPathToFile() -> {
-                job?.cancel()
-                job = scope.launch {
-                    val asset = withContext(Dispatchers.IO) { externalImageResource(url) }
-                    setImageAsset(asset)
-                }
-            }
+        job?.cancel()
+        job = scope.launch {
+            setImageAsset(ImageLoader().loadImage(url))
         }
     }
     Box(

@@ -13,7 +13,6 @@ class MapHolderAddController : BaseController<MapHolder>() {
         state = ViewState(title = "Add Map", item = MapHolder())
     }
 
-    fun onIdChange(id: String) = setItemState(state.item.copy(id = id))
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return

@@ -1,4 +1,4 @@
-package screens.weapons.add
+package screens.weapon.add
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.Box
@@ -15,11 +15,11 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.*
 
-class WeaponsAddView : BaseView<WeaponsAddController>() {
-    override val controller by inject<WeaponsAddController>()
+class WeaponAddView : BaseView<WeaponAddController>() {
+    override val controller by inject<WeaponAddController>()
 
     @Composable
-    override fun setContent(controller: WeaponsAddController) {
+    override fun setContent(controller: WeaponAddController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -31,9 +31,8 @@ class WeaponsAddView : BaseView<WeaponsAddController>() {
                     horizontalArrangement = spacedBy20dp
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Enter weapon ID",
-                        onTextChanged = controller::onIdChange
                     )
                     TextFieldApp(
                         value = controller.getViewState().item.name,

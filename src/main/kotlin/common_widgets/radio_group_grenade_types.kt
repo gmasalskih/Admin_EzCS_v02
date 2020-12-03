@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import data.enums.GrenadeTypes
+import data.types.GrenadeType
 import ui.fontSize20sp
 import ui.greyAccent
 import ui.spacedBy10dp
@@ -14,8 +14,8 @@ import ui.verdanaRegular
 @Composable
 fun RadioGroupGrenadeTypes(
     modifier: Modifier = Modifier,
-    onTypeSelected: (GrenadeTypes) -> Unit,
-    grenadeTypeSelected: GrenadeTypes = GrenadeTypes.SMOKE
+    onTypeSelected: (GrenadeType) -> Unit,
+    grenadeTypeSelected: GrenadeType = GrenadeType.SMOKE
 ) {
     Column(
         modifier = Modifier.then(modifier),
@@ -32,23 +32,23 @@ fun RadioGroupGrenadeTypes(
         ) {
             RadioButtonLabel(
                 label = "Smoke",
-                isSelected = grenadeTypeSelected === GrenadeTypes.SMOKE ,
+                isSelected = grenadeTypeSelected === GrenadeType.SMOKE ,
                 onClick = {
-                    onTypeSelected(GrenadeTypes.SMOKE)
+                    onTypeSelected(GrenadeType.SMOKE)
                 }
             )
             RadioButtonLabel(
                 label = "Molotov",
-                isSelected = grenadeTypeSelected === GrenadeTypes.MOLOTOV,
+                isSelected = grenadeTypeSelected === GrenadeType.MOLOTOV,
                 onClick = {
-                    onTypeSelected(GrenadeTypes.MOLOTOV)
+                    onTypeSelected(GrenadeType.MOLOTOV)
                 }
             )
             RadioButtonLabel(
                 label = "Flash",
-                isSelected = grenadeTypeSelected === GrenadeTypes.FLASH,
+                isSelected = grenadeTypeSelected === GrenadeType.FLASH,
                 onClick = {
-                    onTypeSelected(GrenadeTypes.FLASH)
+                    onTypeSelected(GrenadeType.FLASH)
                 }
             )
         }

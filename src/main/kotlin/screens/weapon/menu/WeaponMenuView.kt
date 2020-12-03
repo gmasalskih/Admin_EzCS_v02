@@ -1,4 +1,4 @@
-package screens.weapons.menu
+package screens.weapon.menu
 
 import androidx.compose.runtime.Composable
 import common_widgets.CardAdd
@@ -7,11 +7,11 @@ import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
 
-class WeaponsMenuView : BaseView<WeaponsMenuController>() {
-    override val controller by inject<WeaponsMenuController>()
+class WeaponMenuView : BaseView<WeaponMenuController>() {
+    override val controller by inject<WeaponMenuController>()
 
     @Composable
-    override fun setContent(controller: WeaponsMenuController) {
+    override fun setContent(controller: WeaponMenuController) {
         ScrollableRowAdd(
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "add weapon", onClick = controller::navigateToWeaponsAdd) },
@@ -19,8 +19,8 @@ class WeaponsMenuView : BaseView<WeaponsMenuController>() {
                 CardWeapon(
                     name = weapon.name,
                     image = weapon.image,
-                    teams = weapon.teams,
-                    onClick = { controller.navigateToWeaponsEdit(weapon.id) }
+                    teamTypes = weapon.teamTypes,
+                    onClick = { controller.navigateToWeaponsEdit(weapon.getId()) }
                 )
             }
         )

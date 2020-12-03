@@ -1,21 +1,21 @@
-package screens.map_points.edit
+package screens.map_point.edit
 
 import androidx.compose.runtime.*
-import data.enums.GrenadeTypes
-import data.enums.TickRate
+import data.types.GrenadeType
+import data.types.TickrateType
 import data.pojo.MapPoint
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class MapPointsEditController : BaseController<MapPoint>() {
+class MapPointEditController : BaseController<MapPoint>() {
     override var state: ViewState<MapPoint> by mutableStateOf(
         ViewState(
             title = "New map point", item = MapPoint(
                 mapId = "id_palas_to_under_palas",
                 name = "palas_to_under_palas",
-                grenadeType = GrenadeTypes.SMOKE,
-                tickRate = listOf(TickRate.TICKRATE_64),
+                grenadeType = GrenadeType.SMOKE,
+                tickrateTypes = listOf(TickrateType.TICKRATE_64),
                 previewStart = "D:/EzCS/map_points/palas_to_under_palas_start.png",
                 previewEnd = "D:/EzCS/map_points/palas_to_under_palas_end.png",
                 contentVideos = listOf(
@@ -31,12 +31,12 @@ class MapPointsEditController : BaseController<MapPoint>() {
     )
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
-    fun onGrenadeTypeChange(grenadeType: GrenadeTypes) = setItemState(state.item.copy(grenadeType = grenadeType))
-    fun onTickrateChange(tickrate: TickRate) {
+    fun onGrenadeTypeChange(grenadeType: GrenadeType) = setItemState(state.item.copy(grenadeType = grenadeType))
+    fun onTickrateChange(tickrate: TickrateType) {
         setItemState(
             state.item.copy(
-                tickRate = if (state.item.tickRate.contains(tickrate)) state.item.tickRate.filter { it != tickrate }
-                else state.item.tickRate + listOf(tickrate)
+                tickrateTypes = if (state.item.tickrateTypes.contains(tickrate)) state.item.tickrateTypes.filter { it != tickrate }
+                else state.item.tickrateTypes + listOf(tickrate)
             )
         )
     }

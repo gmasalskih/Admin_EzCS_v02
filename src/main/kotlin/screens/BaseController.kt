@@ -1,6 +1,6 @@
 package screens
 
-import androidx.compose.runtime.*
+import data.types.StateType
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import router.Router
@@ -23,11 +23,11 @@ abstract class BaseController<I> : KoinComponent {
     fun back() = router.back()
 
     protected fun showLoading(){
-        setViewState(state.copy(typeScreenState = TypeScreenState.Loading))
+        setViewState(state.copy(stateType = StateType.Loading))
     }
 
     protected fun showData(){
-        setViewState(state.copy(typeScreenState = TypeScreenState.Data))
+        setViewState(state.copy(stateType = StateType.Data))
     }
 
     open fun onViewCreate() {/* STUB */

@@ -9,8 +9,6 @@ import utils.fileChooser
 class DangerZoneEditController : BaseController<DangerZone>() {
     override var state: ViewState<DangerZone> by mutableStateOf(ViewState(title = "Edit rank", item = DangerZone()))
 
-    fun setId(id: String) = setItemState(state.item.copy(id = id))
-
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 
     fun onLogoChange() {

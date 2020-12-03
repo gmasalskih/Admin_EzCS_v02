@@ -9,8 +9,6 @@ import utils.fileChooser
 class CompetitiveEditController : BaseController<Competitive>() {
     override var state: ViewState<Competitive> by mutableStateOf(ViewState(title = "Edit rank", item = Competitive()))
 
-    fun setId(id: String) = setItemState(state.item.copy(id = id))
-
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 
     fun onLogoChange() {

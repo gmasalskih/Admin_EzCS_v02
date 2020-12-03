@@ -2,13 +2,12 @@ package di
 
 import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.StorageClient
-import utils.BUCKET_NAME
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
+import providers.dropbox.DropboxProvider
 import providers.firebase.FirebaseAppProvider
 import providers.firebase.FirestoreProvider
-import providers.firebase.StorageProvider
 import router.NavigationTargets
 import router.Router
 import screens.competitive.add.CompetitiveAddController
@@ -17,9 +16,9 @@ import screens.competitive.menu.CompetitiveMenuController
 import screens.danger_zone.add.DangerZoneAddController
 import screens.danger_zone.edit.DangerZoneEditController
 import screens.danger_zone.menu.DangerZoneMenuController
-import screens.map_points.menu.MapPointsMenuController
-import screens.map_points.add.MapPointsAddController
-import screens.map_points.edit.MapPointsEditController
+import screens.map_point.menu.MapPointMenuController
+import screens.map_point.add.MapPointAddController
+import screens.map_point.edit.MapPointEditController
 import screens.map_holder.menu.MapHolderMenuController
 import screens.map_holder.menu.MapHolderMenuView
 import screens.map_holder.add.MapHolderAddController
@@ -27,12 +26,20 @@ import screens.map_holder.edit.MapHolderEditController
 import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
-import screens.weapons.add.WeaponsAddController
-import screens.weapons.edit.WeaponsEditController
-import screens.weapons.menu.WeaponsMenuController
+import screens.weapon.add.WeaponAddController
+import screens.weapon.edit.WeaponEditController
+import screens.weapon.menu.WeaponMenuController
 import screens.wingman.add.WingmanAddController
 import screens.wingman.edit.WingmanEditController
 import screens.wingman.menu.WingmanMenuController
+
+val appModule = module {
+    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
+}
+
+val dropboxModule = module {
+    single<DropboxProvider> { DropboxProvider() }
+}
 
 val fbModules = module {
     single<FirebaseApp> {
@@ -42,11 +49,7 @@ val fbModules = module {
         ).getApp()
     }
     single<StorageClient> { StorageClient.getInstance(get()) }
-    single<StorageProvider> { StorageProvider(get(), BUCKET_NAME) }
     single<FirestoreProvider> { FirestoreProvider(get()) }
-}
-val appModule = module {
-    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
 }
 
 val competitiveModule = module {
@@ -62,9 +65,9 @@ val dangerZoneModule = module {
 }
 
 val mapPointsModule = module {
-    single<MapPointsAddController> { MapPointsAddController() }
-    single<MapPointsEditController> { MapPointsEditController() }
-    single<MapPointsMenuController> { MapPointsMenuController() }
+    single<MapPointAddController> { MapPointAddController() }
+    single<MapPointEditController> { MapPointEditController() }
+    single<MapPointMenuController> { MapPointMenuController() }
 }
 
 val mapsModule = module {
@@ -80,9 +83,9 @@ val profileRankModule = module {
 }
 
 val weaponsModule = module {
-    single<WeaponsAddController> { WeaponsAddController() }
-    single<WeaponsEditController> { WeaponsEditController() }
-    single<WeaponsMenuController> { WeaponsMenuController() }
+    single<WeaponAddController> { WeaponAddController() }
+    single<WeaponEditController> { WeaponEditController() }
+    single<WeaponMenuController> { WeaponMenuController() }
 }
 
 val wingmanModule = module {

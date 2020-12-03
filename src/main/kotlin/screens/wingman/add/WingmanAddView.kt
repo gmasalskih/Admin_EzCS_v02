@@ -35,9 +35,8 @@ class WingmanAddView : BaseView<WingmanAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Enter rank ID",
-                        onTextChanged = controller::onIdChange
                     )
                     TextFieldApp(
                         value = controller.getViewState().item.name,

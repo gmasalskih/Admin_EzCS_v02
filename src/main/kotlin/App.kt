@@ -17,8 +17,9 @@ object App : KoinComponent {
     init {
         startKoin {
             modules(
-                fbModules,
                 appModule,
+                dropboxModule,
+                fbModules,
                 competitiveModule,
                 dangerZoneModule,
                 mapPointsModule,

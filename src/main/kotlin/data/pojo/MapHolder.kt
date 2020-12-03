@@ -1,17 +1,13 @@
 package data.pojo
 
-import data.Entity
-import data.enums.FirestoreCollections
+import data.types.EntityType
 
 data class MapHolder(
-    val collection: FirestoreCollections = FirestoreCollections.MAPS,
-    val id: String = "",
+    override val name: String = "",
+    override val entityType: EntityType = EntityType.MAP_HOLDER,
     @field:JvmField
     val isCompetitive: Boolean = true,
     val logo: String = "",
     val map: String = "",
-    val name: String = "",
     val wallpaper: String = "",
-) : Entity {
-    fun getContentsPath() = "${collection.name}/$id/"
-}
+) : Entity

@@ -29,9 +29,8 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 ) {
                     //Map ID
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Enter map ID",
-                        onTextChanged = controller::onIdChange
                     )
                     //Map name
                     TextFieldApp(

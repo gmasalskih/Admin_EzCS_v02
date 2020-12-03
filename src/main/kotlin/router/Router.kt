@@ -8,18 +8,18 @@ import screens.competitive.menu.CompetitiveMenuView
 import screens.danger_zone.add.DangerZoneAddView
 import screens.danger_zone.edit.DangerZoneEditView
 import screens.danger_zone.menu.DangerZoneMenuView
-import screens.map_points.add.MapPointsAddView
-import screens.map_points.edit.MapPointsEditView
-import screens.map_points.menu.MapPointsMenuView
+import screens.map_point.add.MapPointAddView
+import screens.map_point.edit.MapPointEditView
+import screens.map_point.menu.MapPointMenuView
 import screens.map_holder.menu.MapHolderMenuView
 import screens.map_holder.add.MapHolderAddView
 import screens.map_holder.edit.MapHolderEditView
 import screens.profile_rank.add.ProfileRankAddView
 import screens.profile_rank.edit.ProfileRankEditView
 import screens.profile_rank.menu.ProfileRankMenuView
-import screens.weapons.add.WeaponsAddView
-import screens.weapons.edit.WeaponsEditView
-import screens.weapons.menu.WeaponsMenuView
+import screens.weapon.add.WeaponAddView
+import screens.weapon.edit.WeaponEditView
+import screens.weapon.menu.WeaponMenuView
 import screens.wingman.add.WingmanAddView
 import screens.wingman.edit.WingmanEditView
 import screens.wingman.menu.WingmanMenuView
@@ -66,9 +66,9 @@ class Router(entryPoint: Pair<NavigationTargets, BaseView<*>>) {
             is NavigationTargets.DangerZoneMenu -> DangerZoneMenuView()
 
             //MapPoints
-            is NavigationTargets.MapPointsAdd -> MapPointsAddView()
-            is NavigationTargets.MapPointsEdit -> MapPointsEditView(target.id)
-            is NavigationTargets.MapPointsMenu -> MapPointsMenuView()
+            is NavigationTargets.MapPointsAdd -> MapPointAddView()
+            is NavigationTargets.MapPointsEdit -> MapPointEditView(target.id)
+            is NavigationTargets.MapPointsMenu -> MapPointMenuView()
 
             //Maps
             is NavigationTargets.MapHolderAdd -> MapHolderAddView()
@@ -81,9 +81,9 @@ class Router(entryPoint: Pair<NavigationTargets, BaseView<*>>) {
             is NavigationTargets.ProfileRankMenu -> ProfileRankMenuView()
 
             //Weapons
-            is NavigationTargets.WeaponsAdd -> WeaponsAddView()
-            is NavigationTargets.WeaponsEdit -> WeaponsEditView(target.id)
-            is NavigationTargets.WeaponsMenu -> WeaponsMenuView()
+            is NavigationTargets.WeaponsAdd -> WeaponAddView()
+            is NavigationTargets.WeaponsEdit -> WeaponEditView(target.id)
+            is NavigationTargets.WeaponsMenu -> WeaponMenuView()
 
             //Wingman
             is NavigationTargets.WingmanAdd -> WingmanAddView()

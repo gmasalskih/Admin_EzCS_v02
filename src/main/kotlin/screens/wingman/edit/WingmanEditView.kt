@@ -20,7 +20,7 @@ class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
     override val controller by inject<WingmanEditController>()
 
     init {
-        controller.setId(id)
+//        controller.setId(id)
     }
 
     @Composable
@@ -38,7 +38,7 @@ class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Rank ID",
                     )
                     //Rank name

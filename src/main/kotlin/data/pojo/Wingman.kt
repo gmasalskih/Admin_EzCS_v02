@@ -1,13 +1,9 @@
 package data.pojo
 
-import data.Entity
-import data.enums.FirestoreCollections
+import data.types.EntityType
 
 data class Wingman(
-    val collection: FirestoreCollections = FirestoreCollections.WINGMAN,
-    val id: String = "",
+    override val name: String = "",
+    override val entityType: EntityType = EntityType.WINGMAN,
     val logo: String = "",
-    val name: String = "",
-) : Entity {
-    fun getContentsPath() = "${collection.name}/$id/"
-}
+) : Entity

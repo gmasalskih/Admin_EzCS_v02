@@ -1,13 +1,10 @@
 package data.pojo
 
-import data.Entity
-import data.enums.FirestoreCollections
+import data.types.EntityType
+import utils.toValidName
 
 data class Competitive(
-    val id: String = "",
-    val name: String = "",
+    override val name: String = "",
+    override val entityType: EntityType = EntityType.COMPETITIVE,
     val logo: String = "",
-    val collection: FirestoreCollections = FirestoreCollections.COMPETITIVE,
-) : Entity {
-    fun getContentsPath() = "${collection.name}/$id/"
-}
+) : Entity

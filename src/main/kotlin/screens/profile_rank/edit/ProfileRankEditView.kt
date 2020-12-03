@@ -20,7 +20,7 @@ class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>(
     override val controller by inject<ProfileRankEditController>()
 
     init {
-        controller.setId(id)
+//        controller.setId(id)
     }
 
     @Composable
@@ -38,7 +38,7 @@ class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>(
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Rank ID",
                         onTextChanged = {}
                     )

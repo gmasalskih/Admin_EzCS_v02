@@ -18,7 +18,6 @@ class ProfileRankAddController : BaseController<ProfileRank>() {
         state = ViewState(title = "Add new profile rank", item = ProfileRank())
     }
 
-    fun onIdChange(id: String) = setItemState(state.item.copy(id = id))
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
     fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp))
     fun onLogoAdd() {

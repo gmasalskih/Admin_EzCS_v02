@@ -1,21 +1,17 @@
 package data.pojo
 
-import data.Entity
-import data.enums.FirestoreCollections
-import data.enums.GrenadeTypes
-import data.enums.TickRate
+import data.types.EntityType
+import data.types.GrenadeType
+import data.types.TickrateType
 
 data class MapPoint(
-    val collection: FirestoreCollections = FirestoreCollections.MAP_POINTS,
+    override val name: String = "",
+    override val entityType: EntityType = EntityType.MAP_POINT,
     val contentImages: List<String> = listOf(),
     val contentVideos: List<String> = listOf(),
-    val grenadeType: GrenadeTypes = GrenadeTypes.UNKNOWN,
-    val id: String = "",
+    val grenadeType: GrenadeType = GrenadeType.SMOKE,
     val mapId: String = "",
-    val name: String = "",
     val previewEnd: String = "",
     val previewStart: String = "",
-    val tickRate: List<TickRate> = listOf(),
-) : Entity {
-    fun getContentsPath() = "${collection.name}/$id/"
-}
+    val tickrateTypes: List<TickrateType> = listOf(),
+) : Entity

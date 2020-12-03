@@ -14,8 +14,6 @@ class ProfileRankEditController : BaseController<ProfileRank>() {
         )
     )
 
-    fun setId(id: String) = setItemState(state.item.copy(id = id))
-
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 
     fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp))

@@ -1,7 +1,9 @@
 package screens
 
+import data.types.StateType
+
 data class ViewState<I>(
-    val typeScreenState: TypeScreenState = TypeScreenState.Data,
+    val stateType: StateType = StateType.Data,
     val title: String = "",
     val item: I
 )

@@ -22,7 +22,7 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
                 CardRank(
                     pathToImage = dangerZone.logo,
                     name = dangerZone.name,
-                    onClick = { controller.navigateToDangerZoneEdit(dangerZone.id) }
+                    onClick = { controller.navigateToDangerZoneEdit(dangerZone.getId()) }
                 )
             }
         )

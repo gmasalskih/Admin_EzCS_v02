@@ -24,7 +24,6 @@ class DangerZoneAddController : BaseController<DangerZone>() {
     }
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
-    fun onIdChange(id: String) = setItemState(state.item.copy(id = id))
     fun onSubmit() {
 //        TODO("Not yet implemented")
     }

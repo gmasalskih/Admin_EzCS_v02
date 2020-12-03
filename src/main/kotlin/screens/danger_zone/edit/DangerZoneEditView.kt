@@ -20,7 +20,7 @@ class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() 
     override val controller by inject<DangerZoneEditController>()
 
     init {
-        controller.setId(id)
+//        controller.setId(id)
     }
 
     @Composable
@@ -38,7 +38,7 @@ class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() 
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Rank ID",
                     )
                     //Rank name

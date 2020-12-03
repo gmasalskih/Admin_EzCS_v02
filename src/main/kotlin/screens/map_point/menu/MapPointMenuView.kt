@@ -1,4 +1,4 @@
-package screens.map_points.menu
+package screens.map_point.menu
 
 import androidx.compose.runtime.Composable
 import common_widgets.CardAdd
@@ -7,11 +7,11 @@ import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
 
-class MapPointsMenuView : BaseView<MapPointsMenuController>() {
-    override val controller by inject<MapPointsMenuController>()
+class MapPointMenuView : BaseView<MapPointMenuController>() {
+    override val controller by inject<MapPointMenuController>()
 
     @Composable
-    override fun setContent(controller: MapPointsMenuController) {
+    override fun setContent(controller: MapPointMenuController) {
         ScrollableRowAdd(
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "add map point", onClick = controller::navigateToMapPointsAdd) },
@@ -21,7 +21,7 @@ class MapPointsMenuView : BaseView<MapPointsMenuController>() {
                     logo = mapHolder.logo,
                     name = mapHolder.name,
                     isCompetitive = mapHolder.isCompetitive,
-                    onClick = { controller.navigateToMapPointsEdit(mapHolder.id) }
+                    onClick = { controller.navigateToMapPointsEdit(mapHolder.getId()) }
                 )
             }
         )

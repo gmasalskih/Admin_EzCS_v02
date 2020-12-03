@@ -1,12 +1,12 @@
 package screens.map_holder.menu
 
 import androidx.compose.runtime.*
-import data.enums.FirestoreCollections
+import data.types.EntityType
 import data.pojo.MapHolder
 import kotlinx.coroutines.*
 import org.koin.core.inject
+import providers.dropbox.DropboxProvider
 import providers.firebase.FirestoreProvider
-import providers.firebase.StorageProvider
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState
@@ -14,7 +14,7 @@ import screens.ViewState
 class MapHolderMenuController : BaseController<List<MapHolder>>() {
     private var cs = CoroutineScope(Dispatchers.Main)
     private val firestoreProvider by inject<FirestoreProvider>()
-    private val storageProvider by inject<StorageProvider>()
+    private val dropboxProvider by inject<DropboxProvider>()
     override var state: ViewState<List<MapHolder>> by mutableStateOf(ViewState(title = "Maps", item = listOf()))
 
     fun navigateToMapHolderAdd() {
@@ -28,13 +28,12 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
     private fun initState() = cs.launch {
         showLoading()
         val maps = withContext(Dispatchers.IO) {
-            firestoreProvider.getCollectionItems(FirestoreCollections.MAPS.name, MapHolder::class.java)
-                .map { mapHolder ->
-                    mapHolder.copy(
-                        logo = storageProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
-                        wallpaper = storageProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
-                    )
-                }.toList()
+            firestoreProvider.getCollectionItems(EntityType.MAP_HOLDER.name, MapHolder::class.java).map { mapHolder ->
+                mapHolder.copy(
+                    logo = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
+                    wallpaper = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
+                )
+            }.toList()
         }
         setItemState(maps)
         showData()

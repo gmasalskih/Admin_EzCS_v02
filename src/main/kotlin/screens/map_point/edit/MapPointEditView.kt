@@ -1,4 +1,4 @@
-package screens.map_points.edit
+package screens.map_point.edit
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.Box
@@ -14,11 +14,11 @@ import screens.BaseView
 import ui.orangeAccent
 import ui.spacedBy20dp
 
-class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
-    override val controller by inject<MapPointsEditController>()
+class MapPointEditView(val id: String) : BaseView<MapPointEditController>() {
+    override val controller by inject<MapPointEditController>()
 
     @Composable
-    override fun setContent(controller: MapPointsEditController) {
+    override fun setContent(controller: MapPointEditController) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -46,7 +46,7 @@ class MapPointsEditView(val id: String) : BaseView<MapPointsEditController>() {
                     grenadeTypeSelected = controller.getViewState().item.grenadeType
                 )
                 CheckboxGroupTickrateTypes(
-                    listTickrateTypes = controller.getViewState().item.tickRate,
+                    listTickrateTypes = controller.getViewState().item.tickrateTypes,
                     onTickrateTypeClick = controller::onTickrateChange
                 )
                 Row(

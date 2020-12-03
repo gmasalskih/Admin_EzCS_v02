@@ -1,4 +1,4 @@
-package screens.weapons.add
+package screens.weapon.add
 
 import androidx.compose.runtime.*
 import data.pojo.Weapon
@@ -6,11 +6,9 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class WeaponsAddController : BaseController<Weapon>() {
+class WeaponAddController : BaseController<Weapon>() {
     override var state: ViewState<Weapon> by mutableStateOf(ViewState(title = "Add new weapon", item = Weapon()))
     var configFile: String by mutableStateOf("")
-
-    fun onIdChange(id: String) = setItemState(state.item.copy(id = id))
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 

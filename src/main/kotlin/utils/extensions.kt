@@ -7,7 +7,8 @@ import java.io.FileInputStream
 import java.net.URL
 import org.jetbrains.skija.Image as ImageLoader
 
-fun String.toValidId() = this.replace("[^a-zA-Z0-9_]".toRegex(), "")
+fun String.toValidId() = this.replace("[^a-zA-Z0-9_\\s]".toRegex(), "")
+    .replace("[\\s]+".toRegex(), "_")
     .replace("[_]+".toRegex(), "_")
     .toLowerCase()
 

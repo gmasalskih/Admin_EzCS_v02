@@ -1,14 +1,14 @@
-package screens.map_points.add
+package screens.map_point.add
 
 import androidx.compose.runtime.*
-import data.enums.GrenadeTypes
-import data.enums.TickRate
+import data.types.GrenadeType
+import data.types.TickrateType
 import data.pojo.MapPoint
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class MapPointsAddController : BaseController<MapPoint>() {
+class MapPointAddController : BaseController<MapPoint>() {
     override var state: ViewState<MapPoint> by mutableStateOf(ViewState(title = "New map point", item = MapPoint()))
 
     fun onClear() {
@@ -17,11 +17,11 @@ class MapPointsAddController : BaseController<MapPoint>() {
 
     fun onMapIdChange(mapId: String) = setItemState(state.item.copy(mapId = mapId))
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
-    fun onGrenadeTypeChange(grenadeType: GrenadeTypes) = setItemState(state.item.copy(grenadeType = grenadeType))
-    fun onTickrateChange(tickrate: TickRate) =
+    fun onGrenadeTypeChange(grenadeType: GrenadeType) = setItemState(state.item.copy(grenadeType = grenadeType))
+    fun onTickrateChange(tickrate: TickrateType) =
         setItemState(state.item.copy(
-            tickRate = if (state.item.tickRate.contains(tickrate)) state.item.tickRate.filter { it != tickrate }
-            else state.item.tickRate + listOf(tickrate)
+            tickrateTypes = if (state.item.tickrateTypes.contains(tickrate)) state.item.tickrateTypes.filter { it != tickrate }
+            else state.item.tickrateTypes + listOf(tickrate)
         ))
 
     fun onPreviewStartChange() {

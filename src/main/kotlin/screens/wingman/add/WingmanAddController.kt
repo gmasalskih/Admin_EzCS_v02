@@ -10,8 +10,6 @@ class WingmanAddController : BaseController<Wingman>() {
 
     override var state: ViewState<Wingman> by mutableStateOf(ViewState(title = "Add new wingman rank", item = Wingman()))
 
-    fun onIdChange(id: String) = setItemState(state.item.copy(id = id))
-
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 
     fun onLogoAdd() {

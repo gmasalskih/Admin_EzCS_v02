@@ -14,7 +14,7 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
     override val controller by inject<MapHolderEditController>()
 
     init {
-        controller.setId(id)
+//        controller.setId(id)
     }
 
     @Composable
@@ -32,7 +32,7 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                 ) {
                     //Map ID
                     TextFieldApp(
-                        value = controller.getViewState().item.id,
+                        value = controller.getViewState().item.getId(),
                         label = "Map ID",
                     )
                     //Map name

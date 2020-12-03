@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import data.enums.TickRate
+import data.types.TickrateType
 import ui.fontSize20sp
 import ui.greyAccent
 import ui.spacedBy10dp
@@ -14,8 +14,8 @@ import ui.verdanaRegular
 @Composable
 fun CheckboxGroupTickrateTypes(
     modifier: Modifier = Modifier,
-    listTickrateTypes: List<TickRate>,
-    onTickrateTypeClick: (TickRate) -> Unit
+    listTickrateTypes: List<TickrateType>,
+    onTickrateTypeClick: (TickrateType) -> Unit
 ) {
     Column(
         modifier = Modifier.then(modifier),
@@ -32,13 +32,13 @@ fun CheckboxGroupTickrateTypes(
         ) {
             CheckboxLable(
                 label = "64",
-                checked = listTickrateTypes.contains(TickRate.TICKRATE_64),
-                onCheckedChange = { onTickrateTypeClick(TickRate.TICKRATE_64) }
+                checked = listTickrateTypes.contains(TickrateType.TICKRATE_64),
+                onCheckedChange = { onTickrateTypeClick(TickrateType.TICKRATE_64) }
             )
             CheckboxLable(
                 label = "128",
-                checked = listTickrateTypes.contains(TickRate.TICKRATE_128),
-                onCheckedChange = { onTickrateTypeClick(TickRate.TICKRATE_128) }
+                checked = listTickrateTypes.contains(TickrateType.TICKRATE_128),
+                onCheckedChange = { onTickrateTypeClick(TickrateType.TICKRATE_128) }
             )
         }
     }

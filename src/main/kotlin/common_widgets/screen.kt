@@ -8,10 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import screens.BaseView
-import screens.TypeScreenState
+import data.types.StateType
 import ui.*
 
 @Composable
@@ -28,8 +26,8 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable (
         //Content
         Box(modifier = Modifier.fillMaxSize()) {
             content()
-            when (val typeScreenState = viewComponent.controller.getViewState().typeScreenState) {
-                is TypeScreenState.Loading -> {
+            when (val typeScreenState = viewComponent.controller.getViewState().stateType) {
+                is StateType.Loading -> {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = Color.Black.copy(alpha = 0.4f),
@@ -50,7 +48,7 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable (
                     }
 
                 }
-                is TypeScreenState.Error -> {
+                is StateType.Error -> {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = Color.Black.copy(alpha = 0.4f),

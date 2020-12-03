@@ -1,13 +1,9 @@
 package data.pojo
 
-import data.Entity
-import data.enums.FirestoreCollections
+import data.types.EntityType
 
 data class DangerZone(
-    val id: String = "",
-    val name: String = "",
+    override val name: String = "",
+    override val entityType: EntityType = EntityType.DANGER_ZONE,
     val logo: String = "",
-    val collection: FirestoreCollections = FirestoreCollections.DANGER_ZONE,
-) : Entity {
-    fun getContentsPath() = "${collection.name}/$id/"
-}
+) : Entity

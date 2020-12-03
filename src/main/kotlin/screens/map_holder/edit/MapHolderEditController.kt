@@ -9,7 +9,6 @@ import utils.fileChooser
 class MapHolderEditController : BaseController<MapHolder>() {
     override var state: ViewState<MapHolder> by mutableStateOf(ViewState(title = "Edit map", item = MapHolder()))
 
-    fun setId(id: String) = setItemState(state.item.copy(id = id))
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
     fun onSubmit() {
 //        TODO("Not yet implemented")

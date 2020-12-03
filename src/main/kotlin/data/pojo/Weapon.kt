@@ -1,26 +1,20 @@
 package data.pojo
 
-import data.Entity
-import data.enums.FirestoreCollections
-import data.enums.Team
-import data.enums.WeaponTypes
+import data.types.EntityType
+import data.types.TeamType
+import data.types.WeaponType
 
 data class Weapon(
+    override val name: String = "",
+    override val entityType: EntityType = EntityType.WEAPON,
 
-    /** ID */
-    val id: String = "",
-
-    /** Имя */
-    val name: String = "",
-
-    /** Коллекция в фаербейсе */
-    val collection: FirestoreCollections = FirestoreCollections.WEAPONS,
+    val externalId:String = "",
 
     /** Тип оружия */
-    val weaponTypes: WeaponTypes = WeaponTypes.UNKNOWN,
+    val weaponType: WeaponType = WeaponType.PISTOL,
 
     /** Принадлежность команде */
-    val teams: List<Team> = listOf(),
+    val teamTypes: List<TeamType> = listOf(),
 
     /** Ссылка на лого */
     val image: String = "",
@@ -109,7 +103,4 @@ data class Weapon(
 
     /** Дополнительная погрешность, рассчитанная на пулю доп */
     val spreadAlt: Double = 0.0,
-
-    ) : Entity {
-    fun getContentsPath() = "${collection.name}/$id/"
-}
+) : Entity
