@@ -1,7 +1,7 @@
 package screens.profile_rank.edit
 
 import androidx.compose.runtime.*
-import data.pojo.ProfileRank
+import data.entitys.ProfileRank
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser

@@ -1,4 +1,4 @@
-package data.pojo
+package data.entitys
 
 import data.types.EntityType
 import data.types.GrenadeType

@@ -2,7 +2,7 @@ package screens.weapon.menu
 
 import androidx.compose.runtime.*
 import data.types.TeamType
-import data.pojo.Weapon
+import data.entitys.Weapon
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState

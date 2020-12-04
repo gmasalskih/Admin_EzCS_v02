@@ -1,7 +1,7 @@
 package screens.map_point.menu
 
 import androidx.compose.runtime.*
-import data.pojo.MapHolder
+import data.entitys.MapHolder
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState

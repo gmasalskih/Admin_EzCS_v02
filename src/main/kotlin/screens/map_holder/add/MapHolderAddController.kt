@@ -1,13 +1,19 @@
 package screens.map_holder.add
 
 import androidx.compose.runtime.*
-import data.pojo.MapHolder
+import data.entitys.MapHolder
+import kotlinx.coroutines.launch
+import org.koin.core.inject
+import providers.dropbox.DropboxProvider
+import providers.firebase.FirestoreProvider
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
 class MapHolderAddController : BaseController<MapHolder>() {
     override var state: ViewState<MapHolder> by mutableStateOf(ViewState(title = "Add Map", item = MapHolder()))
+    private val firestoreProvider by inject<FirestoreProvider>()
+    private val dropboxProvider by inject<DropboxProvider>()
 
     fun onClear() {
         state = ViewState(title = "Add Map", item = MapHolder())
@@ -30,8 +36,21 @@ class MapHolderAddController : BaseController<MapHolder>() {
     }
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
-    fun onSubmit() {
-//        TODO("Not yet implemented")
+    fun onSubmit() = cs.launch {
+        showLoading()
+        if (!state.item.isValid()) {
+            showError(Exception("The map holder have empty fields"))
+            return@launch
+        }
+        try {
+            dropboxProvider.uploadFile(state.item.logo, state.item.getContentsPath())
+            dropboxProvider.uploadFile(state.item.map, state.item.getContentsPath())
+            dropboxProvider.uploadFile(state.item.wallpaper, state.item.getContentsPath())
+            firestoreProvider.uploadEntity(state.item)
+            router.back()
+        } catch (e: Exception) {
+            showError(e)
+        }
     }
 
     override fun onViewCreate() {

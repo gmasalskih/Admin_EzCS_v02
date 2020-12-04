@@ -1,7 +1,7 @@
 package screens.danger_zone.add
 
 import androidx.compose.runtime.*
-import data.pojo.DangerZone
+import data.entitys.DangerZone
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser

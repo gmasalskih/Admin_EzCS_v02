@@ -1,7 +1,7 @@
 package screens.profile_rank.menu
 
 import androidx.compose.runtime.*
-import data.pojo.ProfileRank
+import data.entitys.ProfileRank
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState

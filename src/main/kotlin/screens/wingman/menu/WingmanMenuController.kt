@@ -1,7 +1,7 @@
 package screens.wingman.menu
 
 import androidx.compose.runtime.*
-import data.pojo.Wingman
+import data.entitys.Wingman
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState

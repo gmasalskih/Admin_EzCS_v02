@@ -1,7 +1,7 @@
 package screens.wingman.add
 
 import androidx.compose.runtime.*
-import data.pojo.Wingman
+import data.entitys.Wingman
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser

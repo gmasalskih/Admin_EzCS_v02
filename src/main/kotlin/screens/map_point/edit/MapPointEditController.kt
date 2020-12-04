@@ -3,7 +3,7 @@ package screens.map_point.edit
 import androidx.compose.runtime.*
 import data.types.GrenadeType
 import data.types.TickrateType
-import data.pojo.MapPoint
+import data.entitys.MapPoint
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser

@@ -1,7 +1,7 @@
 package screens.danger_zone.menu
 
 import androidx.compose.runtime.*
-import data.pojo.DangerZone
+import data.entitys.DangerZone
 import router.NavigationTargets
 import screens.BaseController
 import screens.ViewState

@@ -1,4 +1,4 @@
-package data.pojo
+package data.entitys
 
 import data.types.EntityType
 
@@ -10,4 +10,6 @@ data class MapHolder(
     val logo: String = "",
     val map: String = "",
     val wallpaper: String = "",
-) : Entity
+) : Entity {
+    fun isValid() = name.isNotBlank() && logo.isNotBlank() && map.isNotBlank() && wallpaper.isNotBlank()
+}

@@ -1,7 +1,7 @@
 package screens.map_holder.edit
 
 import androidx.compose.runtime.*
-import data.pojo.MapHolder
+import data.entitys.MapHolder
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser

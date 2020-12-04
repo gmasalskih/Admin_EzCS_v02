@@ -1,7 +1,7 @@
 package screens.competitive.add
 
 import androidx.compose.runtime.*
-import data.pojo.Competitive
+import data.entitys.Competitive
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser

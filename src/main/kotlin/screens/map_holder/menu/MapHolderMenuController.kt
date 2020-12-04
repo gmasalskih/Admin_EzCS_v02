@@ -2,7 +2,7 @@ package screens.map_holder.menu
 
 import androidx.compose.runtime.*
 import data.types.EntityType
-import data.pojo.MapHolder
+import data.entitys.MapHolder
 import kotlinx.coroutines.*
 import org.koin.core.inject
 import providers.dropbox.DropboxProvider
@@ -25,15 +25,20 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
     }
 
     private fun initState() = cs.launch {
-        val maps =
-            firestoreProvider.getCollectionItems(EntityType.MAP_HOLDER.name, MapHolder::class.java).map { mapHolder ->
-                mapHolder.copy(
-                    logo = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
-                    wallpaper = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
-                )
-            }.toList()
-        setItemState(maps)
-        showData()
+        try {
+            val maps =
+                firestoreProvider.getCollectionItems(EntityType.MAP_HOLDER.name, MapHolder::class.java)
+                    .map { mapHolder ->
+                        mapHolder.copy(
+                            logo = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
+                            wallpaper = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
+                        )
+                    }.toList()
+            setItemState(maps)
+            showData()
+        } catch (e: Exception) {
+            showError(e)
+        }
     }
 
     override fun onViewCreate() {

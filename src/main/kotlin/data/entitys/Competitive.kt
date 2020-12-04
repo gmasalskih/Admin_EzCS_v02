@@ -1,7 +1,6 @@
-package data.pojo
+package data.entitys
 
 import data.types.EntityType
-import utils.toValidName
 
 data class Competitive(
     override val name: String = "",

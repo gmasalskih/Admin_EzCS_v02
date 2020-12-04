@@ -17,22 +17,23 @@ abstract class BaseController<I> : KoinComponent {
 
     fun getViewState() = state
 
-    fun setItemState(item: I) {
+    protected fun setItemState(item: I) {
         state = state.copy(item = item)
     }
 
     fun isNavigableBack() = router.isNavigableBack()
+
     fun back() = router.back()
 
-    protected fun showLoading() {
+    fun showLoading() {
         state = state.copy(stateType = StateType.Loading)
     }
 
-    protected fun showData() {
+    fun showData() {
         state = state.copy(stateType = StateType.Data)
     }
 
-    protected fun showError(e: Exception) {
+    fun showError(e: Exception) {
         state = state.copy(stateType = StateType.Error(err = e))
     }
 

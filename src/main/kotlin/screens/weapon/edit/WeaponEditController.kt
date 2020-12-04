@@ -1,7 +1,7 @@
 package screens.weapon.edit
 
 import androidx.compose.runtime.*
-import data.pojo.Weapon
+import data.entitys.Weapon
 import screens.BaseController
 import screens.ViewState
 
