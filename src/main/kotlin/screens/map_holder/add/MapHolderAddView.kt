@@ -1,15 +1,14 @@
 package screens.map_holder.add
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
-import ui.greyAccent
-import ui.orangeAccent
-import ui.spacedBy20dp
+import ui.*
 
 class MapHolderAddView : BaseView<MapHolderAddController>() {
     override val controller by inject<MapHolderAddController>()
@@ -23,22 +22,20 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
                 verticalArrangement = spacedBy20dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    //Map ID
-                    TextFieldApp(
-                        value = controller.getViewState().item.getId(),
-                        label = "Enter map ID",
-                    )
-                    //Map name
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Enter map name",
-                        onTextChanged = controller::onNameChange
-                    )
-                }
+                Text(
+                    text = "Map ID: ${
+                        if (controller.getViewState().item.getId().isBlank()) "UNKNOWN"
+                        else controller.getViewState().item.getId()
+                    }",
+                    fontFamily = verdanaRegular,
+                    fontSize = fontSize14sp,
+                    color = greyAccent
+                )
+                TextFieldApp(
+                    value = controller.getViewState().item.name,
+                    label = "Enter map name",
+                    onTextChanged = controller::onNameChange
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = spacedBy20dp

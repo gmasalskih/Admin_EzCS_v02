@@ -20,39 +20,33 @@ import utils.isValidURL
 import java.io.BufferedInputStream
 import java.net.URL
 
-private class ImageLoader {
-    private val errAsset = externalImageResource("src/main/resources/icons/icon_err.png")
-
-    @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun loadImage(url: String) = when {
-        url.isValidURL() -> {
-
-            try {
-                withContext(Dispatchers.IO) {
-                    URL(url).openStream().use { inputStream ->
-                        BufferedInputStream(inputStream).use { bufferedInputStream ->
-                            println("ImageLoader")
-                            Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageAsset()
-                        }
+@Suppress("BlockingMethodInNonBlockingContext")
+private suspend fun loadImage(url: String) = when {
+    url.isValidURL() -> {
+        try {
+            withContext(Dispatchers.IO) {
+                URL(url).openStream().use { inputStream ->
+                    BufferedInputStream(inputStream).use { bufferedInputStream ->
+                        Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageAsset()
                     }
                 }
-            } catch (e: Exception) {
-                println("ImageLoader - ${e.message}")
-                errAsset
             }
+        } catch (e: Exception) {
+            println("ImageLoader - ${e.message}")
+            externalImageResource("src/main/resources/icons/icon_err.png")
         }
-        url.isValidPathToFile() -> {
-            try {
-                withContext(Dispatchers.IO) { externalImageResource(url) }
-            } catch (e: Exception) {
-                println("ImageLoader - ${e.message}")
-                errAsset
-            }
+    }
+    url.isValidPathToFile() -> {
+        try {
+            withContext(Dispatchers.IO) { externalImageResource(url) }
+        } catch (e: Exception) {
+            println("ImageLoader - ${e.message}")
+            externalImageResource("src/main/resources/icons/icon_err.png")
         }
-        else -> {
-            println("ImageLoader - url is:$url")
-            errAsset
-        }
+    }
+    else -> {
+        println("ImageLoader - url is:$url")
+        externalImageResource("src/main/resources/icons/icon_err.png")
     }
 }
 
@@ -65,15 +59,8 @@ fun ImageUrl(
     progressIndicatorColor: Color = dark,
 ) {
     val (imageAsset, setImageAsset) = remember(url) { mutableStateOf<ImageAsset?>(null) }
-//    val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
     val scope = rememberCoroutineScope()
     var job by remember { mutableStateOf<Job?>(null) }
-    onCommit {
-//        if (oldUrl != url) {
-//            setImageAsset(null)
-//            setOldUrl(url)
-//        }
-    }
     onDispose {
         job?.cancel()
         job = null
@@ -81,7 +68,7 @@ fun ImageUrl(
     if (imageAsset == null) {
         job?.cancel()
         job = scope.launch {
-            setImageAsset(ImageLoader().loadImage(url))
+            setImageAsset(loadImage(url))
         }
     }
     Box(

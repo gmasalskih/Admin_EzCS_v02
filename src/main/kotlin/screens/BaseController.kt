@@ -1,6 +1,9 @@
 package screens
 
 import data.types.StateType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import router.Router
@@ -9,30 +12,35 @@ abstract class BaseController<I> : KoinComponent {
 
     protected abstract var state: ViewState<I>
     protected val router: Router by inject()
+    protected lateinit var cs: CoroutineScope
+        private set
 
     fun getViewState() = state
-    fun setViewState(viewState: ViewState<I>) {
-        state = viewState
-    }
 
     fun setItemState(item: I) {
-        setViewState(state.copy(item = item))
+        state = state.copy(item = item)
     }
 
     fun isNavigableBack() = router.isNavigableBack()
     fun back() = router.back()
 
-    protected fun showLoading(){
-        setViewState(state.copy(stateType = StateType.Loading))
+    protected fun showLoading() {
+        state = state.copy(stateType = StateType.Loading)
     }
 
-    protected fun showData(){
-        setViewState(state.copy(stateType = StateType.Data))
+    protected fun showData() {
+        state = state.copy(stateType = StateType.Data)
     }
 
-    open fun onViewCreate() {/* STUB */
+    protected fun showError(e: Exception) {
+        state = state.copy(stateType = StateType.Error(err = e))
     }
 
-    open fun onViewDestroy() {/* STUB */
+    open fun onViewCreate() {
+        cs = CoroutineScope(Dispatchers.Default)
+    }
+
+    open fun onViewDestroy() {
+        cs.cancel()
     }
 }

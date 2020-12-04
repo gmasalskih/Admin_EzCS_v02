@@ -33,4 +33,9 @@ class MapHolderAddController : BaseController<MapHolder>() {
     fun onSubmit() {
 //        TODO("Not yet implemented")
     }
+
+    override fun onViewCreate() {
+        super.onViewCreate()
+        onClear()
+    }
 }

@@ -12,7 +12,6 @@ import screens.BaseController
 import screens.ViewState
 
 class MapHolderMenuController : BaseController<List<MapHolder>>() {
-    private var cs = CoroutineScope(Dispatchers.Main)
     private val firestoreProvider by inject<FirestoreProvider>()
     private val dropboxProvider by inject<DropboxProvider>()
     override var state: ViewState<List<MapHolder>> by mutableStateOf(ViewState(title = "Maps", item = listOf()))
@@ -26,28 +25,25 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
     }
 
     private fun initState() = cs.launch {
-        showLoading()
-        val maps = withContext(Dispatchers.IO) {
+        val maps =
             firestoreProvider.getCollectionItems(EntityType.MAP_HOLDER.name, MapHolder::class.java).map { mapHolder ->
                 mapHolder.copy(
                     logo = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
                     wallpaper = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
                 )
             }.toList()
-        }
         setItemState(maps)
         showData()
     }
 
     override fun onViewCreate() {
         super.onViewCreate()
-        cs = CoroutineScope(Dispatchers.Main)
+        showLoading()
         initState()
     }
 
     override fun onViewDestroy() {
         super.onViewDestroy()
         setItemState(listOf())
-        cs.cancel()
     }
 }
