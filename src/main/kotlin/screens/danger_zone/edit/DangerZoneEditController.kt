@@ -6,8 +6,8 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class DangerZoneEditController : BaseController<DangerZone>() {
-    override var state: ViewState<DangerZone> by mutableStateOf(ViewState(title = "Edit rank", item = DangerZone()))
+class DangerZoneEditController : BaseController<DangerZoneEditSate>() {
+    override var state: ViewState<DangerZoneEditSate> by mutableStateOf(ViewState(title = "Edit rank", item = DangerZoneEditSate()))
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 

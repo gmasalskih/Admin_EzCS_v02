@@ -6,16 +6,16 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class DangerZoneAddController : BaseController<DangerZone>() {
-    override var state: ViewState<DangerZone> by mutableStateOf(
+class DangerZoneAddController : BaseController<DangerZoneAddState>() {
+    override var state: ViewState<DangerZoneAddState> by mutableStateOf(
         ViewState(
             title = "Add new competitive rank",
-            item = DangerZone()
+            item = DangerZoneAddState()
         )
     )
 
     fun onClear() {
-        state = ViewState(title = "Add new competitive rank", item = DangerZone())
+        state = ViewState(title = "Add new competitive rank", item = DangerZoneAddState())
     }
 
     fun onLogoAdd() {

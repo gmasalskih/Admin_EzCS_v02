@@ -6,8 +6,8 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class WeaponAddController : BaseController<Weapon>() {
-    override var state: ViewState<Weapon> by mutableStateOf(ViewState(title = "Add new weapon", item = Weapon()))
+class WeaponAddController : BaseController<WeaponAddState>() {
+    override var state: ViewState<WeaponAddState> by mutableStateOf(ViewState(title = "Add new weapon", item = WeaponAddState()))
     var configFile: String by mutableStateOf("")
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
@@ -33,7 +33,7 @@ class WeaponAddController : BaseController<Weapon>() {
     }
 
     fun onClear() {
-        state = ViewState(title = "Add new weapon", item = Weapon())
+        state = ViewState(title = "Add new weapon", item = WeaponAddState())
         configFile = ""
     }
 

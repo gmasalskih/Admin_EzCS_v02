@@ -9,6 +9,7 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
 import ui.spacedBy20dp
+import utils.toValidId
 
 class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
     override val controller by inject<MapHolderEditController>()
@@ -32,7 +33,7 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                 ) {
                     //Map ID
                     TextFieldApp(
-                        value = controller.getViewState().item.getId(),
+                        value = controller.getViewState().item.name.toValidId(),
                         label = "Map ID",
                     )
                     //Map name

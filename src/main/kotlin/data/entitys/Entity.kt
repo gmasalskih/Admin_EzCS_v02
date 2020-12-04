@@ -8,4 +8,6 @@ interface Entity {
     val entityType: EntityType
     fun getContentsPath() = "${entityType.name}/${getId()}"
     fun getId() = name.toValidId()
+    fun setId(value: String) {}
+    fun setContentsPath(value: String) {}
 }

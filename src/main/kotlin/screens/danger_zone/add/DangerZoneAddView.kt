@@ -16,6 +16,7 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
+import utils.toValidId
 
 class DangerZoneAddView : BaseView<DangerZoneAddController>() {
     override val controller by inject<DangerZoneAddController>()
@@ -35,7 +36,7 @@ class DangerZoneAddView : BaseView<DangerZoneAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.getId(),
+                        value = controller.getViewState().item.name.toValidId(),
                         label = "Enter rank ID",
                     )
                     TextFieldApp(

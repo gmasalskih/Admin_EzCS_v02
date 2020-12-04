@@ -6,9 +6,9 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class WingmanAddController : BaseController<Wingman>() {
+class WingmanAddController : BaseController<WingmanAddState>() {
 
-    override var state: ViewState<Wingman> by mutableStateOf(ViewState(title = "Add new wingman rank", item = Wingman()))
+    override var state: ViewState<WingmanAddState> by mutableStateOf(ViewState(title = "Add new wingman rank", item = WingmanAddState()))
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 
@@ -18,7 +18,7 @@ class WingmanAddController : BaseController<Wingman>() {
     }
 
     fun onClear() {
-        state = ViewState(title = "Add new wingman rank", item = Wingman())
+        state = ViewState(title = "Add new wingman rank", item = WingmanAddState())
     }
 
     fun onSubmit() {

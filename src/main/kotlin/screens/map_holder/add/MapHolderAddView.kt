@@ -9,6 +9,7 @@ import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
 import ui.*
+import utils.toValidId
 
 class MapHolderAddView : BaseView<MapHolderAddController>() {
     override val controller by inject<MapHolderAddController>()
@@ -24,8 +25,8 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
             ) {
                 Text(
                     text = "Map ID: ${
-                        if (controller.getViewState().item.getId().isBlank()) "UNKNOWN"
-                        else controller.getViewState().item.getId()
+                        if (controller.getViewState().item.name.toValidId().isBlank()) "UNKNOWN"
+                        else controller.getViewState().item.name.toValidId()
                     }",
                     fontFamily = verdanaRegular,
                     fontSize = fontSize14sp,

@@ -14,6 +14,7 @@ import common_widgets.TextFieldApp
 import org.koin.core.inject
 import screens.BaseView
 import ui.*
+import utils.toValidId
 
 class WeaponAddView : BaseView<WeaponAddController>() {
     override val controller by inject<WeaponAddController>()
@@ -31,7 +32,7 @@ class WeaponAddView : BaseView<WeaponAddController>() {
                     horizontalArrangement = spacedBy20dp
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.getId(),
+                        value = controller.getViewState().item.name.toValidId(),
                         label = "Enter weapon ID",
                     )
                     TextFieldApp(

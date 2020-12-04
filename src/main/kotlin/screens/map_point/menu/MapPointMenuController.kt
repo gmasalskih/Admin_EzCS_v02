@@ -14,17 +14,20 @@ class MapPointMenuController : BaseController<List<MapHolder>>() {
                 MapHolder(
                     name = "Dust II",
                     logo = "",
-                    wallpaper = ""
+                    wallpaper = "",
+                    map = ""
                 ),
                 MapHolder(
                     name = "Mirage",
                     logo = "",
-                    wallpaper = ""
+                    wallpaper = "",
+                    map = ""
                 ),
                 MapHolder(
                     name = "Inferno",
                     logo = "",
-                    wallpaper = ""
+                    wallpaper = "",
+                    map = ""
                 ),
             )
         )

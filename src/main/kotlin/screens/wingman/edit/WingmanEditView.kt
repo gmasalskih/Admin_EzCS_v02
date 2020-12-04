@@ -15,6 +15,7 @@ import ui.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
+import utils.toValidId
 
 class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
     override val controller by inject<WingmanEditController>()
@@ -38,7 +39,7 @@ class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().item.getId(),
+                        value = controller.getViewState().item.name.toValidId(),
                         label = "Rank ID",
                     )
                     //Rank name

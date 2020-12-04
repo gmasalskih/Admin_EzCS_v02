@@ -10,6 +10,7 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
 import ui.spacedBy20dp
+import utils.toValidId
 
 class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>() {
     override val controller by inject<CompetitiveEditController>()
@@ -33,7 +34,7 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
                 ) {
                     //Rank ID
                     TextFieldApp(
-                        value = controller.getViewState().item.getId(),
+                        value = controller.getViewState().item.name.toValidId(),
                         label = "Rank ID",
                     )
                     //Rank name

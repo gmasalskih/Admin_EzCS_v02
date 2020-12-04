@@ -6,8 +6,8 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class MapHolderEditController : BaseController<MapHolder>() {
-    override var state: ViewState<MapHolder> by mutableStateOf(ViewState(title = "Edit map", item = MapHolder()))
+class MapHolderEditController : BaseController<MapHolderEditState>() {
+    override var state: ViewState<MapHolderEditState> by mutableStateOf(ViewState(title = "Edit map", item = MapHolderEditState()))
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
     fun onSubmit() {

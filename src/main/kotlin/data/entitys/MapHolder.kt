@@ -10,6 +10,4 @@ data class MapHolder(
     val logo: String = "",
     val map: String = "",
     val wallpaper: String = "",
-) : Entity {
-    fun isValid() = name.isNotBlank() && logo.isNotBlank() && map.isNotBlank() && wallpaper.isNotBlank()
-}
+) : Entity

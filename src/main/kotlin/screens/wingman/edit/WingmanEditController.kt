@@ -6,9 +6,9 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class WingmanEditController : BaseController<Wingman>() {
+class WingmanEditController : BaseController<WingmanEditState>() {
 
-    override var state: ViewState<Wingman> by mutableStateOf(ViewState(title = "Edit rank", item = Wingman()))
+    override var state: ViewState<WingmanEditState> by mutableStateOf(ViewState(title = "Edit rank", item = WingmanEditState()))
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 

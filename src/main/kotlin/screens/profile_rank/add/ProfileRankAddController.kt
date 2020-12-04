@@ -1,21 +1,20 @@
 package screens.profile_rank.add
 
 import androidx.compose.runtime.*
-import data.entitys.ProfileRank
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class ProfileRankAddController : BaseController<ProfileRank>() {
-    override var state: ViewState<ProfileRank> by mutableStateOf(
+class ProfileRankAddController : BaseController<ProfileRankAddState>() {
+    override var state: ViewState<ProfileRankAddState> by mutableStateOf(
         ViewState(
             title = "Add new profile rank",
-            item = ProfileRank()
+            item = ProfileRankAddState()
         )
     )
 
     fun onClear() {
-        state = ViewState(title = "Add new profile rank", item = ProfileRank())
+        state = ViewState(title = "Add new profile rank", item = ProfileRankAddState())
     }
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))

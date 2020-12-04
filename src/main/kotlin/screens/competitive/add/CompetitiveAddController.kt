@@ -1,21 +1,20 @@
 package screens.competitive.add
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class CompetitiveAddController : BaseController<Competitive>() {
-    override var state: ViewState<Competitive> by mutableStateOf(
+class CompetitiveAddController : BaseController<CompetitiveAddState>() {
+    override var state: ViewState<CompetitiveAddState> by mutableStateOf(
         ViewState(
             title = "Add new competitive rank",
-            item = Competitive()
+            item = CompetitiveAddState()
         )
     )
 
     fun onClear() {
-        state = ViewState(title = "Add new competitive rank", item = Competitive())
+        state = ViewState(title = "Add new competitive rank", item = CompetitiveAddState())
     }
 
 

@@ -8,11 +8,11 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class MapPointAddController : BaseController<MapPoint>() {
-    override var state: ViewState<MapPoint> by mutableStateOf(ViewState(title = "New map point", item = MapPoint()))
+class MapPointAddController : BaseController<MapPointAddState>() {
+    override var state: ViewState<MapPointAddState> by mutableStateOf(ViewState(title = "New map point", item = MapPointAddState()))
 
     fun onClear() {
-        state = ViewState(title = "New map point", item = MapPoint())
+        state = ViewState(title = "New map point", item = MapPointAddState())
     }
 
     fun onMapIdChange(mapId: String) = setItemState(state.item.copy(mapId = mapId))

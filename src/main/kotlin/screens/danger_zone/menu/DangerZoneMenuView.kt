@@ -8,6 +8,7 @@ import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
+import utils.toValidId
 
 class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
     override val controller by inject<DangerZoneMenuController>()
@@ -22,7 +23,7 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
                 CardRank(
                     pathToImage = dangerZone.logo,
                     name = dangerZone.name,
-                    onClick = { controller.navigateToDangerZoneEdit(dangerZone.getId()) }
+                    onClick = { controller.navigateToDangerZoneEdit(dangerZone.name.toValidId()) }
                 )
             }
         )

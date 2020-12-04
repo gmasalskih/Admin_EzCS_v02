@@ -6,11 +6,11 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class ProfileRankEditController : BaseController<ProfileRank>() {
-    override var state: ViewState<ProfileRank> by mutableStateOf(
+class ProfileRankEditController : BaseController<ProfileRankEditState>() {
+    override var state: ViewState<ProfileRankEditState> by mutableStateOf(
         ViewState(
             title = "Edit profile rank",
-            item = ProfileRank()
+            item = ProfileRankEditState()
         )
     )
 

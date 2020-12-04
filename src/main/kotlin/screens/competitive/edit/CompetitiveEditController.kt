@@ -1,13 +1,12 @@
 package screens.competitive.edit
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class CompetitiveEditController : BaseController<Competitive>() {
-    override var state: ViewState<Competitive> by mutableStateOf(ViewState(title = "Edit rank", item = Competitive()))
+class CompetitiveEditController : BaseController<CompetitiveEditState>() {
+    override var state: ViewState<CompetitiveEditState> by mutableStateOf(ViewState(title = "Edit rank", item = CompetitiveEditState()))
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 

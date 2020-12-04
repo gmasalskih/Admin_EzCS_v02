@@ -8,10 +8,10 @@ import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 
-class MapPointEditController : BaseController<MapPoint>() {
-    override var state: ViewState<MapPoint> by mutableStateOf(
+class MapPointEditController : BaseController<MapPointEditState>() {
+    override var state: ViewState<MapPointEditState> by mutableStateOf(
         ViewState(
-            title = "New map point", item = MapPoint(
+            title = "New map point", item = MapPointEditState(
                 mapId = "id_palas_to_under_palas",
                 name = "palas_to_under_palas",
                 grenadeType = GrenadeType.SMOKE,
