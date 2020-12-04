@@ -44,16 +44,16 @@ class MapHolderAddController : BaseController<MapHolderAddState>() {
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
     fun onSubmit() = cs.launch {
-        val entity = stateToEntity(state.item)
         showLoading()
+        val entity = stateToEntity(state.item)
         if (!state.item.isValid()) {
             showError(Exception("The map holder have empty fields"))
             return@launch
         }
         try {
-            dropboxProvider.uploadFile(state.item.logo, entity.getContentsPath())
-            dropboxProvider.uploadFile(state.item.map, entity.getContentsPath())
-            dropboxProvider.uploadFile(state.item.wallpaper, entity.getContentsPath())
+            dropboxProvider.uploadFile(state.item.logo, entity.createContentsPath())
+            dropboxProvider.uploadFile(state.item.map, entity.createContentsPath())
+            dropboxProvider.uploadFile(state.item.wallpaper, entity.createContentsPath())
             firestoreProvider.uploadEntity(entity)
             router.back()
         } catch (e: Exception) {

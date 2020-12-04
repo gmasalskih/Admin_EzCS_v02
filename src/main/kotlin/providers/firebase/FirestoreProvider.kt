@@ -16,7 +16,7 @@ class FirestoreProvider(app: FirebaseApp) {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun <E : Entity> uploadEntity(entity: E) = withContext(Dispatchers.IO) {
-        db.document(entity.getContentsPath()).set(entity).get()
+        db.document(entity.createContentsPath()).set(entity).get()
     }
 
 }

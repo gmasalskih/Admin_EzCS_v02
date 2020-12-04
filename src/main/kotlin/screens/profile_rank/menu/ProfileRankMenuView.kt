@@ -22,7 +22,7 @@ class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {
                 CardRank(
                     pathToImage = profileRank.logo,
                     name = profileRank.name,
-                    onClick = { controller.navigateToProfileRankEdit(profileRank.getId()) }
+                    onClick = { controller.navigateToProfileRankEdit(profileRank.createId()) }
                 )
             }
         )

@@ -30,8 +30,8 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
                 firestoreProvider.getCollectionItems(EntityType.MAP_HOLDER.name, MapHolder::class.java)
                     .map { mapHolder ->
                         mapHolder.copy(
-                            logo = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.logo),
-                            wallpaper = dropboxProvider.getFileUrl(mapHolder.getContentsPath(), mapHolder.wallpaper),
+                            logo = dropboxProvider.getFileUrl(mapHolder.createContentsPath(), mapHolder.logo),
+                            wallpaper = dropboxProvider.getFileUrl(mapHolder.createContentsPath(), mapHolder.wallpaper),
                         )
                     }.toList()
             setItemState(maps)

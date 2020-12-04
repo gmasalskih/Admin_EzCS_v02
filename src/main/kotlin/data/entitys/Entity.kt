@@ -6,8 +6,6 @@ import utils.toValidId
 interface Entity {
     val name: String
     val entityType: EntityType
-    fun getContentsPath() = "${entityType.name}/${getId()}"
-    fun getId() = name.toValidId()
-    fun setId(value: String) {}
-    fun setContentsPath(value: String) {}
+    fun createContentsPath() = "${entityType.name}/${createId()}"
+    fun createId() = name.toValidId()
 }

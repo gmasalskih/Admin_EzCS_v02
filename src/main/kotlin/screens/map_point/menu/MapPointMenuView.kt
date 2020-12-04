@@ -21,7 +21,7 @@ class MapPointMenuView : BaseView<MapPointMenuController>() {
                     logo = mapHolder.logo,
                     name = mapHolder.name,
                     isCompetitive = mapHolder.isCompetitive,
-                    onClick = { controller.navigateToMapPointsEdit(mapHolder.getId()) }
+                    onClick = { controller.navigateToMapPointsEdit(mapHolder.createId()) }
                 )
             }
         )

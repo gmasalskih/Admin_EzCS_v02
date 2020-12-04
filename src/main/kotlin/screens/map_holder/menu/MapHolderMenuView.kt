@@ -30,7 +30,7 @@ class MapHolderMenuView : BaseView<MapHolderMenuController>() {
                         logo = mapHolder.logo,
                         name = mapHolder.name,
                         isCompetitive = mapHolder.isCompetitive,
-                        onClick = { controller.navigateToMapHolderEdit(mapHolder.getId()) }
+                        onClick = { controller.navigateToMapHolderEdit(mapHolder.createId()) }
                     )
                 }
             )

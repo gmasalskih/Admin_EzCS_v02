@@ -22,7 +22,7 @@ class WingmanMenuView : BaseView<WingmanMenuController>() {
                 CardRank(
                     pathToImage = wingman.logo,
                     name = wingman.name,
-                    onClick = { controller.navigateToWingmanEdit(wingman.getId()) }
+                    onClick = { controller.navigateToWingmanEdit(wingman.createId()) }
                 )
             }
         )
