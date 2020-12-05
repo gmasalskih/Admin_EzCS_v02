@@ -1,7 +1,7 @@
 package utils
 
-import androidx.compose.ui.graphics.ImageAsset
-import androidx.compose.ui.graphics.asImageAsset
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import java.io.File
 import java.io.FileInputStream
 import java.net.URL
@@ -24,8 +24,8 @@ fun String.toValidXP(): String {
     return this.replace("[^0-9]".toRegex(), "") + "XP"
 }
 
-fun externalImageResource(path: String): ImageAsset {
-    return ImageLoader.makeFromEncoded(FileInputStream(File(path)).readAllBytes()).asImageAsset()
+fun externalImageResource(path: String): ImageBitmap {
+    return ImageLoader.makeFromEncoded(FileInputStream(File(path)).readAllBytes()).asImageBitmap()
 }
 
 fun String.isValidURL() = try {

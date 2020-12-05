@@ -58,14 +58,14 @@ fun CardImage(
                     pathToFile.toLowerCase().contains("\\.mp4$".toRegex()) -> {
                         Icon(
                             modifier = Modifier.padding(10.dp).fillMaxSize(),
-                            asset = imageResource("icons/icon_video.png"),
+                            bitmap = imageResource("icons/icon_video.png"),
                             tint = dark
                         )
                     }
                     else -> {
                         Icon(
                             modifier = Modifier.padding(10.dp).fillMaxSize(),
-                            asset = imageResource("icons/icon_err.png"),
+                            bitmap = imageResource("icons/icon_err.png"),
                             tint = dark
                         )
                     }

@@ -11,7 +11,7 @@ import ui.iconHeight
 @Composable
 fun IconApp(pathToIcon: String, tint: Color, modifier: Modifier = Modifier) {
     Icon(
-        asset = imageResource(pathToIcon),
+        bitmap = imageResource(pathToIcon),
         tint = tint,
         modifier = Modifier.preferredHeight(iconHeight).then(modifier)
     )

@@ -19,7 +19,7 @@ abstract class BaseView<C : BaseController<*>> : KoinComponent {
         Screen(this) {
             Box(
                 modifier = Modifier.fillMaxSize().padding(20.dp),
-                children = { setContent(controller) }
+                content = { setContent(controller) }
             )
         }
     }

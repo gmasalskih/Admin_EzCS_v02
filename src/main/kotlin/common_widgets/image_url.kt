@@ -6,10 +6,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ImageAsset
-import androidx.compose.ui.graphics.asImageAsset
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
 import kotlinx.coroutines.*
 import org.jetbrains.skija.Image
@@ -27,7 +24,7 @@ private suspend fun loadImage(url: String) = when {
             withContext(Dispatchers.IO) {
                 URL(url).openStream().use { inputStream ->
                     BufferedInputStream(inputStream).use { bufferedInputStream ->
-                        Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageAsset()
+                        Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageBitmap()
                     }
                 }
             }
@@ -58,7 +55,7 @@ fun ImageUrl(
     colorFilter: ColorFilter? = null,
     progressIndicatorColor: Color = dark,
 ) {
-    val (imageAsset, setImageAsset) = remember(url) { mutableStateOf<ImageAsset?>(null) }
+    val (imageAsset, setImageAsset) = remember(url) { mutableStateOf<ImageBitmap?>(null) }
     val scope = rememberCoroutineScope()
     var job by remember { mutableStateOf<Job?>(null) }
     onDispose {
@@ -82,7 +79,7 @@ fun ImageUrl(
         } else {
             Image(
                 modifier = Modifier.then(modifier),
-                asset = imageAsset,
+                bitmap = imageAsset,
                 contentScale = contentScale,
                 colorFilter = colorFilter
             )

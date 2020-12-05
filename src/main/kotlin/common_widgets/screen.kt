@@ -2,9 +2,7 @@ package common_widgets
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,7 +15,7 @@ import data.types.StateType
 import ui.*
 
 @Composable
-inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable () -> Unit) {
+inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable () -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -33,45 +31,39 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable (
             content()
             when (val typeScreenState = viewComponent.controller.getViewState().stateType) {
                 is StateType.Loading -> {
-                    Surface(
+                    Container(
                         modifier = Modifier.fillMaxSize(),
-                        color = Color.Black.copy(alpha = 0.4f),
-                        content = {}
-                    )
-                    Row(
-                        modifier = Modifier.align(alignment = Alignment.Center),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy20dp
+                        color = Color.Black.copy(alpha = 0.4f)
                     ) {
-                        Text(
-                            text = "Loading...",
-                            fontFamily = verdanaBold,
-                            fontSize = fontSize20sp,
-                            color = greyAccent
-                        )
-                        CircularProgressIndicator(color = orangeAccent)
+                        Row(
+                            modifier = Modifier.align(alignment = Alignment.Center),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = spacedBy20dp
+                        ) {
+                            Text(
+                                text = "Loading...",
+                                fontFamily = verdanaBold,
+                                fontSize = fontSize20sp,
+                                color = greyAccent
+                            )
+                            CircularProgressIndicator(color = orangeAccent)
+                        }
                     }
-
                 }
                 is StateType.Error -> {
                     Dialog(
-                        title = "Error",
-                        undecorated = true
+                        onDismissRequest = {}
                     ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize()
+                        Container(
+                            modifier = Modifier.fillMaxSize(),
+                            color = dark
                         ) {
-                            Surface(
-                                modifier = Modifier.fillMaxSize(),
-                                color = dark,
-                                content = {}
-                            )
                             Text(
                                 modifier = Modifier.align(alignment = Alignment.Center),
                                 text = typeScreenState.err.message ?: "Unknown error...",
                                 color = greyAccent
                             )
-                            Surface(
+                            Container(
                                 modifier = Modifier.size(100.dp, 40.dp)
                                     .align(alignment = Alignment.BottomCenter)
                                     .offset(y = (-20).dp)
@@ -79,16 +71,12 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable (
                                 color = greyAccent,
                                 shape = roundedCorner5dp
                             ) {
-                                Box(
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                                    Text(
-                                        text = "OK",
-                                        fontSize = fontSize14sp,
-                                        color = dark,
-                                        modifier = Modifier.align(Alignment.Center)
-                                    )
-                                }
+                                Text(
+                                    text = "OK",
+                                    fontSize = fontSize14sp,
+                                    color = dark,
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
                             }
                         }
                     }

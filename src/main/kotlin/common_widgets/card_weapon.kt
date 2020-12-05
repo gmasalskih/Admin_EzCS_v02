@@ -41,13 +41,13 @@ fun CardWeapon(
             ) {
                 if (teamTypes.contains(TeamType.T)){
                     Image(
-                        asset = imageResource("assets/T_logo.png"),
+                        bitmap = imageResource("assets/T_logo.png"),
                         modifier = Modifier.size(10.dp)
                     )
                 }
                 if (teamTypes.contains(TeamType.CT)){
                     Image(
-                        asset = imageResource("assets/CT_logo.png"),
+                        bitmap = imageResource("assets/CT_logo.png"),
                         modifier = Modifier.size(10.dp)
                     )
                 }

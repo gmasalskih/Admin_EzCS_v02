@@ -22,7 +22,7 @@ fun <T> ScrollableRowAdd(
         ScrollableRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = spacedBy20dp,
-            children = {
+            content = {
                 items.forEach { entity ->
                     cardItem(entity)
                 }

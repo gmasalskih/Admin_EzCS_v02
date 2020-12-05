@@ -1,10 +1,7 @@
 package common_widgets
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,21 +15,17 @@ import ui.verdanaBold
 
 @Composable
 fun ButtonApp(label: String, color: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Surface(
+    Container(
         modifier = Modifier.size(100.dp, 40.dp).then(modifier).clickable(onClick = onClick),
         color = color,
         shape = roundedCorner5dp
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(
-                text = label.toUpperCase(),
-                fontFamily = verdanaBold,
-                fontSize = fontSize14sp,
-                color = dark,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        Text(
+            text = label.toUpperCase(),
+            fontFamily = verdanaBold,
+            fontSize = fontSize14sp,
+            color = dark,
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }
