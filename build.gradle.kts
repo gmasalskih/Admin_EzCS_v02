@@ -30,8 +30,6 @@ tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "11"
 }
 
-
-
 compose.desktop {
     application {
         mainClass = "MainKt"
