@@ -32,9 +32,9 @@ class FirestoreProvider(app: FirebaseApp) {
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun <T> download(documentName: String, clazz: Class<T>) = withContext(Dispatchers.IO) {
+    suspend fun <T> download(documentName: String, clazz: Class<T>): T = withContext(Dispatchers.IO) {
         if (!db.document(documentName).get().get().exists()) throw Exception("$documentName is note exist on Firestore")
-        db.document(documentName).get().get().toObject(clazz)
+        db.document(documentName).get().get().toObject(clazz)!!
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
