@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.20")
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.google.firebase:firebase-admin:7.0.1")
     implementation("org.koin:koin-core:2.1.6")

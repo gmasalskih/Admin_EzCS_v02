@@ -13,9 +13,21 @@ class DropboxProvider {
     private val dropbox = DbxClientV2(DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(), DROPBOX_TOKEN)
 
     suspend fun getFileUrl(pathToFile: String, fileName: String): String = withContext(Dispatchers.IO) {
-        println("/$pathToFile/$fileName")
         dropbox.files().getTemporaryLink("/$pathToFile/$fileName").link
     }
+
+    suspend fun isEntityExist(contentsPath: String) = withContext(Dispatchers.IO){
+        try {
+            dropbox.files().listFolder("/$contentsPath")
+            true
+        } catch (e:Exception){
+            false
+        }
+    }
+
+    private fun isFileExist(pathToFile: String, fileName: String) = dropbox.files().listFolder("/$pathToFile").entries.find {
+        it.name == fileName
+    } != null
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun uploadFile(sourceFullPathToFile: String, targetFolder: String): Boolean = withContext(Dispatchers.IO) {

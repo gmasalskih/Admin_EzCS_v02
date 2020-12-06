@@ -14,18 +14,40 @@ import ui.roundedCorner5dp
 import ui.verdanaBold
 
 @Composable
-fun ButtonApp(label: String, color: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Container(
-        modifier = Modifier.size(100.dp, 40.dp).then(modifier).clickable(onClick = onClick),
-        color = color,
-        shape = roundedCorner5dp
-    ) {
-        Text(
-            text = label.toUpperCase(),
-            fontFamily = verdanaBold,
-            fontSize = fontSize14sp,
-            color = dark,
-            modifier = Modifier.align(Alignment.Center)
-        )
+fun ButtonApp(
+    label: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    isActive: Boolean = true,
+    onClick: () -> Unit
+) {
+    if (isActive) {
+        Container(
+            modifier = Modifier.size(100.dp, 40.dp).then(modifier).clickable(onClick = onClick),
+            color = color,
+            shape = roundedCorner5dp
+        ) {
+            Text(
+                text = label.toUpperCase(),
+                fontFamily = verdanaBold,
+                fontSize = fontSize14sp,
+                color = dark,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    } else {
+        Container(
+            modifier = Modifier.size(100.dp, 40.dp).then(modifier),
+            color = color.copy(alpha = 0.2f),
+            shape = roundedCorner5dp
+        ) {
+            Text(
+                text = label.toUpperCase(),
+                fontFamily = verdanaBold,
+                fontSize = fontSize14sp,
+                color = dark,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
 }

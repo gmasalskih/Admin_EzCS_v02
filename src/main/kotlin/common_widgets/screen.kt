@@ -58,25 +58,28 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable 
                             modifier = Modifier.fillMaxSize(),
                             color = dark
                         ) {
-                            Text(
-                                modifier = Modifier.align(alignment = Alignment.Center),
-                                text = typeScreenState.err.message ?: "Unknown error...",
-                                color = greyAccent
-                            )
-                            Container(
-                                modifier = Modifier.size(100.dp, 40.dp)
-                                    .align(alignment = Alignment.BottomCenter)
-                                    .offset(y = (-20).dp)
-                                    .clickable { viewComponent.controller.showData() },
-                                color = greyAccent,
-                                shape = roundedCorner5dp
+                            Box(
+                                modifier = Modifier.fillMaxSize().padding(10.dp)
                             ) {
                                 Text(
-                                    text = "OK",
-                                    fontSize = fontSize14sp,
-                                    color = dark,
-                                    modifier = Modifier.align(Alignment.Center)
+                                    modifier = Modifier.align(alignment = Alignment.Center),
+                                    text = typeScreenState.err.message ?: "Unknown error...",
+                                    color = greyAccent
                                 )
+                                Container(
+                                    modifier = Modifier.size(100.dp, 40.dp)
+                                        .align(alignment = Alignment.BottomCenter)
+                                        .clickable { viewComponent.controller.showData() },
+                                    color = greyAccent,
+                                    shape = roundedCorner5dp
+                                ) {
+                                    Text(
+                                        text = "OK",
+                                        fontSize = fontSize14sp,
+                                        color = dark,
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                }
                             }
                         }
                     }

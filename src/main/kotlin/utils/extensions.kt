@@ -28,6 +28,11 @@ fun externalImageResource(path: String): ImageBitmap {
     return ImageLoader.makeFromEncoded(FileInputStream(File(path)).readAllBytes()).asImageBitmap()
 }
 
+fun String.toValidFileName(): String {
+    if (!this.isValidPathToFile()) return this
+    return this.split("/").last()
+}
+
 fun String.isValidURL() = try {
     URL(this)
     true

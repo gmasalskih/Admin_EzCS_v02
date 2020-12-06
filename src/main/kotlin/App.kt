@@ -20,6 +20,7 @@ object App : KoinComponent {
                 appModule,
                 dropboxModule,
                 fbModules,
+                serviceModule,
                 competitiveModule,
                 dangerZoneModule,
                 mapPointsModule,

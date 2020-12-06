@@ -8,6 +8,7 @@ import org.koin.dsl.module
 import providers.dropbox.DropboxProvider
 import providers.firebase.FirebaseAppProvider
 import providers.firebase.FirestoreProvider
+import providers.service.ServiceProvider
 import router.NavigationTargets
 import router.Router
 import screens.competitive.add.CompetitiveAddController
@@ -50,6 +51,10 @@ val fbModules = module {
     }
     single<StorageClient> { StorageClient.getInstance(get()) }
     single<FirestoreProvider> { FirestoreProvider(get()) }
+}
+
+val serviceModule = module {
+    single<ServiceProvider> { ServiceProvider(get(), get()) }
 }
 
 val competitiveModule = module {

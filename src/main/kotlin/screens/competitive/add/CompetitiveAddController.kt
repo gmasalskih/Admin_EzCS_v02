@@ -27,6 +27,6 @@ class CompetitiveAddController : BaseController<CompetitiveAddState>() {
     }
 
     fun onSubmit() {
-//        TODO("Not yet implemented")
+        //TODO implement fun onSubmit
     }
 }
