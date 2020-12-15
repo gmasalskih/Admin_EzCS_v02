@@ -16,18 +16,23 @@ class DropboxProvider {
         dropbox.files().getTemporaryLink("/$pathToFile/$fileName").link
     }
 
-    suspend fun isEntityExist(contentsPath: String) = withContext(Dispatchers.IO){
+    suspend fun isEntityExist(contentsPath: String) = withContext(Dispatchers.IO) {
         try {
             dropbox.files().listFolder("/$contentsPath")
             true
-        } catch (e:Exception){
+        } catch (e: Exception) {
             false
         }
     }
 
-    private fun isFileExist(pathToFile: String, fileName: String) = dropbox.files().listFolder("/$pathToFile").entries.find {
-        it.name == fileName
-    } != null
+    suspend fun delete(path: String) {
+        dropbox.files().deleteV2(path)
+    }
+
+    private fun isFileExist(pathToFile: String, fileName: String) =
+        dropbox.files().listFolder("/$pathToFile").entries.find {
+            it.name == fileName
+        } != null
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun uploadFile(sourceFullPathToFile: String, targetFolder: String): Boolean = withContext(Dispatchers.IO) {

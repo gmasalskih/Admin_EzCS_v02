@@ -21,8 +21,8 @@ class FirestoreProvider(app: FirebaseApp) {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun <E : Entity> uploadEntity(entity: E) = withContext(Dispatchers.IO) {
-        if (isEntityExist(entity.contentsPath())) throw Exception("${entity.contentsPath()} is exist on Firestore")
-        db.document(entity.contentsPath()).set(entity).get()
+        if (isEntityExist(entity.getDocumentName())) throw Exception("${entity.getDocumentName()} is exist on Firestore")
+        db.document(entity.getDocumentName()).set(entity).get()
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
@@ -39,12 +39,12 @@ class FirestoreProvider(app: FirebaseApp) {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun <E : Entity> update(entity: E) = withContext(Dispatchers.IO) {
-        if (!isEntityExist(entity.contentsPath())) throw Exception("${entity.contentsPath()} is note exist on Firestore")
-        db.document(entity.contentsPath()).set(entity).get()
+        if (!isEntityExist(entity.getDocumentName())) throw Exception("${entity.getDocumentName()} is note exist on Firestore")
+        db.document(entity.getDocumentName()).set(entity).get()
     }
 
-    suspend fun <E : Entity> delete(entity: E) = withContext(Dispatchers.IO) {
-        if (!isEntityExist(entity.contentsPath())) throw Exception("${entity.contentsPath()} is note exist on Firestore")
-        db.document(entity.contentsPath()).delete()
+    suspend fun delete(path: String) = withContext(Dispatchers.IO) {
+        if (!isEntityExist(path)) throw Exception("$path is note exist on Firestore")
+        db.document(path).delete()
     }
 }

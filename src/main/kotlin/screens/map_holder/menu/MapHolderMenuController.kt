@@ -15,8 +15,8 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
         router.navigateTo(NavigationTargets.MapHolderAdd)
     }
 
-    fun navigateToMapHolderEdit(mapId: String) {
-        router.navigateTo(NavigationTargets.MapHolderEdit(mapId))
+    fun navigateToMapHolderEdit(documentName: String) {
+        router.navigateTo(NavigationTargets.MapHolderEdit(documentName))
     }
 
     private fun initState() = cs.launch {

@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
+import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
 import utils.toValidId
@@ -15,7 +16,7 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
     override val controller by inject<MapHolderEditController>()
 
     init {
-//        controller.setId(id)
+        controller.setDocumentName(id)
     }
 
     @Composable
@@ -47,20 +48,19 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = spacedBy20dp
                 ) {
-
-                    CardAddOrImage(
+                    CardImageUrl(
                         label = "add logo",
-                        image = controller.getViewState().item.logo,
+                        pathToFile = controller.getViewState().item.logo,
                         onClick = controller::onLogoChange
                     )
-                    CardAddOrImage(
+                    CardImageUrl(
                         label = "add map",
-                        image = controller.getViewState().item.map,
+                        pathToFile = controller.getViewState().item.map,
                         onClick = controller::onMapChange
                     )
-                    CardAddOrImage(
+                    CardImageUrl(
                         label = "add wallpaper",
-                        image = controller.getViewState().item.wallpaper,
+                        pathToFile = controller.getViewState().item.wallpaper,
                         onClick = controller::onWallpaperChange
                     )
                 }
@@ -71,12 +71,21 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                     onCheckedChange = controller::onCompetitiveChange
                 )
             }
-            ButtonApp(
-                label = "submit",
-                color = orangeAccent,
-                onClick = controller::onSubmit,
-                modifier = Modifier.align(Alignment.BottomEnd)
-            )
+            Row(
+                modifier = Modifier.align(Alignment.BottomEnd),
+                horizontalArrangement = spacedBy20dp
+            ) {
+                ButtonApp(
+                    label = "delete",
+                    color = greyAccent,
+                    onClick = controller::onDelete,
+                )
+                ButtonApp(
+                    label = "submit",
+                    color = orangeAccent,
+                    onClick = controller::onSubmit,
+                )
+            }
         }
     }
 }

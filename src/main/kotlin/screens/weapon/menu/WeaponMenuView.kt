@@ -20,7 +20,7 @@ class WeaponMenuView : BaseView<WeaponMenuController>() {
                     name = weapon.name,
                     image = weapon.image,
                     teamTypes = weapon.teamTypes,
-                    onClick = { controller.navigateToWeaponsEdit(weapon.id()) }
+                    onClick = { controller.navigateToWeaponsEdit(weapon.getDocumentName()) }
                 )
             }
         )

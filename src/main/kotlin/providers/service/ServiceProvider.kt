@@ -4,7 +4,6 @@ import data.entitys.Entity
 import providers.Service
 import providers.dropbox.DropboxProvider
 import providers.firebase.FirestoreProvider
-import screens.State
 import utils.ContentType
 import utils.DataType
 import utils.isValidPathToFile
@@ -50,12 +49,12 @@ class ServiceProvider(
                 }
             }
         }
-        firestore.uploadMap(entityMap, entity.contentsPath())
-        contentSet.forEach { pathToFile -> dropbox.uploadFile(pathToFile, entity.contentsPath()) }
+        firestore.uploadMap(entityMap, entity.getDocumentName())
+        contentSet.forEach { pathToFile -> dropbox.uploadFile(pathToFile, entity.getDocumentName()) }
     }
 
-    override suspend fun <T : Entity> retrieveEntity(collectionName: String, clazz: KClass<T>) =
-        firestore.download(collectionName, clazz.java).apply { enrichEntity(this) }
+    override suspend fun <T : Entity> retrieveEntity(documentName: String, clazz: KClass<T>) =
+        firestore.download(documentName, clazz.java).apply { enrichEntity(this) }
 
     override suspend fun <T : Entity> retrieveEntities(collectionName: String, clazz: KClass<T>) =
         firestore.getCollectionItems(collectionName, clazz.java).map { entity -> enrichEntity(entity) }
@@ -65,9 +64,11 @@ class ServiceProvider(
         //TODO implement fun update
     }
 
-    override suspend fun <T : Entity> delete(entity: T) {
-        //TODO implement fun delete
+    override suspend fun delete(path: String) {
+        firestore.delete(path)
+        dropbox.delete("/$path")
     }
+
 
     private suspend fun <T : Entity> enrichEntity(entity: T) = entity.apply {
         this::class.declaredMemberProperties.forEach { prop ->
@@ -77,7 +78,7 @@ class ServiceProvider(
                         prop.javaField?.let { field ->
                             field.isAccessible = true
                             val newContentList = content.filterIsInstance<String>()
-                                .map { fileName -> dropbox.getFileUrl(contentsPath(), fileName) }
+                                .map { fileName -> dropbox.getFileUrl(getDocumentName(), fileName) }
                                 .toList()
                             if (newContentList.isEmpty()) throw  Exception("Entity $name have field ${prop.name}, but it's field have empty list $content")
                             field.set(this, newContentList)
@@ -86,7 +87,7 @@ class ServiceProvider(
                     is String -> {
                         prop.javaField?.let { field ->
                             field.isAccessible = true
-                            field.set(this, dropbox.getFileUrl(contentsPath(), content))
+                            field.set(this, dropbox.getFileUrl(getDocumentName(), content))
                         }
                     }
                     else -> {
@@ -103,11 +104,11 @@ class ServiceProvider(
     }
 
     private suspend fun <T : Entity> checkEntity(entity: T, isEntityHaveToExist: Boolean) {
-        val isEntityOnFirestoreExist = firestore.isEntityExist(entity.contentsPath())
-        val isEntityOnDropboxExist = dropbox.isEntityExist(entity.contentsPath())
+        val isEntityOnFirestoreExist = firestore.isEntityExist(entity.getDocumentName())
+        val isEntityOnDropboxExist = dropbox.isEntityExist(entity.getDocumentName())
         if (isEntityOnFirestoreExist != isEntityOnDropboxExist)
-            throw Exception("The entity ${entity.contentsPath()} is not consistent stored!")
+            throw Exception("The entity ${entity.getDocumentName()} is not consistent stored!")
         if (isEntityHaveToExist != (isEntityOnFirestoreExist && isEntityOnDropboxExist))
-            throw Exception("The ${entity.contentsPath()} ${if (isEntityHaveToExist) "is not" else "already"} exist!")
+            throw Exception("The ${entity.getDocumentName()} ${if (isEntityHaveToExist) "is not" else "already"} exist!")
     }
 }
