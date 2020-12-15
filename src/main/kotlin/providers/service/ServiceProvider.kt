@@ -1,6 +1,7 @@
 package providers.service
 
 import data.entitys.Entity
+import providers.Service
 import providers.dropbox.DropboxProvider
 import providers.firebase.FirestoreProvider
 import screens.State
@@ -15,9 +16,9 @@ import kotlin.reflect.jvm.javaField
 class ServiceProvider(
     private val firestore: FirestoreProvider,
     private val dropbox: DropboxProvider
-) {
+) : Service {
 
-    suspend fun <T : State> upload(entity: T) {
+    override suspend fun <T : Entity> upload(entity: T) {
         checkEntity(entity, false)
         val entityMap = mutableMapOf<String, Any>()
         val contentSet = mutableSetOf<String>()
@@ -49,26 +50,22 @@ class ServiceProvider(
                 }
             }
         }
-        firestore.uploadMap(entityMap, entity.getContentsPath())
-        contentSet.forEach { pathToFile -> dropbox.uploadFile(pathToFile, entity.getContentsPath()) }
+        firestore.uploadMap(entityMap, entity.contentsPath())
+        contentSet.forEach { pathToFile -> dropbox.uploadFile(pathToFile, entity.contentsPath()) }
     }
 
-    suspend fun <T : Entity> retrieveEntity(collectionName: String, clazz: KClass<T>) =
+    override suspend fun <T : Entity> retrieveEntity(collectionName: String, clazz: KClass<T>) =
         firestore.download(collectionName, clazz.java).apply { enrichEntity(this) }
 
-    suspend fun <T : Entity> retrieveEntities(collectionName: String, clazz: KClass<T>) =
+    override suspend fun <T : Entity> retrieveEntities(collectionName: String, clazz: KClass<T>) =
         firestore.getCollectionItems(collectionName, clazz.java).map { entity -> enrichEntity(entity) }
 
 
-    fun download(id: String) {
-        //TODO implement fun download
-    }
-
-    fun update(entity: Entity) {
+    override suspend fun <T : Entity> update(entity: T) {
         //TODO implement fun update
     }
 
-    fun delete(id: String) {
+    override suspend fun <T : Entity> delete(entity: T) {
         //TODO implement fun delete
     }
 
@@ -87,10 +84,10 @@ class ServiceProvider(
                         }
                     }
                     is String -> {
-                            prop.javaField?.let { field ->
-                                field.isAccessible = true
-                                field.set(this, dropbox.getFileUrl(contentsPath(), content))
-                            }
+                        prop.javaField?.let { field ->
+                            field.isAccessible = true
+                            field.set(this, dropbox.getFileUrl(contentsPath(), content))
+                        }
                     }
                     else -> {
                         throw Exception("Entity $name have field ${prop.name} contains incompatible type of ${prop.returnType}")
@@ -105,13 +102,12 @@ class ServiceProvider(
         if (!contentSet.add(content)) throw Exception("Each item content have to unique! $content already exist.")
     }
 
-    private suspend fun checkEntity(entity: State, isEntityHaveToExist: Boolean) {
-        if (!entity.isValid()) throw Exception("The entity $entity is not valid!")
-        val isEntityOnFirestoreExist = firestore.isEntityExist(entity.getContentsPath())
-        val isEntityOnDropboxExist = dropbox.isEntityExist(entity.getContentsPath())
+    private suspend fun <T : Entity> checkEntity(entity: T, isEntityHaveToExist: Boolean) {
+        val isEntityOnFirestoreExist = firestore.isEntityExist(entity.contentsPath())
+        val isEntityOnDropboxExist = dropbox.isEntityExist(entity.contentsPath())
         if (isEntityOnFirestoreExist != isEntityOnDropboxExist)
-            throw Exception("The entity ${entity.getContentsPath()} is not consistent stored!")
+            throw Exception("The entity ${entity.contentsPath()} is not consistent stored!")
         if (isEntityHaveToExist != (isEntityOnFirestoreExist && isEntityOnDropboxExist))
-            throw Exception("The ${entity.getContentsPath()} ${if (isEntityHaveToExist) "is not" else "already"} exist!")
+            throw Exception("The ${entity.contentsPath()} ${if (isEntityHaveToExist) "is not" else "already"} exist!")
     }
 }

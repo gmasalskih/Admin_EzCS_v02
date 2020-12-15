@@ -1,8 +1,1 @@
-fun main() {
-
-    try {
-        App.runApp(title = "App")
-    } catch (e: Throwable) {
-        e.printStackTrace()
-    }
-}
+fun main() = App.runApp(title = "Admin_EzCS")

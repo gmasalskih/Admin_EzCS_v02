@@ -6,12 +6,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import providers.Service
 import router.Router
 
 abstract class BaseController<I> : KoinComponent {
 
     protected abstract var state: ViewState<I>
-    protected val router: Router by inject()
+    protected val router by inject<Router>()
+    protected val service by inject<Service>()
     protected lateinit var cs: CoroutineScope
         private set
 

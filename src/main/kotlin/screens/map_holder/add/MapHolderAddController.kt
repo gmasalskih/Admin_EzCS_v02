@@ -1,9 +1,8 @@
 package screens.map_holder.add
 
 import androidx.compose.runtime.*
+import data.entitys.MapHolder
 import kotlinx.coroutines.launch
-import org.koin.core.inject
-import providers.service.ServiceProvider
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
@@ -16,7 +15,6 @@ class MapHolderAddController : BaseController<MapHolderAddState>() {
             item = MapHolderAddState()
         )
     )
-    private val serviceProvider by inject<ServiceProvider>()
 
     fun onClear() {
         state = ViewState(title = "Add Map", item = MapHolderAddState())
@@ -40,9 +38,19 @@ class MapHolderAddController : BaseController<MapHolderAddState>() {
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
     fun onSubmit() = cs.launch {
+        val item = state.item
+        if (!item.isValid()) throw Exception("The entity ${state.item} is not valid!")
         showLoading()
         try {
-            serviceProvider.upload(state.item)
+            service.upload(
+                MapHolder(
+                    name = item.name,
+                    isCompetitive = item.isCompetitive,
+                    logo = item.logo,
+                    map = item.map,
+                    wallpaper = item.wallpaper
+                )
+            )
             onClear()
         } catch (e: Exception) {
             showError(e)

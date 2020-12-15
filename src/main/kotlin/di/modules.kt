@@ -5,6 +5,7 @@ import com.google.firebase.cloud.StorageClient
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
+import providers.Service
 import providers.dropbox.DropboxProvider
 import providers.firebase.FirebaseAppProvider
 import providers.firebase.FirestoreProvider
@@ -54,7 +55,7 @@ val fbModules = module {
 }
 
 val serviceModule = module {
-    single<ServiceProvider> { ServiceProvider(get(), get()) }
+    single<Service> { ServiceProvider(get(), get()) }
 }
 
 val competitiveModule = module {
