@@ -27,7 +27,8 @@ object App : KoinComponent {
                 mapsModule,
                 profileRankModule,
                 weaponsModule,
-                wingmanModule
+                wingmanModule,
+                testModule
             )
         }
     }
@@ -46,7 +47,6 @@ object App : KoinComponent {
                     MenuApp(router)
                     // Content
                     router.currentScreen.render()
-//                    router.currentScreen.render()
                 }
             }
         }

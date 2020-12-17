@@ -28,6 +28,8 @@ import screens.map_holder.edit.MapHolderEditController
 import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
+import screens.test.TestController
+import screens.test.TestView
 import screens.weapon.add.WeaponAddController
 import screens.weapon.edit.WeaponEditController
 import screens.weapon.menu.WeaponMenuController
@@ -37,6 +39,7 @@ import screens.wingman.menu.WingmanMenuController
 
 val appModule = module {
     single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
+//    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
 val dropboxModule = module {
@@ -98,4 +101,8 @@ val wingmanModule = module {
     single<WingmanAddController> { WingmanAddController() }
     single<WingmanEditController> { WingmanEditController() }
     single<WingmanMenuController> { WingmanMenuController() }
+}
+
+val testModule = module {
+    single<TestController> { TestController() }
 }

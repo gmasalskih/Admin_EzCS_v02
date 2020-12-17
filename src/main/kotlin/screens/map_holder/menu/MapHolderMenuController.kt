@@ -20,6 +20,9 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
     }
 
     private fun initState() = cs.launch {
+
+
+
         try {
             val maps = service.retrieveEntities(EntityType.MAP_HOLDER.name, MapHolder::class)
             setItemState(maps)

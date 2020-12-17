@@ -55,16 +55,9 @@ fun ImageUrl(
     colorFilter: ColorFilter? = null,
     progressIndicatorColor: Color = dark,
 ) {
-    val (imageAsset, setImageAsset) = remember { mutableStateOf<ImageBitmap?>(null) }
-    val (oldUrl, setOldUrl) = remember { mutableStateOf(url) }
+    val (imageAsset, setImageAsset) = remember(url) { mutableStateOf<ImageBitmap?>(null) }
     val scope = rememberCoroutineScope()
     var job by remember { mutableStateOf<Job?>(null) }
-    onCommit {
-        if (oldUrl != url) {
-            setImageAsset(null)
-            setOldUrl(url)
-        }
-    }
     onDispose {
         job?.cancel()
         job = null

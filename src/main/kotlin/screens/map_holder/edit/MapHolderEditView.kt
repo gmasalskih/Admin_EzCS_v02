@@ -33,16 +33,9 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                     horizontalArrangement = spacedBy20dp
                 ) {
                     //Map ID
-                    TextFieldApp(
-                        value = controller.getViewState().item.name.toValidId(),
-                        label = "Map ID",
-                    )
+                    TextApp("Map ID: ${controller.getViewState().item.name.toValidId()}")
                     //Map name
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Map name",
-                        onTextChanged = controller::onNameChange
-                    )
+                    TextApp("Map name: ${controller.getViewState().item.name}")
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),

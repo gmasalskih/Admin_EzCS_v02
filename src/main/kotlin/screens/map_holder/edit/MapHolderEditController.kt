@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
+import utils.isValidPathToFile
 
 class MapHolderEditController : BaseController<MapHolderEditState>() {
     override var state: ViewState<MapHolderEditState> by mutableStateOf(
@@ -15,24 +16,45 @@ class MapHolderEditController : BaseController<MapHolderEditState>() {
         )
     )
     private lateinit var documentName: String
+    private lateinit var entity: MapHolder
 
     private fun initState() = cs.launch {
-        val item = service.retrieveEntity(documentName, MapHolder::class)
-        setItemState(
-            state.item.copy(
-                name = item.name,
-                logo = item.logo,
-                map = item.map,
-                wallpaper = item.wallpaper,
-                isCompetitive = item.isCompetitive
+        entity = service.retrieveRawEntity(documentName, MapHolder::class)
+        service.retrieveEntity(documentName, MapHolder::class).let { entity ->
+            setItemState(
+                state.item.copy(
+                    name = entity.name,
+                    logo = entity.logo,
+                    map = entity.map,
+                    wallpaper = entity.wallpaper,
+                    isCompetitive = entity.isCompetitive
+                )
             )
-        )
+        }
         showData()
+        println(entity)
     }
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
-    fun onSubmit() {
-//        TODO("Not yet implemented")
+
+    fun onSubmit() = cs.launch {
+        showLoading()
+        try {
+            service.update(
+                entity.copy(
+                    name = state.item.name,
+                    logo = if (state.item.logo.isValidPathToFile()) state.item.logo else entity.logo,
+                    map = if (state.item.map.isValidPathToFile()) state.item.map else entity.map,
+                    wallpaper = if (state.item.wallpaper.isValidPathToFile()) state.item.wallpaper else entity.wallpaper,
+                    isCompetitive = state.item.isCompetitive
+                )
+            )
+            showData()
+            router.back()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showError(e)
+        }
     }
 
     fun onWallpaperChange() {
@@ -49,8 +71,6 @@ class MapHolderEditController : BaseController<MapHolderEditState>() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
-
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
 
     fun onDelete() = cs.launch {
         showLoading()

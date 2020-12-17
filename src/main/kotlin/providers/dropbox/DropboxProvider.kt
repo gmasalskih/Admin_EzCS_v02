@@ -13,24 +13,35 @@ class DropboxProvider {
     private val dropbox = DbxClientV2(DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(), DROPBOX_TOKEN)
 
     suspend fun getFileUrl(pathToFile: String, fileName: String): String = withContext(Dispatchers.IO) {
-        dropbox.files().getTemporaryLink("/$pathToFile/$fileName").link
+        dropbox.files().getTemporaryLink("${pathToFile.toValidPath()}/$fileName").link
     }
 
     suspend fun isEntityExist(contentsPath: String) = withContext(Dispatchers.IO) {
         try {
-            dropbox.files().listFolder("/$contentsPath")
+            dropbox.files().listFolder(contentsPath.toValidPath())
             true
         } catch (e: Exception) {
             false
         }
     }
 
-    suspend fun delete(path: String) {
-        dropbox.files().deleteV2(path)
+    suspend fun delete(path: String) = withContext(Dispatchers.IO) {
+        dropbox.files().deleteV2(path.toValidPath())
+    }
+
+    suspend fun update() = withContext(Dispatchers.IO) {
+        dropbox.files().listFolder("/MAP_HOLDER/vertigo").entries.forEach {
+
+            println(it.name)
+        }
+    }
+
+    suspend fun getListItems(pathToFolder: String) = withContext(Dispatchers.IO) {
+        dropbox.files().listFolder(pathToFolder.toValidPath()).entries.map { it.name }.toList()
     }
 
     private fun isFileExist(pathToFile: String, fileName: String) =
-        dropbox.files().listFolder("/$pathToFile").entries.find {
+        dropbox.files().listFolder(pathToFile.toValidPath()).entries.find {
             it.name == fileName
         } != null
 
@@ -39,9 +50,12 @@ class DropboxProvider {
         val file = File(sourceFullPathToFile)
         if (!file.exists()) throw FileNotFoundException()
         val fileName: String = sourceFullPathToFile.split("[/]".toRegex()).last()
+        if (isFileExist(targetFolder, fileName)) delete("${targetFolder.toValidPath()}/$fileName")
         FileInputStream(file).use { fis ->
-            dropbox.files().uploadBuilder("/$targetFolder/$fileName").uploadAndFinish(fis)
+            dropbox.files().uploadBuilder("${targetFolder.toValidPath()}/$fileName").uploadAndFinish(fis)
         }
         true
     }
 }
+
+private fun String.toValidPath() = if (this.contains("^[/]".toRegex())) this else "/$this"

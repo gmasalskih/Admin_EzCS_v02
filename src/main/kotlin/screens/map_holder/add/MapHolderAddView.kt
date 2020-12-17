@@ -23,14 +23,11 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
                 verticalArrangement = spacedBy20dp
             ) {
-                Text(
+                TextApp(
                     text = "Map ID: ${
                         if (controller.getViewState().item.name.toValidId().isBlank()) "UNKNOWN"
                         else controller.getViewState().item.name.toValidId()
-                    }",
-                    fontFamily = verdanaRegular,
-                    fontSize = fontSize14sp,
-                    color = greyAccent
+                    }"
                 )
                 TextFieldApp(
                     value = controller.getViewState().item.name,

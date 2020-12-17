@@ -28,4 +28,6 @@ sealed class NavigationTargets {
     object WingmanAdd : NavigationTargets()
     data class WingmanEdit(val id: String) : NavigationTargets()
     object WingmanMenu : NavigationTargets()
+
+    object Test : NavigationTargets()
 }

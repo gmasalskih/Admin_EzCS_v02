@@ -17,6 +17,7 @@ import screens.map_holder.edit.MapHolderEditView
 import screens.profile_rank.add.ProfileRankAddView
 import screens.profile_rank.edit.ProfileRankEditView
 import screens.profile_rank.menu.ProfileRankMenuView
+import screens.test.TestView
 import screens.weapon.add.WeaponAddView
 import screens.weapon.edit.WeaponEditView
 import screens.weapon.menu.WeaponMenuView
@@ -89,6 +90,9 @@ class Router(entryPoint: Pair<NavigationTargets, BaseView<*>>) {
             is NavigationTargets.WingmanAdd -> WingmanAddView()
             is NavigationTargets.WingmanEdit -> WingmanEditView(target.id)
             is NavigationTargets.WingmanMenu -> WingmanMenuView()
+
+            //Test
+            is NavigationTargets.Test -> TestView()
         }
         currentScreen.onViewCreate()
     }
