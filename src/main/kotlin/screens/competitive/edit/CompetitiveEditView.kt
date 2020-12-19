@@ -8,15 +8,16 @@ import androidx.compose.ui.Modifier
 import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
+import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
 import utils.toValidId
 
-class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>() {
+class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditController>() {
     override val controller by inject<CompetitiveEditController>()
 
     init {
-//        controller.setId(id)
+        controller.setDocumentName(documentName)
     }
 
     @Composable
@@ -28,34 +29,27 @@ class CompetitiveEditView(val id: String) : BaseView<CompetitiveEditController>(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = spacedBy20dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    //Rank ID
-                    TextFieldApp(
-                        value = controller.getViewState().item.name.toValidId(),
-                        label = "Rank ID",
-                    )
-                    //Rank name
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Rank name",
-                        onTextChanged = controller::onNameChange
-                    )
-                }
-                CardAddOrImage(
+                CardImageUrl(
                     label = "Change logo",
-                    image = controller.getViewState().item.logo,
+                    pathToFile = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange
                 )
             }
-            ButtonApp(
+            Row(
                 modifier = Modifier.align(Alignment.BottomEnd),
-                label = "submit",
-                color = orangeAccent,
-                onClick = controller::onSubmit
-            )
+                horizontalArrangement = spacedBy20dp
+            ) {
+                ButtonApp(
+                    label = "delete",
+                    color = greyAccent,
+                    onClick = controller::onDelete,
+                )
+                ButtonApp(
+                    label = "submit",
+                    color = orangeAccent,
+                    onClick = controller::onSubmit,
+                )
+            }
         }
     }
 }

@@ -27,4 +27,8 @@ class DangerZoneAddController : BaseController<DangerZoneAddState>() {
     fun onSubmit() {
         //TODO implement fun onSubmit
     }
+
+    override fun initState() {
+        onClear()
+    }
 }

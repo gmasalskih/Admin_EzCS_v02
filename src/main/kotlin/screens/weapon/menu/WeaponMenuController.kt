@@ -38,4 +38,8 @@ class WeaponMenuController : BaseController<List<Weapon>>() {
     fun navigateToWeaponsEdit(id: String) {
         router.navigateTo(NavigationTargets.WeaponsEdit(id))
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

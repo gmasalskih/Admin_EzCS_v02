@@ -2,13 +2,12 @@ package screens.map_holder.add
 
 import androidx.compose.runtime.*
 import data.entitys.MapHolder
-import kotlinx.coroutines.launch
-import screens.BaseController
+import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
 import utils.toValidName
 
-class MapHolderAddController : BaseController<MapHolderAddState>() {
+class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     override var state: ViewState<MapHolderAddState> by mutableStateOf(
         ViewState(
             title = "Add Map",
@@ -16,11 +15,21 @@ class MapHolderAddController : BaseController<MapHolderAddState>() {
         )
     )
 
-    fun onClear() {
-        state = ViewState(title = "Add Map", item = MapHolderAddState())
-    }
+    override fun onClear() = setItemState(MapHolderAddState())
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    override suspend fun upload(item: MapHolderAddState) =
+        service.upload(
+            MapHolder(
+                name = item.name,
+                isCompetitive = item.isCompetitive,
+                logo = item.logo,
+                map = item.map,
+                wallpaper = item.wallpaper
+            )
+        )
+
+    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
@@ -37,28 +46,5 @@ class MapHolderAddController : BaseController<MapHolderAddState>() {
     }
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
-    fun onSubmit() = cs.launch {
-        val item = state.item
-        if (!item.isValid()) throw Exception("The entity ${state.item} is not valid!")
-        showLoading()
-        try {
-            service.upload(
-                MapHolder(
-                    name = item.name,
-                    isCompetitive = item.isCompetitive,
-                    logo = item.logo,
-                    map = item.map,
-                    wallpaper = item.wallpaper
-                )
-            )
-            onClear()
-        } catch (e: Exception) {
-            showError(e)
-        }
-    }
-
-    override fun onViewCreate() {
-        super.onViewCreate()
-        onClear()
-    }
+    
 }

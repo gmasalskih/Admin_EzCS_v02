@@ -6,8 +6,12 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.orangeAccent
 
-class WeaponEditView(val id: String) : BaseView<WeaponEditController>() {
+class WeaponEditView(documentName: String) : BaseView<WeaponEditController>() {
     override val controller by inject<WeaponEditController>()
+
+    init {
+        controller.setDocumentName(documentName)
+    }
 
     @Composable
     override fun setContent(controller: WeaponEditController) {

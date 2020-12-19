@@ -1,9 +1,11 @@
 package screens.map_point.edit
 
 import androidx.compose.runtime.*
+import data.entitys.Competitive
 import data.types.GrenadeType
 import data.types.TickrateType
 import data.entitys.MapPoint
+import kotlinx.coroutines.launch
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
@@ -29,6 +31,13 @@ class MapPointEditController : BaseController<MapPointEditState>() {
             )
         )
     )
+
+    private lateinit var documentName: String
+    private lateinit var entity: MapPoint
+
+    fun setDocumentName(documentName: String) {
+        this.documentName = documentName
+    }
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
     fun onGrenadeTypeChange(grenadeType: GrenadeType) = setItemState(state.item.copy(grenadeType = grenadeType))
@@ -81,7 +90,17 @@ class MapPointEditController : BaseController<MapPointEditState>() {
     fun onVideoDelete(video: String) =
         setItemState(state.item.copy(contentVideos = state.item.contentVideos.filter { it != video }))
 
+    fun onDelete() = cs.launch {
+        showLoading()
+        service.delete(documentName)
+        router.back()
+    }
+
     fun onSubmit() {
+//        TODO("Not yet implemented")
+    }
+
+    override fun initState() {
 //        TODO("Not yet implemented")
     }
 }

@@ -12,11 +12,11 @@ import ui.orangeAccent
 import ui.spacedBy20dp
 import utils.toValidId
 
-class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
+class MapHolderEditView(documentName: String) : BaseView<MapHolderEditController>() {
     override val controller by inject<MapHolderEditController>()
 
     init {
-        controller.setDocumentName(id)
+        controller.setDocumentName(documentName)
     }
 
     @Composable
@@ -28,15 +28,6 @@ class MapHolderEditView(val id: String) : BaseView<MapHolderEditController>() {
                 modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
                 verticalArrangement = spacedBy20dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    //Map ID
-                    TextApp("Map ID: ${controller.getViewState().item.name.toValidId()}")
-                    //Map name
-                    TextApp("Map name: ${controller.getViewState().item.name}")
-                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = spacedBy20dp

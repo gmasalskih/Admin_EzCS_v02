@@ -33,4 +33,8 @@ class ProfileRankMenuController : BaseController<List<ProfileRank>>() {
     fun navigateToProfileRankEdit(id: String) {
         router.navigateTo(NavigationTargets.ProfileRankEdit(id))
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

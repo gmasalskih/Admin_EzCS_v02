@@ -6,9 +6,10 @@ import data.entitys.MapHolder
 import kotlinx.coroutines.*
 import router.NavigationTargets
 import screens.BaseController
+import screens.BaseMenuController
 import screens.ViewState
 
-class MapHolderMenuController : BaseController<List<MapHolder>>() {
+class MapHolderMenuController : BaseMenuController<List<MapHolder>>() {
     override var state: ViewState<List<MapHolder>> by mutableStateOf(ViewState(title = "Maps", item = listOf()))
 
     fun navigateToMapHolderAdd() {
@@ -19,27 +20,15 @@ class MapHolderMenuController : BaseController<List<MapHolder>>() {
         router.navigateTo(NavigationTargets.MapHolderEdit(documentName))
     }
 
-    private fun initState() = cs.launch {
-
-
-
-        try {
-            val maps = service.retrieveEntities(EntityType.MAP_HOLDER.name, MapHolder::class)
-            setItemState(maps)
-            showData()
-        } catch (e: Exception) {
-            showError(e)
-        }
-    }
-
-    override fun onViewCreate() {
-        super.onViewCreate()
-        showLoading()
-        initState()
-    }
-
-    override fun onViewDestroy() {
-        super.onViewDestroy()
+    override fun initState() {
         setItemState(listOf())
+        cs.launch {
+            try {
+                setItemState(service.retrieveEntities(EntityType.MAP_HOLDER.name, MapHolder::class))
+                showData()
+            } catch (e: Exception) {
+                showError(e)
+            }
+        }
     }
 }

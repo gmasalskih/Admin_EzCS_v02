@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ui.*
 
@@ -43,9 +44,10 @@ fun CardRank(
             }
             Text(
                 text = name.toUpperCase(),
+                textAlign = TextAlign.Center,
                 fontFamily = verdanaBold,
                 fontSize = fontSize8sp,
-                modifier = Modifier.align(Alignment.BottomCenter).offset(y = (-10).dp),
+                modifier = Modifier.align(Alignment.BottomCenter).padding(10.dp),
                 color = greyAccent
             )
         }

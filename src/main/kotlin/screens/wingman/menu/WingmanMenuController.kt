@@ -34,4 +34,8 @@ class WingmanMenuController : BaseController<List<Wingman>>() {
     fun navigateToWingmanEdit(id: String) {
         router.navigateTo(NavigationTargets.WingmanEdit(id))
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

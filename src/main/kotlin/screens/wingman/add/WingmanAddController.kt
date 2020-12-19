@@ -24,4 +24,8 @@ class WingmanAddController : BaseController<WingmanAddState>() {
     fun onSubmit() {
 //        TODO("Not yet implemented")
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

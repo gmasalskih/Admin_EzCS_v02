@@ -27,4 +27,8 @@ class ProfileRankAddController : BaseController<ProfileRankAddState>() {
     fun onSubmit() {
 //        TODO("Not yet implemented")
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

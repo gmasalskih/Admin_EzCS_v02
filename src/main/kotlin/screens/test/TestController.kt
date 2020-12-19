@@ -16,11 +16,15 @@ class TestController : BaseController<TestState>() {
     override fun onViewCreate() {
         super.onViewCreate()
         cs.launch {
-            dropbox.update()
+            println("TEST --- ${dropbox.test()}")
         }
     }
 
     override fun onViewDestroy() {
         super.onViewDestroy()
+    }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
     }
 }

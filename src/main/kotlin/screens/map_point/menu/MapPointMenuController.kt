@@ -40,4 +40,8 @@ class MapPointMenuController : BaseController<List<MapHolder>>() {
     fun navigateToMapPointsEdit(id: String) {
         router.navigateTo(NavigationTargets.MapPointsEdit(id))
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

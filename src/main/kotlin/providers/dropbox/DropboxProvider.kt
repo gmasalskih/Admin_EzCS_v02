@@ -29,21 +29,23 @@ class DropboxProvider {
         dropbox.files().deleteV2(path.toValidPath())
     }
 
-    suspend fun update() = withContext(Dispatchers.IO) {
-        dropbox.files().listFolder("/MAP_HOLDER/vertigo").entries.forEach {
-
-            println(it.name)
-        }
+    suspend fun test() = withContext(Dispatchers.IO) {
+        isFileExist("/MAP_HOLDER/aaa", "logo.png")
     }
 
     suspend fun getListItems(pathToFolder: String) = withContext(Dispatchers.IO) {
         dropbox.files().listFolder(pathToFolder.toValidPath()).entries.map { it.name }.toList()
     }
 
-    private fun isFileExist(pathToFile: String, fileName: String) =
-        dropbox.files().listFolder(pathToFile.toValidPath()).entries.find {
-            it.name == fileName
-        } != null
+    private suspend fun isFileExist(pathToFile: String, fileName: String) =
+        try {
+            dropbox.files().listFolder(pathToFile.toValidPath()).entries.find {
+                it.name == fileName
+            } != null
+        } catch (e: Exception) {
+            false
+        }
+
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun uploadFile(sourceFullPathToFile: String, targetFolder: String): Boolean = withContext(Dispatchers.IO) {

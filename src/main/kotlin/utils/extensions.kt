@@ -33,6 +33,9 @@ fun String.toValidFileName(): String {
     return this.split("/").last()
 }
 
+fun String.toValidOrder(): Int = this.replace("[^0-9]".toRegex(), "").toIntOrNull() ?: -1
+
+
 fun String.isValidURL() = try {
     URL(this)
     true

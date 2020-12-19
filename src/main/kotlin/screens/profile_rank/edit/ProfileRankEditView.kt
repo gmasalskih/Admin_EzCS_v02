@@ -17,11 +17,11 @@ import screens.BaseView
 import ui.orangeAccent
 import utils.toValidId
 
-class ProfileRankEditView(val id: String) : BaseView<ProfileRankEditController>() {
+class ProfileRankEditView(documentName: String) : BaseView<ProfileRankEditController>() {
     override val controller by inject<ProfileRankEditController>()
 
     init {
-//        controller.setId(id)
+        controller.setDocumentName(documentName)
     }
 
     @Composable

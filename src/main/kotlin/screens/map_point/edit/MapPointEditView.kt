@@ -14,8 +14,12 @@ import screens.BaseView
 import ui.orangeAccent
 import ui.spacedBy20dp
 
-class MapPointEditView(val id: String) : BaseView<MapPointEditController>() {
+class MapPointEditView(documentName: String) : BaseView<MapPointEditController>() {
     override val controller by inject<MapPointEditController>()
+
+    init {
+        controller.setDocumentName(documentName)
+    }
 
     @Composable
     override fun setContent(controller: MapPointEditController) {

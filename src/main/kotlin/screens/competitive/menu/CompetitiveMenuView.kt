@@ -23,7 +23,7 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
                 CardRank(
                     pathToImage = competitiveRank.logo,
                     name = competitiveRank.name,
-                    onClick = { controller.navigateToCompetitiveEdit(competitiveRank.name.toValidId()) }
+                    onClick = { controller.navigateToCompetitiveEdit(competitiveRank.getDocumentName()) }
                 )
             }
         )

@@ -26,18 +26,17 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 verticalArrangement = spacedBy20dp
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = spacedBy20dp
-
                 ) {
-                    TextFieldApp(
-                        value = controller.getViewState().item.name.toValidId(),
-                        label = "Enter rank ID",
-                    )
                     TextFieldApp(
                         value = controller.getViewState().item.name,
                         label = "Enter rank name",
                         onTextChanged = controller::onNameChange
+                    )
+                    TextFieldApp(
+                        value = controller.getViewState().item.order.toString(),
+                        label = "Enter order",
+                        onTextChanged = controller::onOrderChange
                     )
                 }
                 CardAddOrImage(

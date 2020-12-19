@@ -13,4 +13,7 @@ data class Competitive(
 
     @ContentType
     val logo: String = "",
+
+    @DataType
+    val order: Int = 0
 ) : Entity

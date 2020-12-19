@@ -34,4 +34,8 @@ class DangerZoneMenuController : BaseController<List<DangerZone>>() {
     fun navigateToDangerZoneEdit(id: String) {
         router.navigateTo(NavigationTargets.DangerZoneEdit(id))
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }

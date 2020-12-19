@@ -17,11 +17,11 @@ import screens.BaseView
 import ui.orangeAccent
 import utils.toValidId
 
-class WingmanEditView(val id: String) : BaseView<WingmanEditController>() {
+class WingmanEditView(documentName: String) : BaseView<WingmanEditController>() {
     override val controller by inject<WingmanEditController>()
 
     init {
-//        controller.setId(id)
+        controller.setDocumentName(documentName)
     }
 
     @Composable

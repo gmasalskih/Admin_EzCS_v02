@@ -23,12 +23,6 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 modifier = Modifier.fillMaxSize().align(Alignment.TopStart),
                 verticalArrangement = spacedBy20dp
             ) {
-                TextApp(
-                    text = "Map ID: ${
-                        if (controller.getViewState().item.name.toValidId().isBlank()) "UNKNOWN"
-                        else controller.getViewState().item.name.toValidId()
-                    }"
-                )
                 TextFieldApp(
                     value = controller.getViewState().item.name,
                     label = "Enter map name",

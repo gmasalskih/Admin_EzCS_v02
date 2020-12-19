@@ -1,11 +1,13 @@
 package screens.map_holder.edit
 
+import data.types.EntityType
+import screens.State
 import utils.ContentType
 import utils.DataType
 
 data class MapHolderEditState(
     @DataType
-    val name: String = "",
+    override val name: String = "",
 
     @ContentType
     val logo: String = "",
@@ -17,7 +19,9 @@ data class MapHolderEditState(
     val wallpaper: String = "",
 
     @DataType
-    val isCompetitive: Boolean = false
-) {
-    fun isValid() = name.isNotBlank() && logo.isNotBlank() && map.isNotBlank() && wallpaper.isNotBlank()
+    val isCompetitive: Boolean = false,
+
+    override val entityType: EntityType = EntityType.MAP_HOLDER
+) : State {
+    override fun isValid() = name.isNotBlank() && logo.isNotBlank() && map.isNotBlank() && wallpaper.isNotBlank()
 }

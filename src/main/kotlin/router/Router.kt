@@ -58,37 +58,37 @@ class Router(entryPoint: Pair<NavigationTargets, BaseView<*>>) {
         currentScreen = when (target) {
             //Competitive
             is NavigationTargets.CompetitiveAdd -> CompetitiveAddView()
-            is NavigationTargets.CompetitiveEdit -> CompetitiveEditView(target.id)
+            is NavigationTargets.CompetitiveEdit -> CompetitiveEditView(target.documentName)
             is NavigationTargets.CompetitiveMenu -> CompetitiveMenuView()
 
             //DangerZone
             is NavigationTargets.DangerZoneAdd -> DangerZoneAddView()
-            is NavigationTargets.DangerZoneEdit -> DangerZoneEditView(target.id)
+            is NavigationTargets.DangerZoneEdit -> DangerZoneEditView(target.documentName)
             is NavigationTargets.DangerZoneMenu -> DangerZoneMenuView()
 
             //MapPoints
             is NavigationTargets.MapPointsAdd -> MapPointAddView()
-            is NavigationTargets.MapPointsEdit -> MapPointEditView(target.id)
+            is NavigationTargets.MapPointsEdit -> MapPointEditView(target.documentName)
             is NavigationTargets.MapPointsMenu -> MapPointMenuView()
 
             //Maps
             is NavigationTargets.MapHolderAdd -> MapHolderAddView()
-            is NavigationTargets.MapHolderEdit -> MapHolderEditView(target.id)
+            is NavigationTargets.MapHolderEdit -> MapHolderEditView(target.documentName)
             is NavigationTargets.MapHolderMenu -> MapHolderMenuView()
 
             //ProfileRank
             is NavigationTargets.ProfileRankAdd -> ProfileRankAddView()
-            is NavigationTargets.ProfileRankEdit -> ProfileRankEditView(target.id)
+            is NavigationTargets.ProfileRankEdit -> ProfileRankEditView(target.documentName)
             is NavigationTargets.ProfileRankMenu -> ProfileRankMenuView()
 
             //Weapons
             is NavigationTargets.WeaponsAdd -> WeaponAddView()
-            is NavigationTargets.WeaponsEdit -> WeaponEditView(target.id)
+            is NavigationTargets.WeaponsEdit -> WeaponEditView(target.documentName)
             is NavigationTargets.WeaponsMenu -> WeaponMenuView()
 
             //Wingman
             is NavigationTargets.WingmanAdd -> WingmanAddView()
-            is NavigationTargets.WingmanEdit -> WingmanEditView(target.id)
+            is NavigationTargets.WingmanEdit -> WingmanEditView(target.documentName)
             is NavigationTargets.WingmanMenu -> WingmanMenuView()
 
             //Test

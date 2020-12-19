@@ -17,11 +17,11 @@ import screens.BaseView
 import ui.orangeAccent
 import utils.toValidId
 
-class DangerZoneEditView(val id: String) : BaseView<DangerZoneEditController>() {
+class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditController>() {
     override val controller by inject<DangerZoneEditController>()
 
     init {
-//        controller.setId(id)
+        controller.setDocumentName(documentName)
     }
 
     @Composable

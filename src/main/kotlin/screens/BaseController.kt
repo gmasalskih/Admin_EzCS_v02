@@ -17,6 +17,8 @@ abstract class BaseController<I> : KoinComponent {
     protected lateinit var cs: CoroutineScope
         private set
 
+    protected abstract fun initState()
+
     fun getViewState() = state
 
     protected fun setItemState(item: I) {

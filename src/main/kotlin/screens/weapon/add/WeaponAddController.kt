@@ -44,4 +44,8 @@ class WeaponAddController : BaseController<WeaponAddState>() {
     fun onParse() {
         //TODO
     }
+
+    override fun initState() {
+        TODO("Not yet implemented")
+    }
 }

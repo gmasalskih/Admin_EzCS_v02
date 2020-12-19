@@ -67,4 +67,8 @@ class MapPointAddController : BaseController<MapPointAddState>() {
     fun onSubmit() {
 //        TODO("Not yet implemented")
     }
+
+    override fun initState() {
+//        TODO("Not yet implemented")
+    }
 }
