@@ -1,10 +1,8 @@
 package screens.profile_rank.add
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import data.entitys.ProfileRank
 import screens.BaseAddController
-import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
 import utils.toValidName

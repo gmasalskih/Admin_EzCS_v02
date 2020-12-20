@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
-import common_widgets.CardAddOrImage
 import common_widgets.CardImageUrl
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
