@@ -11,7 +11,6 @@ import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
-import utils.toValidId
 
 class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditController>() {
     override val controller by inject<CompetitiveEditController>()

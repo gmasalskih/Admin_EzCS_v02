@@ -34,7 +34,7 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order.toString(),
+                        value = controller.getViewState().item.order,
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )

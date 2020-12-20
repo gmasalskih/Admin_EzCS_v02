@@ -10,7 +10,6 @@ import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
-import utils.toValidId
 
 class MapHolderEditView(documentName: String) : BaseView<MapHolderEditController>() {
     override val controller by inject<MapHolderEditController>()

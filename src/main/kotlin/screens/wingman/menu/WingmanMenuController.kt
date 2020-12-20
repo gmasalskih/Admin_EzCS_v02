@@ -2,30 +2,13 @@ package screens.wingman.menu
 
 import androidx.compose.runtime.*
 import data.entitys.Wingman
+import data.types.EntityType
 import router.NavigationTargets
-import screens.BaseController
+import screens.BaseMenuController
 import screens.ViewState
 
-class WingmanMenuController : BaseController<List<Wingman>>() {
-    override var state:ViewState<List<Wingman>> by mutableStateOf(
-        ViewState(
-            title = "Wingman",
-            item = listOf(
-                Wingman(
-                    name = "Silver I",
-                    logo = ""
-                ),
-                Wingman(
-                    name = "Silver II",
-                    logo = ""
-                ),
-                Wingman(
-                    name = "Silver III",
-                    logo = ""
-                ),
-            )
-        )
-    )
+class WingmanMenuController : BaseMenuController<List<Wingman>>() {
+    override var state: ViewState<List<Wingman>> by mutableStateOf(ViewState(title = "Wingman", item = listOf()))
 
     fun navigateToWingmanAdd() {
         router.navigateTo(NavigationTargets.WingmanAdd)
@@ -35,7 +18,12 @@ class WingmanMenuController : BaseController<List<Wingman>>() {
         router.navigateTo(NavigationTargets.WingmanEdit(id))
     }
 
-    override fun initState() {
-//        TODO("Not yet implemented")
+    override fun onClear() {
+        setItemState(listOf())
     }
+
+    override suspend fun setEntities() {
+        setItemState(service.retrieveEntities(EntityType.WINGMAN.name, Wingman::class).sortedBy { it.order })
+    }
+
 }

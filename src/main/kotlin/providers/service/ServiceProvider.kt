@@ -53,8 +53,6 @@ class ServiceProvider(
                 }
             }
         }
-        println("---uploadContentSet ${uploadContentSet}")
-        println("---fullContentSet ${fullContentSet}")
         firestore.update(entityMap, entity.getDocumentName())
         uploadContentSet.forEach { pathToFile -> dropbox.uploadFile(pathToFile, entity.getDocumentName()) }
         dropbox.getListItems(entity.getDocumentName()).forEach { fileName ->

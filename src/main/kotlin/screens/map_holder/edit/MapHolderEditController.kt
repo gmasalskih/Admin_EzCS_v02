@@ -24,7 +24,6 @@ class MapHolderEditController : BaseEditController<MapHolder, MapHolderEditState
             state = state.copy(title = "Edit ${entity.name}")
             setItemState(
                 state.item.copy(
-                    name = entity.name,
                     logo = entity.logo,
                     map = entity.map,
                     wallpaper = entity.wallpaper,

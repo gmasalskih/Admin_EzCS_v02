@@ -6,7 +6,6 @@ import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
 import utils.isValidPathToFile
-import kotlin.reflect.KClass
 
 class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEditState>() {
     override var state: ViewState<CompetitiveEditState> by mutableStateOf(
@@ -22,7 +21,6 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
     }
 
     override suspend fun setRowEntity() {
-
         entity = service.retrieveRawEntity(documentName, Competitive::class)
     }
 
@@ -31,7 +29,6 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
             state = state.copy(title = "Edit ${entity.name}")
             setItemState(
                 state.item.copy(
-                    name = entity.name,
                     logo = entity.logo,
                 )
             )

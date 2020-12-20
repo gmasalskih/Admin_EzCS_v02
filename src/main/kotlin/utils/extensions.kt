@@ -33,7 +33,11 @@ fun String.toValidFileName(): String {
     return this.split("/").last()
 }
 
-fun String.toValidOrder(): Int = this.replace("[^0-9]".toRegex(), "").toIntOrNull() ?: -1
+fun String.toValidOrder() = this.replace("[^0-9]".toRegex(), "").let { order ->
+    if (order.isEmpty() || order.toInt() < 1) return@let ""
+    if (order.length > 3) order.take(3).toInt().toString()
+    else order.toInt().toString()
+}
 
 
 fun String.isValidURL() = try {
