@@ -1,11 +1,15 @@
 package screens.profile_rank.add
 
 import androidx.compose.runtime.*
-import screens.BaseController
+import data.entitys.ProfileRank
+import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
+import utils.toValidName
+import utils.toValidOrder
+import utils.toValidXP
 
-class ProfileRankAddController : BaseController<ProfileRankAddState>() {
+class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
     override var state: ViewState<ProfileRankAddState> by mutableStateOf(
         ViewState(
             title = "Add new profile rank",
@@ -13,22 +17,23 @@ class ProfileRankAddController : BaseController<ProfileRankAddState>() {
         )
     )
 
-    fun onClear() {
-        state = ViewState(title = "Add new profile rank", item = ProfileRankAddState())
+    override fun onClear() {
+        setItemState(ProfileRankAddState())
     }
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
-    fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp))
+    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+
+    fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp.toValidXP()))
+
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
 
-    fun onSubmit() {
-//        TODO("Not yet implemented")
+    fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
+
+    override suspend fun upload(item: ProfileRankAddState) {
+        service.upload(ProfileRank(name = item.name, xp = item.xp, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
     }
 
-    override fun initState() {
-//        TODO("Not yet implemented")
-    }
 }

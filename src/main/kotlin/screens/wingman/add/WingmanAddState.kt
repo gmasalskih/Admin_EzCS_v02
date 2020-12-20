@@ -1,9 +1,11 @@
 package screens.wingman.add
 
-import data.types.EntityType
+import screens.State
 
 data class WingmanAddState(
     val name: String = "",
-    val entityType: EntityType = EntityType.WINGMAN,
     val logo: String = "",
-)
+    val order: String = "",
+) : State {
+    override fun isValid() = name.isNotBlank() && logo.isNotBlank() && (order.toIntOrNull() ?: -1) > 0
+}

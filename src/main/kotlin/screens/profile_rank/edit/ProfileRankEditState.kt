@@ -1,10 +1,10 @@
 package screens.profile_rank.edit
 
-import data.types.EntityType
+import screens.State
 
 data class ProfileRankEditState(
-    val name: String = "",
-    val entityType: EntityType = EntityType.PROFILE_RANK,
     var xp: String = "",
     var logo: String = "",
-)
+) : State {
+    override fun isValid(): Boolean = xp.isNotBlank() && logo.isNotBlank()
+}

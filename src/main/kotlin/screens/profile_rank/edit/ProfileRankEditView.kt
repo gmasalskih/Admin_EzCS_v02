@@ -4,18 +4,17 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
-import common_widgets.CardAddOrImage
+import common_widgets.CardImageUrl
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
+import ui.greyAccent
 import ui.orangeAccent
-import utils.toValidId
 
 class ProfileRankEditView(documentName: String) : BaseView<ProfileRankEditController>() {
     override val controller by inject<ProfileRankEditController>()
@@ -33,39 +32,32 @@ class ProfileRankEditView(documentName: String) : BaseView<ProfileRankEditContro
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = spacedBy20dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-
-                ) {
-                    TextFieldApp(
-                        value = controller.getViewState().item.name.toValidId(),
-                        label = "Rank ID",
-                        onTextChanged = {}
-                    )
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Rank name",
-                        onTextChanged = controller::onNameChange
-                    )
-                    TextFieldApp(
-                        value = controller.getViewState().item.xp,
-                        label = "Rank XP",
-                        onTextChanged = controller::onXPChange
-                    )
-                }
-                CardAddOrImage(
-                    label = "add logo",
-                    image = controller.getViewState().item.logo,
-                    onClick = controller::onLogoAdd
+                TextFieldApp(
+                    value = controller.getViewState().item.xp,
+                    label = "Rank XP",
+                    onTextChanged = controller::onXPChange
+                )
+                CardImageUrl(
+                    label = "Change logo",
+                    pathToFile = controller.getViewState().item.logo,
+                    onClick = controller::onLogoChange
                 )
             }
-            ButtonApp(
+            Row(
                 modifier = Modifier.align(Alignment.BottomEnd),
-                label = "submit",
-                color = orangeAccent,
-                onClick = controller::onSubmit
-            )
+                horizontalArrangement = spacedBy20dp
+            ) {
+                ButtonApp(
+                    label = "delete",
+                    color = greyAccent,
+                    onClick = controller::onDelete,
+                )
+                ButtonApp(
+                    label = "submit",
+                    color = orangeAccent,
+                    onClick = controller::onSubmit,
+                )
+            }
         }
     }
 }

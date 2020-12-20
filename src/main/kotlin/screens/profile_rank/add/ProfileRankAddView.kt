@@ -16,7 +16,6 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
-import utils.toValidId
 
 class ProfileRankAddView : BaseView<ProfileRankAddController>() {
     override val controller by inject<ProfileRankAddController>()
@@ -36,10 +35,6 @@ class ProfileRankAddView : BaseView<ProfileRankAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.name.toValidId(),
-                        label = "Enter rank ID",
-                    )
-                    TextFieldApp(
                         value = controller.getViewState().item.name,
                         label = "Enter rank name",
                         onTextChanged = controller::onNameChange
@@ -48,6 +43,11 @@ class ProfileRankAddView : BaseView<ProfileRankAddController>() {
                         value = controller.getViewState().item.xp,
                         label = "Enter rank XP",
                         onTextChanged = controller::onXPChange
+                    )
+                    TextFieldApp(
+                        value = controller.getViewState().item.order,
+                        label = "Enter order",
+                        onTextChanged = controller::onOrderChange
                     )
                 }
                 CardAddOrImage(

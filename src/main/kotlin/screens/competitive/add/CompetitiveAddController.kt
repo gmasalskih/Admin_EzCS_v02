@@ -27,11 +27,6 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-        onClear()
-    }
-
     override suspend fun upload(item: CompetitiveAddState) =
-        service.upload(Competitive(name = item.name, logo = item.logo, order = item.order))
+        service.upload(Competitive(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
 }

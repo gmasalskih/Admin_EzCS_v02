@@ -1,7 +1,6 @@
 package screens
 
 import data.entitys.Entity
-import data.entitys.MapHolder
 import kotlinx.coroutines.launch
 
 abstract class BaseEditController<E : Entity, I : State> : BaseController<I>() {

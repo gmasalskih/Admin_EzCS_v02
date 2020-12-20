@@ -6,7 +6,6 @@ import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
 import utils.isValidPathToFile
-import kotlin.reflect.KClass
 
 class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEditState>() {
     override var state: ViewState<CompetitiveEditState> by mutableStateOf(
@@ -16,13 +15,7 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
         )
     )
 
-    fun onLogoChange() {
-        val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
-    }
-
     override suspend fun setRowEntity() {
-
         entity = service.retrieveRawEntity(documentName, Competitive::class)
     }
 
@@ -31,7 +24,6 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
             state = state.copy(title = "Edit ${entity.name}")
             setItemState(
                 state.item.copy(
-                    name = entity.name,
                     logo = entity.logo,
                 )
             )
@@ -44,5 +36,10 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
                 logo = if (state.item.logo.isValidPathToFile()) state.item.logo else entity.logo
             )
         )
+    }
+
+    fun onLogoChange() {
+        val newLogo = fileChooser("Select logo", "png") ?: return
+        if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
 }

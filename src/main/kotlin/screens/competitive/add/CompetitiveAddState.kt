@@ -1,21 +1,11 @@
 package screens.competitive.add
 
-import data.types.EntityType
 import screens.State
-import utils.ContentType
-import utils.DataType
 
 data class CompetitiveAddState(
-    @DataType
-    override val name: String = "",
-
-    @ContentType
+    val name: String = "",
     val logo: String = "",
-
-    @DataType
-    val order: Int = -1,
-
-    override val entityType: EntityType = EntityType.COMPETITIVE
+    val order: String = "",
 ) : State {
-    override fun isValid() = name.isNotBlank() && logo.isNotBlank() && order > 0
+    override fun isValid() = name.isNotBlank() && logo.isNotBlank() && (order.toIntOrNull() ?: -1) > 0
 }

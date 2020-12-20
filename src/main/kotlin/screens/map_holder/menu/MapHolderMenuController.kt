@@ -3,9 +3,7 @@ package screens.map_holder.menu
 import androidx.compose.runtime.*
 import data.types.EntityType
 import data.entitys.MapHolder
-import kotlinx.coroutines.*
 import router.NavigationTargets
-import screens.BaseController
 import screens.BaseMenuController
 import screens.ViewState
 
@@ -20,15 +18,11 @@ class MapHolderMenuController : BaseMenuController<List<MapHolder>>() {
         router.navigateTo(NavigationTargets.MapHolderEdit(documentName))
     }
 
-    override fun initState() {
+    override fun onClear() {
         setItemState(listOf())
-        cs.launch {
-            try {
-                setItemState(service.retrieveEntities(EntityType.MAP_HOLDER.name, MapHolder::class))
-                showData()
-            } catch (e: Exception) {
-                showError(e)
-            }
-        }
+    }
+
+    override suspend fun setEntities() {
+        setItemState(service.retrieveEntities(EntityType.MAP_HOLDER.name, MapHolder::class))
     }
 }

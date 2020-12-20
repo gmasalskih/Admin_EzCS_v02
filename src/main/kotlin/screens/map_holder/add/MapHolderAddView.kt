@@ -1,7 +1,6 @@
 package screens.map_holder.add
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -9,7 +8,6 @@ import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
 import ui.*
-import utils.toValidId
 
 class MapHolderAddView : BaseView<MapHolderAddController>() {
     override val controller by inject<MapHolderAddController>()

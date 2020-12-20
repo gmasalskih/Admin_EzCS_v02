@@ -8,7 +8,6 @@ import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
-import utils.toValidId
 
 class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
     override val controller by inject<CompetitiveMenuController>()

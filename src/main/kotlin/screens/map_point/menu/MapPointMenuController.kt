@@ -10,26 +10,7 @@ class MapPointMenuController : BaseController<List<MapHolder>>() {
     override var state: ViewState<List<MapHolder>> by mutableStateOf(
         ViewState(
             title = "Map points",
-            item = listOf(
-                MapHolder(
-                    name = "Dust II",
-                    logo = "",
-                    wallpaper = "",
-                    map = ""
-                ),
-                MapHolder(
-                    name = "Mirage",
-                    logo = "",
-                    wallpaper = "",
-                    map = ""
-                ),
-                MapHolder(
-                    name = "Inferno",
-                    logo = "",
-                    wallpaper = "",
-                    map = ""
-                ),
-            )
+            item = listOf()
         )
     )
 
