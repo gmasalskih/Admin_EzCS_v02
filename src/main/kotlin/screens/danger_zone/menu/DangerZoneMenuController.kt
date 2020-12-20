@@ -2,28 +2,16 @@ package screens.danger_zone.menu
 
 import androidx.compose.runtime.*
 import data.entitys.DangerZone
+import data.types.EntityType
 import router.NavigationTargets
-import screens.BaseController
+import screens.BaseMenuController
 import screens.ViewState
 
-class DangerZoneMenuController : BaseController<List<DangerZone>>() {
+class DangerZoneMenuController : BaseMenuController<List<DangerZone>>() {
     override var state: ViewState<List<DangerZone>> by mutableStateOf(
         ViewState(
             title = "Danger Zone",
-            item = listOf(
-                DangerZone(
-                    name = "Lab rat i",
-                    logo = ""
-                ),
-                DangerZone(
-                    name = "lab rat ii",
-                    logo = ""
-                ),
-                DangerZone(
-                    name = "sprinting hare i",
-                    logo = ""
-                ),
-            )
+            item = listOf()
         )
     )
 
@@ -31,11 +19,16 @@ class DangerZoneMenuController : BaseController<List<DangerZone>>() {
         router.navigateTo(NavigationTargets.DangerZoneAdd)
     }
 
-    fun navigateToDangerZoneEdit(id: String) {
-        router.navigateTo(NavigationTargets.DangerZoneEdit(id))
+    fun navigateToDangerZoneEdit(documentName: String) {
+        router.navigateTo(NavigationTargets.DangerZoneEdit(documentName))
     }
 
-    override fun initState() {
-//        TODO("Not yet implemented")
+    override fun onClear() {
+        setItemState(listOf())
     }
+
+    override suspend fun setEntities() {
+        setItemState(service.retrieveEntities(EntityType.DANGER_ZONE.name, DangerZone::class).sortedBy { it.order })
+    }
+
 }

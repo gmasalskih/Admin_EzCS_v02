@@ -16,4 +16,7 @@ data class ProfileRank(
 
     @ContentType
     var logo: String = "",
+
+    @DataType
+    val order: Int = 0
 ) : Entity

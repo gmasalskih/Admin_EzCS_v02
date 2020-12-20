@@ -1,35 +1,46 @@
 package screens.danger_zone.edit
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import data.entitys.DangerZone
-import kotlinx.coroutines.launch
-import screens.BaseController
+import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
+import utils.isValidPathToFile
 
-class DangerZoneEditController : BaseController<DangerZoneEditSate>() {
-    override var state: ViewState<DangerZoneEditSate> by mutableStateOf(ViewState(title = "Edit rank", item = DangerZoneEditSate()))
+class DangerZoneEditController : BaseEditController<DangerZone, DangerZoneEditSate>() {
+    override var state: ViewState<DangerZoneEditSate> by mutableStateOf(
+        ViewState(
+            title = "Edit rank",
+            item = DangerZoneEditSate()
+        )
+    )
 
-    private lateinit var documentName: String
-    private lateinit var entity: DangerZone
-
-    fun setDocumentName(documentName: String) {
-        this.documentName = documentName
+    override suspend fun setRowEntity() {
+        entity = service.retrieveRawEntity(documentName, DangerZone::class)
     }
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
+    override suspend fun setEntity() {
+        service.retrieveEntity(documentName, DangerZone::class).let { entity ->
+            state = state.copy(title = "Edit ${entity.name}")
+            setItemState(
+                state.item.copy(
+                    logo = entity.logo,
+                )
+            )
+        }
+    }
+
+    override suspend fun update() {
+        service.update(
+            entity.copy(
+                logo = if (state.item.logo.isValidPathToFile()) state.item.logo else entity.logo
+            )
+        )
+    }
 
     fun onLogoChange() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
 
-    fun onSubmit() {
-        //TODO implement fun onSubmit
-    }
-
-    override fun initState() {
-//        TODO("Not yet implemented")
-    }
 }

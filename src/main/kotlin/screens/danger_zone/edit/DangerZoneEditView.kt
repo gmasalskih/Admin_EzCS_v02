@@ -4,18 +4,16 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
-import common_widgets.CardAddOrImage
-import common_widgets.TextFieldApp
+import common_widgets.CardImageUrl
 import ui.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
+import ui.greyAccent
 import ui.orangeAccent
-import utils.toValidId
 
 class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditController>() {
     override val controller by inject<DangerZoneEditController>()
@@ -33,34 +31,27 @@ class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditControll
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = spacedBy20dp
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    //Rank ID
-                    TextFieldApp(
-                        value = controller.getViewState().item.name.toValidId(),
-                        label = "Rank ID",
-                    )
-                    //Rank name
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Rank name",
-                        onTextChanged = controller::onNameChange
-                    )
-                }
-                CardAddOrImage(
+                CardImageUrl(
                     label = "Change logo",
-                    image = controller.getViewState().item.logo,
+                    pathToFile = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange
                 )
             }
-            ButtonApp(
+            Row(
                 modifier = Modifier.align(Alignment.BottomEnd),
-                label = "submit",
-                color = orangeAccent,
-                onClick = controller::onSubmit
-            )
+                horizontalArrangement = spacedBy20dp
+            ) {
+                ButtonApp(
+                    label = "delete",
+                    color = greyAccent,
+                    onClick = controller::onDelete,
+                )
+                ButtonApp(
+                    label = "submit",
+                    color = orangeAccent,
+                    onClick = controller::onSubmit,
+                )
+            }
         }
     }
 }

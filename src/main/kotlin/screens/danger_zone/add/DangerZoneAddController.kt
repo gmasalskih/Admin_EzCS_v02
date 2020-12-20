@@ -2,11 +2,13 @@ package screens.danger_zone.add
 
 import androidx.compose.runtime.*
 import data.entitys.DangerZone
-import screens.BaseController
+import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
+import utils.toValidName
+import utils.toValidOrder
 
-class DangerZoneAddController : BaseController<DangerZoneAddState>() {
+class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
     override var state: ViewState<DangerZoneAddState> by mutableStateOf(
         ViewState(
             title = "Add new competitive rank",
@@ -14,8 +16,8 @@ class DangerZoneAddController : BaseController<DangerZoneAddState>() {
         )
     )
 
-    fun onClear() {
-        state = ViewState(title = "Add new competitive rank", item = DangerZoneAddState())
+    override fun onClear() {
+        setItemState(item = DangerZoneAddState())
     }
 
     fun onLogoAdd() {
@@ -23,12 +25,15 @@ class DangerZoneAddController : BaseController<DangerZoneAddState>() {
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
-    fun onSubmit() {
-        //TODO implement fun onSubmit
-    }
+    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+
+    fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
 
     override fun initState() {
         onClear()
+    }
+
+    override suspend fun upload(item: DangerZoneAddState) {
+        service.upload(DangerZone(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
     }
 }
