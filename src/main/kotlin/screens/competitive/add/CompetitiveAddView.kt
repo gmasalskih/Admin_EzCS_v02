@@ -11,7 +11,6 @@ import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
-import utils.toValidId
 
 class CompetitiveAddView : BaseView<CompetitiveAddController>() {
     override val controller by inject<CompetitiveAddController>()
@@ -62,6 +61,4 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
             }
         }
     }
-
-
 }

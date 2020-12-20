@@ -25,5 +25,4 @@ class WingmanMenuController : BaseMenuController<List<Wingman>>() {
     override suspend fun setEntities() {
         setItemState(service.retrieveEntities(EntityType.WINGMAN.name, Wingman::class).sortedBy { it.order })
     }
-
 }

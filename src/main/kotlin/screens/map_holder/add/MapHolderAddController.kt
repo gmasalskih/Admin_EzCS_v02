@@ -46,5 +46,4 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     }
 
     fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
-    
 }

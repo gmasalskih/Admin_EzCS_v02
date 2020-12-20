@@ -16,7 +16,6 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
-import utils.toValidId
 import utils.toValidName
 
 class WingmanAddView : BaseView<WingmanAddController>() {
