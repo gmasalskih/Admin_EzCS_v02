@@ -1,14 +1,14 @@
 package screens.profile_rank.edit
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import data.entitys.ProfileRank
-import kotlinx.coroutines.launch
-import screens.BaseController
+import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
+import utils.isValidPathToFile
+import utils.toValidXP
 
-class ProfileRankEditController : BaseController<ProfileRankEditState>() {
+class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEditState>() {
     override var state: ViewState<ProfileRankEditState> by mutableStateOf(
         ViewState(
             title = "Edit profile rank",
@@ -16,33 +16,35 @@ class ProfileRankEditController : BaseController<ProfileRankEditState>() {
         )
     )
 
-    private lateinit var documentName: String
-    private lateinit var entity: ProfileRank
-
-    fun setDocumentName(documentName: String) {
-        this.documentName = documentName
+    override suspend fun setRowEntity() {
+        entity = service.retrieveRawEntity(documentName, ProfileRank::class)
     }
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
+    override suspend fun setEntity() {
+        service.retrieveEntity(documentName, ProfileRank::class).let { entity ->
+            state = state.copy(title = "Edit ${entity.name}")
+            setItemState(
+                state.item.copy(
+                    logo = entity.logo,
+                    xp = entity.xp
+                )
+            )
+        }
+    }
 
-    fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp))
+    override suspend fun update() {
+        service.update(
+            entity.copy(
+                logo = if (state.item.logo.isValidPathToFile()) state.item.logo else entity.logo,
+                xp = state.item.xp
+            )
+        )
+    }
 
-    fun onLogoAdd() {
+    fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp.toValidXP()))
+
+    fun onLogoChange() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
-    }
-
-    fun onDelete() = cs.launch {
-        showLoading()
-        service.delete(documentName)
-        router.back()
-    }
-
-    fun onSubmit() {
-//        TODO("Not yet implemented")
-    }
-
-    override fun initState() {
-//        TODO("Not yet implemented")
     }
 }
