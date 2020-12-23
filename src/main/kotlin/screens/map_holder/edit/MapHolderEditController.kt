@@ -22,9 +22,9 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
                 MapHolderEditState(
                     name = entity.name,
                     isCompetitive = entity.isCompetitive,
-                    logo = ContentSourceType.DropBoxRaw(entity.getDocumentName(), entity.logo),
-                    map = ContentSourceType.DropBoxThumbnail(entity.getDocumentName(), entity.map),
-                    wallpaper = ContentSourceType.DropBoxThumbnail(entity.getDocumentName(), entity.wallpaper)
+                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
+                    map = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.map),
+                    wallpaper = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.wallpaper)
                 )
             )
         }

@@ -7,11 +7,11 @@ import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
 import providers.ContentStorage
 import providers.Service
-import providers.dropbox.DropboxProvider
+import providers.content_provider.DropboxProvider
 import providers.DataStorage
-import providers.firebase.FirebaseAppProvider
-import providers.firebase.FirestoreProvider
-import providers.service.ServiceProvider
+import providers.data_provider.FirebaseAppProvider
+import providers.data_provider.FirestoreProvider
+import providers.service_provider.ServiceProvider
 import router.NavigationTargets
 import router.Router
 import screens.competitive.add.CompetitiveAddController

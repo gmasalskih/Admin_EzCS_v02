@@ -26,11 +26,11 @@ object ImageLoader : KoinComponent {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun loadImage(contentSourceType: ContentSourceType) = when (contentSourceType) {
-        is ContentSourceType.DropBoxThumbnail -> {
+        is ContentSourceType.ContentStorageThumbnail -> {
             Image.makeFromEncoded(dropbox.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName))
                 .asImageBitmap()
         }
-        is ContentSourceType.DropBoxRaw -> {
+        is ContentSourceType.ContentStorageOriginal -> {
             Image.makeFromEncoded(dropbox.getFile(contentSourceType.pathToFolder, contentSourceType.fileName))
                 .asImageBitmap()
         }

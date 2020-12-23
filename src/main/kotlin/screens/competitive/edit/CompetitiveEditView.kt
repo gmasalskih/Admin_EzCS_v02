@@ -11,6 +11,7 @@ import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
+import utils.toOrderString
 
 class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditController>() {
     override val controller by inject<CompetitiveEditController>()
@@ -28,6 +29,11 @@ class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditContro
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = spacedBy20dp
             ) {
+                TextFieldApp(
+                    value = controller.getViewState().item.order.toOrderString(),
+                    label = "Change order",
+                    onTextChanged = controller::onOrderChange
+                )
                 CardImageUrl(
                     label = "Change logo",
                     pathToFile = controller.getViewState().item.logo,
@@ -46,6 +52,7 @@ class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditContro
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
+                    isActive = controller.getViewState().item.isValid(),
                     onClick = controller::onSubmit,
                 )
             }

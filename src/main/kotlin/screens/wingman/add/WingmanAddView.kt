@@ -16,6 +16,7 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
+import utils.toOrderString
 import utils.toValidName
 
 class WingmanAddView : BaseView<WingmanAddController>() {
@@ -36,12 +37,12 @@ class WingmanAddView : BaseView<WingmanAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.name.toValidName(),
+                        value = controller.getViewState().item.name,
                         label = "Enter rank name",
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order,
+                        value = controller.getViewState().item.order.toOrderString(),
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )
@@ -63,6 +64,7 @@ class WingmanAddView : BaseView<WingmanAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

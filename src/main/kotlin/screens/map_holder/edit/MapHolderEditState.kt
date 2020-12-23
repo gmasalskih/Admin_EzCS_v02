@@ -10,6 +10,8 @@ data class MapHolderEditState(
     val map: ContentSourceType = ContentSourceType.Empty,
     val wallpaper: ContentSourceType = ContentSourceType.Empty,
 ) : State {
-    override fun isValid() =
-        logo.value.isNotBlank() && map.value.isNotBlank() && wallpaper.value.isNotBlank() && name.isNotBlank()
+    override fun isValid() = name.isNotBlank() &&
+            logo !is ContentSourceType.Empty &&
+            map !is ContentSourceType.Empty &&
+            wallpaper !is ContentSourceType.Empty
 }

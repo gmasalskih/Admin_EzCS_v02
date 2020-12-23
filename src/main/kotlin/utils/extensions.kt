@@ -20,8 +20,10 @@ fun String.toValidName(): String {
         .replace("[)]+".toRegex(), ")")
 }
 
-fun String.toValidXP(): String {
-    return this.replace("[^0-9]".toRegex(), "") + "XP"
+fun String.toValidXP(): Int = this.replace("[^0-9]".toRegex(), "").let { xp ->
+    if (xp.isBlank()) return@let 0
+    if (xp.length > 6) return@let xp.take(6).toInt()
+    xp.toInt()
 }
 
 fun externalImageResource(path: String): ImageBitmap {
@@ -35,16 +37,19 @@ fun String.toValidFileName(): String {
 }
 
 fun String.toValidFolder(): String {
-    if (!this.isPathToLocalFileValid()) return this
-    return this.substringBeforeLast("/")
+    if (this.isPathToLocalFileValid()) return this.substringBeforeLast("/")
+    throw Exception("$this can't to convert valid local folder")
 }
 
-fun String.toValidOrder() = this.replace("[^0-9]".toRegex(), "").let { order ->
-    if (order.isEmpty() || order.toInt() < 1) return@let ""
-    if (order.length > 3) order.take(3).toInt().toString()
-    else order.toInt().toString()
+fun String.toValidOrder(): Int = this.replace("[^0-9]".toRegex(), "").let { order ->
+    if (order.isEmpty() || order.toInt() < 1) return@let 0
+    if (order.length > 3) return@let order.take(3).toInt()
+    order.toInt()
 }
 
+fun Int.toOrderString(): String = if (this > 0) this.toString() else ""
+
+fun Int.toXPString(): String = if (this > 0) this.toString() else ""
 
 fun String.isValidURL() = try {
     URL(this)

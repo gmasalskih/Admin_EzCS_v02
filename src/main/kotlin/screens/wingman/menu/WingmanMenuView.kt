@@ -18,11 +18,11 @@ class WingmanMenuView : BaseView<WingmanMenuController>() {
             modifier = Modifier.fillMaxWidth(),
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToWingmanAdd) },
-            cardItem = { wingman ->
+            cardItem = { menuState ->
                 CardRank(
-                    pathToImage = wingman.logo,
-                    name = wingman.name,
-                    onClick = { controller.navigateToWingmanEdit(wingman.getDocumentName()) }
+                    pathToImage = menuState.logo,
+                    name = menuState.name,
+                    onClick = { controller.navigateToWingmanEdit(menuState.documentName) }
                 )
             }
         )

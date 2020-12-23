@@ -11,10 +11,9 @@ abstract class BaseAddController<I : State> : BaseController<I>() {
         onClear()
     }
 
-    protected abstract suspend fun upload(item: I)
+    protected abstract suspend fun upload(stateItem: I)
 
     fun onSubmit() = cs.launch {
-
         showLoading()
         val item = state.item
         try {

@@ -2,6 +2,7 @@ package screens.danger_zone.add
 
 import androidx.compose.runtime.*
 import data.entitys.DangerZone
+import data.types.ContentSourceType
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -22,18 +23,21 @@ class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
 
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
+        if (!state.item.logo.value.contains(newLogo))
+            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
     }
 
     override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
 
     fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
 
-    override fun initState() {
-        onClear()
-    }
-
-    override suspend fun upload(item: DangerZoneAddState) {
-        service.uploadEntity(DangerZone(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+    override suspend fun upload(stateItem: DangerZoneAddState) {
+        service.uploadEntity(
+            DangerZone(
+                name = stateItem.name,
+                logo = stateItem.logo.value,
+                order = stateItem.order
+            )
+        )
     }
 }

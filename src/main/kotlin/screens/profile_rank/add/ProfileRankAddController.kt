@@ -2,6 +2,7 @@ package screens.profile_rank.add
 
 import androidx.compose.runtime.*
 import data.entitys.ProfileRank
+import data.types.ContentSourceType
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -27,13 +28,20 @@ class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
 
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
+        if (!state.item.logo.value.contains(newLogo))
+            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
     }
 
     fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
 
-    override suspend fun upload(item: ProfileRankAddState) {
-        service.uploadEntity(ProfileRank(name = item.name, xp = item.xp, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+    override suspend fun upload(stateItem: ProfileRankAddState) {
+        service.uploadEntity(
+            ProfileRank(
+                name = stateItem.name,
+                xp = stateItem.xp,
+                logo = stateItem.logo.value,
+                order = stateItem.order
+            )
+        )
     }
-
 }

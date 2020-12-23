@@ -8,8 +8,6 @@ abstract class BaseMenuController<I> : BaseController<I>() {
     protected abstract suspend fun setEntities()
 
     override fun initState() {
-        showLoading()
-        onClear()
         cs.launch {
             try {
                 setEntities()
@@ -22,6 +20,8 @@ abstract class BaseMenuController<I> : BaseController<I>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
+        showLoading()
+        onClear()
         initState()
     }
 }

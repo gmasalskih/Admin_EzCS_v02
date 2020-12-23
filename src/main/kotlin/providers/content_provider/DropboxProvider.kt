@@ -1,4 +1,4 @@
-package providers.dropbox
+package providers.content_provider
 
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.v2.DbxClientV2

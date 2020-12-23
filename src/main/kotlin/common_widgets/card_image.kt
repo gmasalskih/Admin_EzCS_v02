@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ui.*
+import utils.toValidFileName
 
 @Composable
 fun CardImage(
@@ -75,11 +77,12 @@ fun CardImage(
                 modifier = Modifier.weight(1f, true)
             ) {
                 Text(
-                    text = pathToFile.split("/").last().toLowerCase(),
+                    text = pathToFile.toValidFileName(),
+                    modifier = Modifier.align(Alignment.Center),
+                    textAlign = TextAlign.Center,
                     fontFamily = verdanaBold,
                     fontSize = fontSize8sp,
-                    modifier = Modifier.align(Alignment.Center),
-                    color = dark
+                    color = dark,
                 )
             }
         }

@@ -11,6 +11,7 @@ import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
+import utils.toOrderString
 
 class CompetitiveAddView : BaseView<CompetitiveAddController>() {
     override val controller by inject<CompetitiveAddController>()
@@ -33,7 +34,7 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order,
+                        value = controller.getViewState().item.order.toOrderString(),
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )
@@ -55,6 +56,7 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

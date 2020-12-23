@@ -35,9 +35,9 @@ class MapHolderMenuController : BaseMenuController<List<MapHolderMenuState>>() {
                     documentName = mapHolder.getDocumentName(),
                     name = mapHolder.name,
                     isCompetitive = mapHolder.isCompetitive,
-                    logo = ContentSourceType.DropBoxRaw(mapHolder.getDocumentName(), mapHolder.logo),
-                    map = ContentSourceType.DropBoxThumbnail(mapHolder.getDocumentName(), mapHolder.map),
-                    wallpaper = ContentSourceType.DropBoxThumbnail(mapHolder.getDocumentName(), mapHolder.wallpaper),
+                    logo = ContentSourceType.ContentStorageOriginal(mapHolder.getDocumentName(), mapHolder.logo),
+                    map = ContentSourceType.ContentStorageThumbnail(mapHolder.getDocumentName(), mapHolder.map),
+                    wallpaper = ContentSourceType.ContentStorageThumbnail(mapHolder.getDocumentName(), mapHolder.wallpaper),
                 )
             }
         )

@@ -31,7 +31,6 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         try {
             if (!stateItem.isValid()) throw Exception("The entity ${state.item} is not valid!")
             update(stateItem)
-            showData()
             router.back()
         } catch (e: Exception) {
             showError(e)

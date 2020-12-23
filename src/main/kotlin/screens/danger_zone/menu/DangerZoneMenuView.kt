@@ -18,11 +18,11 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
             modifier = Modifier.fillMaxWidth(),
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToDangerZoneAdd) },
-            cardItem = { dangerZone ->
+            cardItem = { menuState ->
                 CardRank(
-                    pathToImage = dangerZone.logo,
-                    name = dangerZone.name,
-                    onClick = { controller.navigateToDangerZoneEdit(dangerZone.getDocumentName()) }
+                    pathToImage = menuState.logo,
+                    name = menuState.name,
+                    onClick = { controller.navigateToDangerZoneEdit(menuState.documentName) }
                 )
             }
         )

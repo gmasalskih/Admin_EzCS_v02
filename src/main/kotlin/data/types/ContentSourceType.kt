@@ -2,12 +2,12 @@ package data.types
 
 sealed class ContentSourceType(val value: String) {
     data class URL(val url: String) : ContentSourceType(url)
-    data class DropBoxThumbnail(
+    data class ContentStorageThumbnail(
         val pathToFolder: String,
         val fileName: String
     ) : ContentSourceType("$pathToFolder/$fileName")
 
-    data class DropBoxRaw(
+    data class ContentStorageOriginal(
         val pathToFolder: String,
         val fileName: String
     ) : ContentSourceType("$pathToFolder/$fileName")

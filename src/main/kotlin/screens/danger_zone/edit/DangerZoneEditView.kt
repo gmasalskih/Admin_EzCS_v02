@@ -9,11 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
 import common_widgets.CardImageUrl
+import common_widgets.TextFieldApp
 import ui.spacedBy20dp
 import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
+import utils.toOrderString
 
 class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditController>() {
     override val controller by inject<DangerZoneEditController>()
@@ -31,6 +33,11 @@ class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditControll
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = spacedBy20dp
             ) {
+                TextFieldApp(
+                    value = controller.getViewState().item.order.toOrderString(),
+                    label = "Change order",
+                    onTextChanged = controller::onOrderChange
+                )
                 CardImageUrl(
                     label = "Change logo",
                     pathToFile = controller.getViewState().item.logo,
@@ -48,6 +55,7 @@ class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditControll
                 )
                 ButtonApp(
                     label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )

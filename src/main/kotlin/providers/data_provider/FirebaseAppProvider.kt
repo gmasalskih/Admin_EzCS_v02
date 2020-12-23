@@ -1,9 +1,8 @@
-package providers.firebase
+package providers.data_provider
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
-import com.google.firebase.cloud.FirestoreClient
 import java.io.FileInputStream
 
 class FirebaseAppProvider(

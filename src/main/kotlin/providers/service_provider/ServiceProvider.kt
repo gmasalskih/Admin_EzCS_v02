@@ -1,4 +1,4 @@
-package providers.service
+package providers.service_provider
 
 import data.entitys.Entity
 import providers.ContentStorage

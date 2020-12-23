@@ -2,6 +2,7 @@ package screens.competitive.add
 
 import androidx.compose.runtime.*
 import data.entitys.Competitive
+import data.types.ContentSourceType
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -24,9 +25,16 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
 
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
+        if (!state.item.logo.value.contains(newLogo))
+            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
     }
 
-    override suspend fun upload(item: CompetitiveAddState) =
-        service.uploadEntity(Competitive(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+    override suspend fun upload(stateItem: CompetitiveAddState) =
+        service.uploadEntity(
+            Competitive(
+                name = stateItem.name,
+                logo = stateItem.logo.value,
+                order = stateItem.order
+            )
+        )
 }

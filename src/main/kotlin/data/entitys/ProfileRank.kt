@@ -12,10 +12,10 @@ data class ProfileRank(
     override val entityType: EntityType = EntityType.PROFILE_RANK,
 
     @DataType
-    var xp: String = "",
+    val xp: Int = 0,
 
     @ContentType
-    var logo: String = "",
+    val logo: String = "",
 
     @DataType
     val order: Int = 0

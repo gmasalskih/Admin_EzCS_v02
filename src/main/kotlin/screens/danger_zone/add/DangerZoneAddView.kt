@@ -16,6 +16,7 @@ import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
+import utils.toOrderString
 
 class DangerZoneAddView : BaseView<DangerZoneAddController>() {
     override val controller by inject<DangerZoneAddController>()
@@ -40,7 +41,7 @@ class DangerZoneAddView : BaseView<DangerZoneAddController>() {
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order,
+                        value = controller.getViewState().item.order.toOrderString(),
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )
@@ -62,6 +63,7 @@ class DangerZoneAddView : BaseView<DangerZoneAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

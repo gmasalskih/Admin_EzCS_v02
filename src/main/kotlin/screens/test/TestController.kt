@@ -1,10 +1,9 @@
 package screens.test
 
 import androidx.compose.runtime.*
-import kotlinx.coroutines.launch
 import org.koin.core.inject
-import providers.dropbox.DropboxProvider
-import providers.firebase.FirestoreProvider
+import providers.content_provider.DropboxProvider
+import providers.data_provider.FirestoreProvider
 import screens.BaseController
 import screens.ViewState
 

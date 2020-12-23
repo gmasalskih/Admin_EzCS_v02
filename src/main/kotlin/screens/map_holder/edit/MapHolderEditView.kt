@@ -65,6 +65,7 @@ class MapHolderEditView(documentName: String) : BaseView<MapHolderEditController
                 )
                 ButtonApp(
                     label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )
