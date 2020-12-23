@@ -5,10 +5,9 @@ import data.entitys.ProfileRank
 import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
-import utils.isValidPathToFile
 import utils.toValidXP
 
-class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEditState>() {
+class ProfileRankEditController : BaseEditController<ProfileRankEditState>() {
     override var state: ViewState<ProfileRankEditState> by mutableStateOf(
         ViewState(
             title = "Edit profile rank",
@@ -16,12 +15,8 @@ class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEdi
         )
     )
 
-    override suspend fun setRowEntity() {
-        entity = service.retrieveRawEntity(documentName, ProfileRank::class)
-    }
-
     override suspend fun setEntity() {
-        service.retrieveEntity(documentName, ProfileRank::class).let { entity ->
+        service.getEntity(documentName, ProfileRank::class).let { entity ->
             state = state.copy(title = "Edit ${entity.name}")
             setItemState(
                 state.item.copy(
@@ -32,19 +27,14 @@ class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEdi
         }
     }
 
-    override suspend fun update() {
-        service.update(
-            entity.copy(
-                logo = if (state.item.logo.isValidPathToFile()) state.item.logo else entity.logo,
-                xp = state.item.xp
-            )
-        )
-    }
-
     fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp.toValidXP()))
 
     fun onLogoChange() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
+    }
+
+    override suspend fun update(stateItem: ProfileRankEditState) {
+//        TODO("Not yet implemented")
     }
 }

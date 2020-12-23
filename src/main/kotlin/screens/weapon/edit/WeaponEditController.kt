@@ -1,7 +1,6 @@
 package screens.weapon.edit
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import data.entitys.Weapon
 import kotlinx.coroutines.launch
 import screens.BaseController
@@ -24,7 +23,7 @@ class WeaponEditController : BaseController<WeaponEditState>() {
 
     fun onDelete() = cs.launch {
         showLoading()
-        service.delete(documentName)
+        service.deleteEntity(documentName)
         router.back()
     }
 

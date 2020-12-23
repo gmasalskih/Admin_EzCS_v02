@@ -33,7 +33,7 @@ class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
     fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
 
     override suspend fun upload(item: ProfileRankAddState) {
-        service.upload(ProfileRank(name = item.name, xp = item.xp, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+        service.uploadEntity(ProfileRank(name = item.name, xp = item.xp, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
     }
 
 }

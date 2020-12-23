@@ -8,14 +8,88 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
+import data.types.ContentSourceType
 import kotlinx.coroutines.*
 import org.jetbrains.skija.Image
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import providers.ContentStorage
 import ui.dark
 import utils.externalImageResource
-import utils.isValidPathToFile
+import utils.isPathToLocalFileValid
 import utils.isValidURL
 import java.io.BufferedInputStream
 import java.net.URL
+
+object ImageLoader : KoinComponent {
+    private val dropbox by inject<ContentStorage>()
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    private suspend fun loadImage(contentSourceType: ContentSourceType) = when (contentSourceType) {
+        is ContentSourceType.DropBoxThumbnail -> {
+            Image.makeFromEncoded(dropbox.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName))
+                .asImageBitmap()
+        }
+        is ContentSourceType.DropBoxRaw -> {
+            Image.makeFromEncoded(dropbox.getFile(contentSourceType.pathToFolder, contentSourceType.fileName))
+                .asImageBitmap()
+        }
+        is ContentSourceType.URL -> {
+            withContext(Dispatchers.IO) {
+                URL(contentSourceType.url).openStream().use { inputStream ->
+                    BufferedInputStream(inputStream).use { bufferedInputStream ->
+                        Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageBitmap()
+                    }
+                }
+            }
+        }
+        is ContentSourceType.File -> {
+            withContext(Dispatchers.IO) {
+                externalImageResource(contentSourceType.pathToFile)
+            }
+        }
+        is ContentSourceType.Resource -> {
+            withContext(Dispatchers.IO) {
+                externalImageResource("src/main/resources/icons/icon_err.png")
+            }
+        }
+        is ContentSourceType.Empty -> {
+            withContext(Dispatchers.IO) {
+                externalImageResource("src/main/resources/icons/icon_err.png")
+            }
+        }
+    }
+
+    @Composable
+    fun Image(
+        contentSourceType: ContentSourceType,
+        modifier: Modifier = Modifier,
+        contentScale: ContentScale = ContentScale.Fit,
+        colorFilter: ColorFilter? = null,
+        progressIndicatorColor: Color = dark,
+    ) {
+        val (imageAsset, setImageAsset) = remember(contentSourceType) { mutableStateOf<ImageBitmap?>(null) }
+        val scope = rememberCoroutineScope()
+        Box(
+            modifier = Modifier.then(modifier)
+        ) {
+            if (imageAsset == null) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = progressIndicatorColor
+                )
+                scope.launch { setImageAsset(loadImage(contentSourceType)) }
+            } else {
+                Image(
+                    modifier = Modifier.then(modifier),
+                    bitmap = imageAsset,
+                    contentScale = contentScale,
+                    colorFilter = colorFilter
+                )
+            }
+        }
+    }
+}
 
 @Suppress("BlockingMethodInNonBlockingContext")
 private suspend fun loadImage(url: String) = when {
@@ -30,20 +104,20 @@ private suspend fun loadImage(url: String) = when {
             }
         } catch (e: Exception) {
             println("ImageLoader - ${e.message}")
-            externalImageResource("src/main/resources/icons/icon_err.png")
+            withContext(Dispatchers.IO) { externalImageResource("src/main/resources/icons/icon_err.png") }
         }
     }
-    url.isValidPathToFile() -> {
+    url.isPathToLocalFileValid() -> {
         try {
             withContext(Dispatchers.IO) { externalImageResource(url) }
         } catch (e: Exception) {
             println("ImageLoader - ${e.message}")
-            externalImageResource("src/main/resources/icons/icon_err.png")
+            withContext(Dispatchers.IO) { externalImageResource("src/main/resources/icons/icon_err.png") }
         }
     }
     else -> {
         println("ImageLoader - url is:$url")
-        externalImageResource("src/main/resources/icons/icon_err.png")
+        withContext(Dispatchers.IO) { externalImageResource("src/main/resources/icons/icon_err.png") }
     }
 }
 
@@ -57,16 +131,6 @@ fun ImageUrl(
 ) {
     val (imageAsset, setImageAsset) = remember(url) { mutableStateOf<ImageBitmap?>(null) }
     val scope = rememberCoroutineScope()
-    var job by remember { mutableStateOf<Job?>(null) }
-    onDispose {
-        job?.cancel()
-        job = null
-    }
-    if (imageAsset == null) {
-        job = scope.launch {
-            setImageAsset(loadImage(url))
-        }
-    }
     Box(
         modifier = Modifier.then(modifier)
     ) {
@@ -75,6 +139,7 @@ fun ImageUrl(
                 modifier = Modifier.align(Alignment.Center),
                 color = progressIndicatorColor
             )
+            scope.launch { setImageAsset(loadImage(url)) }
         } else {
             Image(
                 modifier = Modifier.then(modifier),

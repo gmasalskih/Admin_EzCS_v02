@@ -34,6 +34,6 @@ class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
     }
 
     override suspend fun upload(item: DangerZoneAddState) {
-        service.upload(DangerZone(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+        service.uploadEntity(DangerZone(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
     }
 }

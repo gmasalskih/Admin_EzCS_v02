@@ -28,7 +28,7 @@ class DangerZoneMenuController : BaseMenuController<List<DangerZone>>() {
     }
 
     override suspend fun setEntities() {
-        setItemState(service.retrieveEntities(EntityType.DANGER_ZONE.name, DangerZone::class).sortedBy { it.order })
+        setItemState(service.getListEntities(EntityType.DANGER_ZONE.name, DangerZone::class).sortedBy { it.order })
     }
 
 }

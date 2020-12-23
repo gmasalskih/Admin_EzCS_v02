@@ -29,8 +29,14 @@ fun externalImageResource(path: String): ImageBitmap {
 }
 
 fun String.toValidFileName(): String {
-    if (!this.isValidPathToFile()) return this
-    return this.split("/").last()
+    val fileName = this.substringAfterLast("/")
+    if (fileName.matches("^[0-9a-zA-Z_ \\-]+\\.[a-zA-Z0-9]+$".toRegex())) return fileName
+    throw Exception("$this can't to convert valid file name")
+}
+
+fun String.toValidFolder(): String {
+    if (!this.isPathToLocalFileValid()) return this
+    return this.substringBeforeLast("/")
 }
 
 fun String.toValidOrder() = this.replace("[^0-9]".toRegex(), "").let { order ->
@@ -47,4 +53,4 @@ fun String.isValidURL() = try {
     false
 }
 
-fun String.isValidPathToFile() = File(this).exists()
+fun String.isPathToLocalFileValid() = File(this).exists()

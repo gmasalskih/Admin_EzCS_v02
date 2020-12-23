@@ -18,7 +18,7 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     override fun onClear() = setItemState(MapHolderAddState())
 
     override suspend fun upload(item: MapHolderAddState) =
-        service.upload(
+        service.uploadEntity(
             MapHolder(
                 name = item.name,
                 isCompetitive = item.isCompetitive,

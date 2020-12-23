@@ -28,5 +28,5 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
     }
 
     override suspend fun upload(item: CompetitiveAddState) =
-        service.upload(Competitive(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+        service.uploadEntity(Competitive(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
 }

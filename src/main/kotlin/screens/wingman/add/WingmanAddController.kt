@@ -30,6 +30,6 @@ class WingmanAddController : BaseAddController<WingmanAddState>() {
     }
 
     override suspend fun upload(item: WingmanAddState) =
-        service.upload(Wingman(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
+        service.uploadEntity(Wingman(name = item.name, logo = item.logo, order = item.order.toIntOrNull() ?: -1))
 
 }

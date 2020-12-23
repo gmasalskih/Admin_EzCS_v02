@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import ui.*
 
 @Composable
-fun CardMap(
+fun CardMapPoint(
     modifier: Modifier = Modifier,
     background: String,
     logo: String,

@@ -2,7 +2,7 @@ package screens.map_point.menu
 
 import androidx.compose.runtime.Composable
 import common_widgets.CardAdd
-import common_widgets.CardMap
+import common_widgets.CardMapPoint
 import common_widgets.ScrollableRowAdd
 import org.koin.core.inject
 import screens.BaseView
@@ -16,7 +16,7 @@ class MapPointMenuView : BaseView<MapPointMenuController>() {
             items = controller.getViewState().item,
             cardAdd = { CardAdd(label = "add map point", onClick = controller::navigateToMapPointsAdd) },
             cardItem = { mapHolder ->
-                CardMap(
+                CardMapPoint(
                     background = mapHolder.wallpaper,
                     logo = mapHolder.logo,
                     name = mapHolder.name,

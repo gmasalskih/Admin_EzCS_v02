@@ -4,10 +4,9 @@ import data.entitys.Entity
 import kotlin.reflect.KClass
 
 interface Service {
-    suspend fun <T : Entity> upload(entity: T)
-    suspend fun <T : Entity> retrieveEntity(documentName: String, clazz: KClass<T>): T
-    suspend fun <T : Entity> retrieveRawEntity(documentName: String, clazz: KClass<T>): T
-    suspend fun <T : Entity> retrieveEntities(collectionName: String, clazz: KClass<T>): List<T>
-    suspend fun <T : Entity> update(entity: T)
-    suspend fun delete(path: String)
+    suspend fun <T : Entity> uploadEntity(entity: T)
+    suspend fun <T : Entity> getEntity(documentName: String, clazz: KClass<T>): T
+    suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>): List<T>
+    suspend fun <T : Entity> updateEntity(entity: T)
+    suspend fun deleteEntity(documentName: String)
 }

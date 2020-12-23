@@ -5,9 +5,8 @@ import data.entitys.Wingman
 import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
-import utils.isValidPathToFile
 
-class WingmanEditController : BaseEditController<Wingman, WingmanEditState>() {
+class WingmanEditController : BaseEditController<WingmanEditState>() {
 
     override var state: ViewState<WingmanEditState> by mutableStateOf(
         ViewState(
@@ -21,12 +20,8 @@ class WingmanEditController : BaseEditController<Wingman, WingmanEditState>() {
         if (!state.item.logo.contains(newLogo)) setItemState(state.item.copy(logo = newLogo))
     }
 
-    override suspend fun setRowEntity() {
-        entity = service.retrieveRawEntity(documentName, Wingman::class)
-    }
-
     override suspend fun setEntity() {
-        service.retrieveEntity(documentName, Wingman::class).let { entity ->
+        service.getEntity(documentName, Wingman::class).let { entity ->
             state = state.copy(title = "Edit ${entity.name}")
             setItemState(
                 state.item.copy(
@@ -36,11 +31,7 @@ class WingmanEditController : BaseEditController<Wingman, WingmanEditState>() {
         }
     }
 
-    override suspend fun update() {
-        service.update(
-            entity.copy(
-                logo = if (state.item.logo.isValidPathToFile()) state.item.logo else entity.logo
-            )
-        )
+    override suspend fun update(stateItem: WingmanEditState) {
+//        TODO("Not yet implemented")
     }
 }

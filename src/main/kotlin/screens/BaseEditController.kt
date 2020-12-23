@@ -1,18 +1,14 @@
 package screens
 
-import data.entitys.Entity
 import kotlinx.coroutines.launch
 
-abstract class BaseEditController<E : Entity, I : State> : BaseController<I>() {
+abstract class BaseEditController<I : State> : BaseController<I>() {
     protected lateinit var documentName: String
-    protected lateinit var entity: E
-    protected abstract suspend fun setRowEntity()
     protected abstract suspend fun setEntity()
-    protected abstract suspend fun update()
+    protected abstract suspend fun update(stateItem: I)
 
     override fun initState() {
         cs.launch {
-            setRowEntity()
             setEntity()
             showData()
         }
@@ -31,8 +27,10 @@ abstract class BaseEditController<E : Entity, I : State> : BaseController<I>() {
 
     fun onSubmit() = cs.launch {
         showLoading()
+        val stateItem = state.item
         try {
-            update()
+            if (!stateItem.isValid()) throw Exception("The entity ${state.item} is not valid!")
+            update(stateItem)
             showData()
             router.back()
         } catch (e: Exception) {
@@ -42,7 +40,7 @@ abstract class BaseEditController<E : Entity, I : State> : BaseController<I>() {
 
     fun onDelete() = cs.launch {
         showLoading()
-        service.delete(documentName)
+        service.deleteEntity(documentName)
         router.back()
     }
 }

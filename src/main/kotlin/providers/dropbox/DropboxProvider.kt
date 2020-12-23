@@ -2,62 +2,76 @@ package providers.dropbox
 
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.files.PathOrLink
+import com.dropbox.core.v2.files.ThumbnailFormat
+import com.dropbox.core.v2.files.ThumbnailSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import providers.ContentStorage
 import utils.DROPBOX_TOKEN
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
+import java.io.*
 
-class DropboxProvider {
-    private val dropbox = DbxClientV2(DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(), DROPBOX_TOKEN)
+class DropboxProvider : ContentStorage {
+    private val dropbox = DbxClientV2(DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(), DROPBOX_TOKEN).files()
 
-    suspend fun getFileUrl(pathToFile: String, fileName: String): String = withContext(Dispatchers.IO) {
-        dropbox.files().getTemporaryLink("${pathToFile.toValidPath()}/$fileName").link
-    }
-
-    suspend fun isEntityExist(contentsPath: String) = withContext(Dispatchers.IO) {
+    override suspend fun isFolderExist(pathToFolder: String): Boolean = withContext(Dispatchers.IO) {
         try {
-            dropbox.files().listFolder(contentsPath.toValidPath())
+            dropbox.listFolder(pathToFolder.toValidPath())
             true
         } catch (e: Exception) {
             false
         }
     }
 
-    suspend fun delete(path: String) = withContext(Dispatchers.IO) {
-        dropbox.files().deleteV2(path.toValidPath())
+    override suspend fun deleteFile(pathToFolder: String, fileName: String): Unit = withContext(Dispatchers.IO) {
+        dropbox.deleteV2("${pathToFolder.toValidPath()}/$fileName")
     }
 
-    suspend fun test() = withContext(Dispatchers.IO) {
-        isFileExist("/MAP_HOLDER/aaa", "logo.png")
+    override suspend fun deleteFolder(pathToFolder: String): Unit = withContext(Dispatchers.IO) {
+        dropbox.deleteV2(pathToFolder.toValidPath())
     }
 
-    suspend fun getListItems(pathToFolder: String) = withContext(Dispatchers.IO) {
-        dropbox.files().listFolder(pathToFolder.toValidPath()).entries.map { it.name }.toList()
+    override suspend fun getFileThumbnail(pathToFolder: String, fileName: String): ByteArray =
+        withContext(Dispatchers.IO) {
+            dropbox.getThumbnailV2Builder(PathOrLink.path("${pathToFolder.toValidPath()}/$fileName"))
+                .withFormat(ThumbnailFormat.PNG)
+                .withSize(ThumbnailSize.W128H128)
+                .start()
+                .inputStream
+                .use { inputStream -> BufferedInputStream(inputStream).use { bis -> bis.readAllBytes() } }
+        }
+
+    override suspend fun getFile(pathToFolder: String, fileName: String): ByteArray = withContext(Dispatchers.IO) {
+        dropbox.download("${pathToFolder.toValidPath()}/$fileName")
+            .inputStream
+            .use { inputStream -> BufferedInputStream(inputStream).use { bis -> bis.readAllBytes() } }
     }
 
-    private suspend fun isFileExist(pathToFile: String, fileName: String) =
+    override suspend fun getListFileNames(pathToFolder: String): List<String> = withContext(Dispatchers.IO) {
+        dropbox.listFolder(pathToFolder.toValidPath()).entries.map { it.name }.toList()
+    }
+
+    override suspend fun isFileExist(pathToFolder: String, fileName: String): Boolean = withContext(Dispatchers.IO) {
         try {
-            dropbox.files().listFolder(pathToFile.toValidPath()).entries.find {
+            dropbox.listFolder(pathToFolder.toValidPath()).entries.find {
                 it.name == fileName
             } != null
         } catch (e: Exception) {
             false
         }
-
+    }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun uploadFile(sourceFullPathToFile: String, targetFolder: String): Boolean = withContext(Dispatchers.IO) {
-        val file = File(sourceFullPathToFile)
-        if (!file.exists()) throw FileNotFoundException()
-        val fileName: String = sourceFullPathToFile.split("[/]".toRegex()).last()
-        if (isFileExist(targetFolder, fileName)) delete("${targetFolder.toValidPath()}/$fileName")
-        FileInputStream(file).use { fis ->
-            dropbox.files().uploadBuilder("${targetFolder.toValidPath()}/$fileName").uploadAndFinish(fis)
+    override suspend fun uploadFile(sourcePathToFolder: String, targetPathToFolder: String, fileName: String): Boolean =
+        withContext(Dispatchers.IO) {
+            val file = File("$sourcePathToFolder/$fileName")
+            if (!file.exists()) throw FileNotFoundException()
+            if (isFileExist(targetPathToFolder, fileName)) deleteFile(targetPathToFolder, fileName)
+            FileInputStream(file).use { fis ->
+                dropbox.uploadBuilder("${targetPathToFolder.toValidPath()}/$fileName").uploadAndFinish(fis)
+            }
+            true
         }
-        true
-    }
 }
 
 private fun String.toValidPath() = if (this.contains("^[/]".toRegex())) this else "/$this"

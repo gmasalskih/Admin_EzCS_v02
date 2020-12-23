@@ -1,7 +1,6 @@
 package screens.profile_rank.menu
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import data.entitys.ProfileRank
 import data.types.EntityType
 import router.NavigationTargets
@@ -28,6 +27,6 @@ class ProfileRankMenuController : BaseMenuController<List<ProfileRank>>() {
     }
 
     override suspend fun setEntities() {
-        setItemState(service.retrieveEntities(EntityType.PROFILE_RANK.name, ProfileRank::class).sortedBy { it.order })
+        setItemState(service.getListEntities(EntityType.PROFILE_RANK.name, ProfileRank::class).sortedBy { it.order })
     }
 }

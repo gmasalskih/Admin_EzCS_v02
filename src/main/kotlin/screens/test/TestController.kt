@@ -15,9 +15,7 @@ class TestController : BaseController<TestState>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-        cs.launch {
-            println("TEST --- ${dropbox.test()}")
-        }
+
     }
 
     override fun onViewDestroy() {

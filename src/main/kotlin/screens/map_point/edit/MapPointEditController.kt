@@ -1,7 +1,6 @@
 package screens.map_point.edit
 
 import androidx.compose.runtime.*
-import data.entitys.Competitive
 import data.types.GrenadeType
 import data.types.TickrateType
 import data.entitys.MapPoint
@@ -92,7 +91,7 @@ class MapPointEditController : BaseController<MapPointEditState>() {
 
     fun onDelete() = cs.launch {
         showLoading()
-        service.delete(documentName)
+        service.deleteEntity(documentName)
         router.back()
     }
 

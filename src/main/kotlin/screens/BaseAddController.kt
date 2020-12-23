@@ -1,6 +1,5 @@
 package screens
 
-import data.entitys.MapHolder
 import kotlinx.coroutines.launch
 
 abstract class BaseAddController<I : State> : BaseController<I>() {

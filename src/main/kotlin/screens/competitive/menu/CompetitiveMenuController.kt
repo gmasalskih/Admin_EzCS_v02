@@ -20,7 +20,7 @@ class CompetitiveMenuController : BaseMenuController<List<Competitive>>() {
     }
 
     override suspend fun setEntities() {
-        setItemState(service.retrieveEntities(EntityType.COMPETITIVE.name, Competitive::class).sortedBy { it.order })
+        setItemState(service.getListEntities(EntityType.COMPETITIVE.name, Competitive::class).sortedBy { it.order })
     }
 
     fun navigateToCompetitiveEdit(documentName: String) {

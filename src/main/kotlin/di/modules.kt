@@ -5,8 +5,10 @@ import com.google.firebase.cloud.StorageClient
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
+import providers.ContentStorage
 import providers.Service
 import providers.dropbox.DropboxProvider
+import providers.DataStorage
 import providers.firebase.FirebaseAppProvider
 import providers.firebase.FirestoreProvider
 import providers.service.ServiceProvider
@@ -29,7 +31,6 @@ import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
 import screens.test.TestController
-import screens.test.TestView
 import screens.weapon.add.WeaponAddController
 import screens.weapon.edit.WeaponEditController
 import screens.weapon.menu.WeaponMenuController
@@ -43,7 +44,7 @@ val appModule = module {
 }
 
 val dropboxModule = module {
-    single<DropboxProvider> { DropboxProvider() }
+    single<ContentStorage> { DropboxProvider() }
 }
 
 val fbModules = module {
@@ -54,7 +55,7 @@ val fbModules = module {
         ).getApp()
     }
     single<StorageClient> { StorageClient.getInstance(get()) }
-    single<FirestoreProvider> { FirestoreProvider(get()) }
+    single<DataStorage> { FirestoreProvider(get()) }
 }
 
 val serviceModule = module {
