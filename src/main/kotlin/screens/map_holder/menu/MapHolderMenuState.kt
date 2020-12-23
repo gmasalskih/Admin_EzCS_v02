@@ -4,9 +4,9 @@ import data.types.ContentSourceType
 import screens.State
 
 data class MapHolderMenuState(
-    val documentName: String,
-    val name: String,
-    val isCompetitive: Boolean,
+    val name: String = "",
+    val documentName: String = "",
+    val isCompetitive: Boolean = false,
     val logo: ContentSourceType = ContentSourceType.Empty,
     val map: ContentSourceType = ContentSourceType.Empty,
     val wallpaper: ContentSourceType = ContentSourceType.Empty,

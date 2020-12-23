@@ -13,59 +13,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import data.types.ContentSourceType
 import ui.*
-import utils.toValidFileName
-
-@Composable
-fun CardImageUrl(
-    label: String,
-    modifier: Modifier = Modifier,
-    pathToFile: String,
-    progressIndicatorColor: Color = dark,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier.size(100.dp, 150.dp).then(modifier),
-        shape = roundedCorner5dp,
-        elevation = elevation6dp,
-        backgroundColor = greyAccent
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier.fillMaxWidth().aspectRatio(1f).clickable(onClick = onClick)
-            ) {
-                ImageUrl(
-                    url = pathToFile,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.FillWidth,
-                    progressIndicatorColor = progressIndicatorColor
-                )
-                Text(
-                    modifier = Modifier.align(alignment = Alignment.BottomCenter),
-                    text = label,
-                    textAlign = TextAlign.Center,
-                    fontSize = fontSize8sp,
-                    fontFamily = verdanaRegular,
-                    color = dark
-                )
-            }
-            Box(
-                modifier = Modifier.weight(1f, true)
-            ) {
-                Text(
-                    text = pathToFile.toValidFileName(),
-                    fontFamily = verdanaBold,
-                    fontSize = fontSize8sp,
-                    modifier = Modifier.align(Alignment.Center),
-                    color = dark
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun CardImageUrl(

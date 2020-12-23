@@ -31,8 +31,9 @@ class DropboxProvider : ContentStorage {
         dropbox.deleteV2(pathToFolder.toValidPath())
     }
 
-    override suspend fun getFileThumbnail(pathToFolder: String, fileName: String): ByteArray =
+    override suspend fun getFileThumbnail(pathToFolder: String, fileName: String): ByteArray? =
         withContext(Dispatchers.IO) {
+            if (!isFileExist(pathToFolder.toValidPath(), fileName)) return@withContext null
             dropbox.getThumbnailV2Builder(PathOrLink.path("${pathToFolder.toValidPath()}/$fileName"))
                 .withFormat(ThumbnailFormat.PNG)
                 .withSize(ThumbnailSize.W128H128)
@@ -41,7 +42,8 @@ class DropboxProvider : ContentStorage {
                 .use { inputStream -> BufferedInputStream(inputStream).use { bis -> bis.readAllBytes() } }
         }
 
-    override suspend fun getFile(pathToFolder: String, fileName: String): ByteArray = withContext(Dispatchers.IO) {
+    override suspend fun getFile(pathToFolder: String, fileName: String): ByteArray? = withContext(Dispatchers.IO) {
+        if (!isFileExist(pathToFolder.toValidPath(), fileName)) return@withContext null
         dropbox.download("${pathToFolder.toValidPath()}/$fileName")
             .inputStream
             .use { inputStream -> BufferedInputStream(inputStream).use { bis -> bis.readAllBytes() } }

@@ -61,6 +61,4 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
         if (!state.item.logo.value.contains(newLogo))
             setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
     }
-
-
 }

@@ -25,20 +25,24 @@ object ImageLoader : KoinComponent {
     private val dropbox by inject<ContentStorage>()
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun loadImage(contentSourceType: ContentSourceType) = when (contentSourceType) {
+    private suspend fun loadImage(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
         is ContentSourceType.ContentStorageThumbnail -> {
-            Image.makeFromEncoded(dropbox.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName))
-                .asImageBitmap()
+            dropbox.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
+                Image.makeFromEncoded(byteArray).asImageBitmap()
+            }
         }
         is ContentSourceType.ContentStorageOriginal -> {
-            Image.makeFromEncoded(dropbox.getFile(contentSourceType.pathToFolder, contentSourceType.fileName))
-                .asImageBitmap()
+            dropbox.getFile(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
+                Image.makeFromEncoded(byteArray).asImageBitmap()
+            }
         }
         is ContentSourceType.URL -> {
             withContext(Dispatchers.IO) {
                 URL(contentSourceType.url).openStream().use { inputStream ->
                     BufferedInputStream(inputStream).use { bufferedInputStream ->
-                        Image.makeFromEncoded(bufferedInputStream.readAllBytes()).asImageBitmap()
+                        bufferedInputStream.readAllBytes()?.let { byteArray ->
+                            Image.makeFromEncoded(byteArray).asImageBitmap()
+                        }
                     }
                 }
             }
