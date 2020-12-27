@@ -9,14 +9,15 @@ import utils.fileChooser
 import utils.toValidName
 
 class MapHolderAddController : BaseAddController<MapHolderAddState>() {
+
+    override val defaultItemState: MapHolderAddState = MapHolderAddState()
+
     override var state: ViewState<MapHolderAddState> by mutableStateOf(
         ViewState(
             title = "Add Map",
-            item = MapHolderAddState()
+            item = defaultItemState
         )
     )
-
-    override fun onClear() = setItemState(MapHolderAddState())
 
     override suspend fun upload(stateItem: MapHolderAddState) =
         service.uploadEntity(
@@ -29,7 +30,7 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
             )
         )
 
-    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
 
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return

@@ -9,6 +9,7 @@ import androidx.compose.ui.zIndex
 import common_widgets.CardAdd
 import common_widgets.CardMapHolder
 import common_widgets.ScrollableRowAdd
+import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
 
@@ -22,15 +23,18 @@ class MapHolderMenuView : BaseView<MapHolderMenuController>() {
         ) {
             ScrollableRowAdd(
                 modifier = Modifier.fillMaxWidth().zIndex(2f),
-                items = controller.getViewState().item,
+                items = controller.getViewState().item.listMapHolder,
                 cardAdd = { CardAdd(label = "add map holder", onClick = controller::navigateToMapHolderAdd) },
-                cardItem = { menuState ->
+                cardItem = { mapHolder ->
                     CardMapHolder(
-                        background = menuState.wallpaper,
-                        logo = menuState.logo,
-                        name = menuState.name,
-                        isCompetitive = menuState.isCompetitive,
-                        onClick = { controller.navigateToMapHolderEdit(menuState.documentName) }
+                        background = ContentSourceType.ContentStorageThumbnail(
+                            mapHolder.getDocumentName(),
+                            mapHolder.wallpaper
+                        ),
+                        logo = ContentSourceType.ContentStorageOriginal(mapHolder.getDocumentName(), mapHolder.logo),
+                        name = mapHolder.name,
+                        isCompetitive = mapHolder.isCompetitive,
+                        onClick = { controller.navigateToMapHolderEdit(mapHolder.getDocumentName()) }
                     )
                 }
             )

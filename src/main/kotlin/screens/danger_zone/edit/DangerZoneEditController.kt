@@ -9,10 +9,13 @@ import utils.fileChooser
 import utils.toValidOrder
 
 class DangerZoneEditController : BaseEditController<DangerZoneEditSate>() {
+
+    override val defaultItemState: DangerZoneEditSate = DangerZoneEditSate()
+
     override var state: ViewState<DangerZoneEditSate> by mutableStateOf(
         ViewState(
             title = "Edit rank",
-            item = DangerZoneEditSate()
+            item = defaultItemState
         )
     )
 

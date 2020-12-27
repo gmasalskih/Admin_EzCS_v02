@@ -1,33 +1,20 @@
 package screens.weapon.menu
 
 import androidx.compose.runtime.*
-import data.types.TeamType
 import data.entitys.Weapon
+import data.types.EntityType
 import router.NavigationTargets
-import screens.BaseController
+import screens.BaseMenuController
 import screens.ViewState
 
-class WeaponMenuController : BaseController<List<Weapon>>() {
-    override var state: ViewState<List<Weapon>> by mutableStateOf(
+class WeaponMenuController : BaseMenuController<WeaponMenuState>() {
+
+    override val defaultItemState: WeaponMenuState = WeaponMenuState()
+
+    override var state: ViewState<WeaponMenuState> by mutableStateOf(
         ViewState(
             title = "Weapons",
-            item = listOf(
-                Weapon(
-                    name = "AWP",
-                    teamTypes = listOf(TeamType.T, TeamType.CT),
-                    image = ""
-                ),
-                Weapon(
-                    name = "CZ75-Auto",
-                    teamTypes = listOf(TeamType.T),
-                    image = ""
-                ),
-                Weapon(
-                    name = "desert_eagle",
-                    teamTypes = listOf(TeamType.CT),
-                    image = ""
-                )
-            )
+            item = defaultItemState
         )
     )
 
@@ -39,7 +26,12 @@ class WeaponMenuController : BaseController<List<Weapon>>() {
         router.navigateTo(NavigationTargets.WeaponsEdit(id))
     }
 
-    override fun initState() {
-//        TODO("Not yet implemented")
+    override suspend fun setEntity() {
+        setItemState(
+            WeaponMenuState(
+                service.getListEntities(EntityType.WEAPON.name, Weapon::class)
+            )
+        )
     }
+
 }

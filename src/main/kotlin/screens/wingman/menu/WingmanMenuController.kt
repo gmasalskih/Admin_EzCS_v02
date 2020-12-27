@@ -2,17 +2,19 @@ package screens.wingman.menu
 
 import androidx.compose.runtime.*
 import data.entitys.Wingman
-import data.types.ContentSourceType
 import data.types.EntityType
 import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class WingmanMenuController : BaseMenuController<List<WingmanMenuState>>() {
-    override var state: ViewState<List<WingmanMenuState>> by mutableStateOf(
+class WingmanMenuController : BaseMenuController<WingmanMenuState>() {
+
+    override val defaultItemState: WingmanMenuState = WingmanMenuState()
+
+    override var state: ViewState<WingmanMenuState> by mutableStateOf(
         ViewState(
             title = "Wingman",
-            item = listOf()
+            item = defaultItemState
         )
     )
 
@@ -24,20 +26,11 @@ class WingmanMenuController : BaseMenuController<List<WingmanMenuState>>() {
         router.navigateTo(NavigationTargets.WingmanEdit(id))
     }
 
-    override fun onClear() {
-        setItemState(listOf())
-    }
-
-    override suspend fun setEntities() {
+    override suspend fun setEntity() {
         setItemState(
-            service.getListEntities(EntityType.WINGMAN.name, Wingman::class).map { entity ->
-                WingmanMenuState(
-                    name = entity.name,
-                    documentName = entity.getDocumentName(),
-                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
-                    order = entity.order
-                )
-            }.sortedBy { it.order }
+            WingmanMenuState(
+                service.getListEntities(EntityType.WINGMAN.name, Wingman::class).sortedBy { it.order }
+            )
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import common_widgets.CardAdd
 import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
+import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
 
@@ -16,13 +17,16 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
     override fun setContent(controller: CompetitiveMenuController) {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item,
+            items = controller.getViewState().item.listCompetitive,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToCompetitiveAdd) },
-            cardItem = { competitiveRank ->
+            cardItem = { competitive ->
                 CardRank(
-                    pathToImage = competitiveRank.logo,
-                    name = competitiveRank.name,
-                    onClick = { controller.navigateToCompetitiveEdit(competitiveRank.documentName) }
+                    pathToImage = ContentSourceType.ContentStorageOriginal(
+                        competitive.getDocumentName(),
+                        competitive.logo
+                    ),
+                    name = competitive.name,
+                    onClick = { controller.navigateToCompetitiveEdit(competitive.getDocumentName()) }
                 )
             }
         )

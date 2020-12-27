@@ -1,33 +1,26 @@
 package screens.weapon.edit
 
 import androidx.compose.runtime.*
-import data.entitys.Weapon
-import kotlinx.coroutines.launch
-import screens.BaseController
+import screens.BaseEditController
 import screens.ViewState
 
-class WeaponEditController : BaseController<WeaponEditState>() {
+class WeaponEditController : BaseEditController<WeaponEditState>() {
+
+    override val defaultItemState: WeaponEditState = WeaponEditState()
+
     override var state: ViewState<WeaponEditState> by mutableStateOf(
         ViewState(
             title = "Edit weapon",
-            item = WeaponEditState()
+            item = defaultItemState
         )
     )
 
-    private lateinit var documentName: String
-    private lateinit var entity: Weapon
-
-    fun setDocumentName(documentName: String) {
-        this.documentName = documentName
-    }
-
-    fun onDelete() = cs.launch {
-        showLoading()
-        service.deleteEntity(documentName)
-        router.back()
-    }
-
-    override fun initState() {
+    override suspend fun setEntity() {
 //        TODO("Not yet implemented")
     }
+
+    override suspend fun update(stateItem: WeaponEditState) {
+//        TODO("Not yet implemented")
+    }
+
 }

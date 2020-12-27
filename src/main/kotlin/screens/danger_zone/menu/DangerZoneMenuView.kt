@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import common_widgets.CardAdd
 import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
+import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
 
@@ -16,13 +17,16 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
     override fun setContent(controller: DangerZoneMenuController) {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item,
+            items = controller.getViewState().item.listDangerZone,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToDangerZoneAdd) },
-            cardItem = { menuState ->
+            cardItem = { dangerZone ->
                 CardRank(
-                    pathToImage = menuState.logo,
-                    name = menuState.name,
-                    onClick = { controller.navigateToDangerZoneEdit(menuState.documentName) }
+                    pathToImage = ContentSourceType.ContentStorageOriginal(
+                        dangerZone.getDocumentName(),
+                        dangerZone.logo
+                    ),
+                    name = dangerZone.name,
+                    onClick = { controller.navigateToDangerZoneEdit(dangerZone.getDocumentName()) }
                 )
             }
         )

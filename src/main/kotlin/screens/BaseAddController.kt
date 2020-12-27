@@ -4,13 +4,6 @@ import kotlinx.coroutines.launch
 
 abstract class BaseAddController<I : State> : BaseController<I>() {
 
-    abstract fun onClear()
-    abstract fun onNameChange(name: String)
-
-    override fun initState() {
-        onClear()
-    }
-
     protected abstract suspend fun upload(stateItem: I)
 
     fun onSubmit() = cs.launch {
@@ -28,6 +21,6 @@ abstract class BaseAddController<I : State> : BaseController<I>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-        initState()
+        onClear()
     }
 }

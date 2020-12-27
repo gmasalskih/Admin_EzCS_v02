@@ -10,6 +10,9 @@ import utils.toValidName
 import utils.toValidOrder
 
 class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
+
+    override val defaultItemState: DangerZoneAddState = DangerZoneAddState()
+
     override var state: ViewState<DangerZoneAddState> by mutableStateOf(
         ViewState(
             title = "Add new competitive rank",
@@ -17,17 +20,13 @@ class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
         )
     )
 
-    override fun onClear() {
-        setItemState(item = DangerZoneAddState())
-    }
-
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
         if (!state.item.logo.value.contains(newLogo))
             setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
     }
 
-    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
 
     fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
 

@@ -13,7 +13,7 @@ class WeaponMenuView : BaseView<WeaponMenuController>() {
     @Composable
     override fun setContent(controller: WeaponMenuController) {
         ScrollableRowAdd(
-            items = controller.getViewState().item,
+            items = controller.getViewState().item.listWeapon,
             cardAdd = { CardAdd(label = "add weapon", onClick = controller::navigateToWeaponsAdd) },
             cardItem = { weapon ->
                 CardWeapon(

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import common_widgets.CardAdd
 import common_widgets.CardRank
 import common_widgets.ScrollableRowAdd
+import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
 
@@ -16,13 +17,16 @@ class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {
     override fun setContent(controller: ProfileRankMenuController) {
         ScrollableRowAdd(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item,
+            items = controller.getViewState().item.listProfileRank,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToProfileRankAdd) },
             cardItem = { profileRank ->
                 CardRank(
-                    pathToImage = profileRank.logo,
+                    pathToImage = ContentSourceType.ContentStorageOriginal(
+                        profileRank.getDocumentName(),
+                        profileRank.logo
+                    ),
                     name = profileRank.name,
-                    onClick = { controller.navigateToProfileRankEdit(profileRank.documentName) }
+                    onClick = { controller.navigateToProfileRankEdit(profileRank.getDocumentName()) }
                 )
             }
         )

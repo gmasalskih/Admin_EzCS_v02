@@ -1,13 +1,20 @@
 package screens.weapon.add
 
 import androidx.compose.runtime.*
-import data.entitys.Weapon
-import screens.BaseController
+import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
 
-class WeaponAddController : BaseController<WeaponAddState>() {
-    override var state: ViewState<WeaponAddState> by mutableStateOf(ViewState(title = "Add new weapon", item = WeaponAddState()))
+class WeaponAddController : BaseAddController<WeaponAddState>() {
+
+    override val defaultItemState: WeaponAddState = WeaponAddState()
+
+    override var state: ViewState<WeaponAddState> by mutableStateOf(
+        ViewState(
+            title = "Add new weapon",
+            item = defaultItemState
+        )
+    )
     var configFile: String by mutableStateOf("")
 
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
@@ -32,20 +39,11 @@ class WeaponAddController : BaseController<WeaponAddState>() {
         if (!configFile.contains(newConfigFile)) configFile = newConfigFile
     }
 
-    fun onClear() {
-        state = ViewState(title = "Add new weapon", item = WeaponAddState())
-        configFile = ""
-    }
-
-    fun onSubmit() {
-        //TODO
-    }
-
     fun onParse() {
         //TODO
     }
 
-    override fun initState() {
+    override suspend fun upload(stateItem: WeaponAddState) {
         TODO("Not yet implemented")
     }
 }

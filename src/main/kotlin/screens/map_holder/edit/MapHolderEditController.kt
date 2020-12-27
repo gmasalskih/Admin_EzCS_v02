@@ -8,10 +8,11 @@ import screens.ViewState
 import utils.fileChooser
 
 class MapHolderEditController : BaseEditController<MapHolderEditState>() {
+    override val defaultItemState: MapHolderEditState = MapHolderEditState()
     override var state: ViewState<MapHolderEditState> by mutableStateOf(
         ViewState(
             title = "Edit map",
-            item = MapHolderEditState()
+            item = defaultItemState
         )
     )
 

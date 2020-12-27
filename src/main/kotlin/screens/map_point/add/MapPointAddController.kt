@@ -3,17 +3,20 @@ package screens.map_point.add
 import androidx.compose.runtime.*
 import data.types.GrenadeType
 import data.types.TickrateType
-import data.entitys.MapPoint
-import screens.BaseController
+import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
 
-class MapPointAddController : BaseController<MapPointAddState>() {
-    override var state: ViewState<MapPointAddState> by mutableStateOf(ViewState(title = "New map point", item = MapPointAddState()))
+class MapPointAddController : BaseAddController<MapPointAddState>() {
 
-    fun onClear() {
-        state = ViewState(title = "New map point", item = MapPointAddState())
-    }
+    override val defaultItemState: MapPointAddState = MapPointAddState()
+
+    override var state: ViewState<MapPointAddState> by mutableStateOf(
+        ViewState(
+            title = "New map point",
+            item = MapPointAddState()
+        )
+    )
 
     fun onMapIdChange(mapId: String) = setItemState(state.item.copy(mapId = mapId))
     fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
@@ -64,11 +67,8 @@ class MapPointAddController : BaseController<MapPointAddState>() {
     fun onVideoDelete(video: String) =
         setItemState(state.item.copy(contentVideos = state.item.contentVideos.filter { it != video }))
 
-    fun onSubmit() {
+    override suspend fun upload(stateItem: MapPointAddState) {
 //        TODO("Not yet implemented")
     }
 
-    override fun initState() {
-//        TODO("Not yet implemented")
-    }
 }

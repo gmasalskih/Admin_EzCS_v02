@@ -8,20 +8,16 @@ import screens.BaseController
 import screens.ViewState
 
 class TestController : BaseController<TestState>() {
-    override var state: ViewState<TestState> by mutableStateOf(ViewState(title = "Test", item = TestState()))
+
+    override val defaultItemState: TestState = TestState()
+
+    override var state: ViewState<TestState> by mutableStateOf(
+        ViewState(
+            title = "Test",
+            item = defaultItemState
+        )
+    )
     private val dropbox by inject<DropboxProvider>()
     private val firestore by inject<FirestoreProvider>()
 
-    override fun onViewCreate() {
-        super.onViewCreate()
-
-    }
-
-    override fun onViewDestroy() {
-        super.onViewDestroy()
-    }
-
-    override fun initState() {
-//        TODO("Not yet implemented")
-    }
 }

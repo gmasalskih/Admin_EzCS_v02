@@ -9,10 +9,13 @@ import utils.fileChooser
 import utils.toValidOrder
 
 class CompetitiveEditController : BaseEditController<CompetitiveEditState>() {
+
+    override val defaultItemState: CompetitiveEditState = CompetitiveEditState()
+
     override var state: ViewState<CompetitiveEditState> by mutableStateOf(
         ViewState(
             title = "Edit rank",
-            item = CompetitiveEditState()
+            item = defaultItemState
         )
     )
 

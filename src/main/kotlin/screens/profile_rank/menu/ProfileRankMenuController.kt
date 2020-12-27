@@ -2,16 +2,19 @@ package screens.profile_rank.menu
 
 import androidx.compose.runtime.*
 import data.entitys.ProfileRank
-import data.types.ContentSourceType
 import data.types.EntityType
 import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class ProfileRankMenuController : BaseMenuController<List<ProfileRankMenuState>>() {
-    override var state: ViewState<List<ProfileRankMenuState>> by mutableStateOf(
+class ProfileRankMenuController : BaseMenuController<ProfileRankMenuState>() {
+
+    override val defaultItemState: ProfileRankMenuState = ProfileRankMenuState()
+
+    override var state: ViewState<ProfileRankMenuState> by mutableStateOf(
         ViewState(
-            title = "Profile Rank", item = listOf()
+            title = "Profile Rank",
+            item = defaultItemState
         )
     )
 
@@ -23,21 +26,11 @@ class ProfileRankMenuController : BaseMenuController<List<ProfileRankMenuState>>
         router.navigateTo(NavigationTargets.ProfileRankEdit(documentName))
     }
 
-    override fun onClear() {
-        setItemState(listOf())
-    }
-
-    override suspend fun setEntities() {
+    override suspend fun setEntity() {
         setItemState(
-            service.getListEntities(EntityType.PROFILE_RANK.name, ProfileRank::class).map { entity ->
-                ProfileRankMenuState(
-                    name = entity.name,
-                    documentName = entity.getDocumentName(),
-                    xp = entity.xp,
-                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
-                    order = entity.order
-                )
-            }.sortedBy { it.order }
+            ProfileRankMenuState(
+                service.getListEntities(EntityType.PROFILE_RANK.name, ProfileRank::class).sortedBy { it.order }
+            )
         )
     }
 }

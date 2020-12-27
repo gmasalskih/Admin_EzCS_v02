@@ -10,16 +10,17 @@ import utils.toValidName
 import utils.toValidOrder
 
 class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
+
+    override val defaultItemState: CompetitiveAddState = CompetitiveAddState()
+
     override var state: ViewState<CompetitiveAddState> by mutableStateOf(
         ViewState(
             title = "Add new competitive rank",
-            item = CompetitiveAddState()
+            item = defaultItemState
         )
     )
 
-    override fun onClear() = setItemState(item = CompetitiveAddState())
-
-    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
 
     fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
 

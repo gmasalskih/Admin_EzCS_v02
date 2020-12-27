@@ -11,18 +11,17 @@ import utils.toValidOrder
 import utils.toValidXP
 
 class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
+
+    override val defaultItemState: ProfileRankAddState = ProfileRankAddState()
+
     override var state: ViewState<ProfileRankAddState> by mutableStateOf(
         ViewState(
             title = "Add new profile rank",
-            item = ProfileRankAddState()
+            item = defaultItemState
         )
     )
 
-    override fun onClear() {
-        setItemState(ProfileRankAddState())
-    }
-
-    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
 
     fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp.toValidXP()))
 

@@ -3,6 +3,7 @@ package screens.weapon.add
 import data.types.EntityType
 import data.types.TeamType
 import data.types.WeaponType
+import screens.State
 
 data class WeaponAddState(
     val name: String = "",
@@ -103,4 +104,9 @@ data class WeaponAddState(
 
     /** Дополнительная погрешность, рассчитанная на пулю доп */
     val spreadAlt: Double = 0.0,
-)
+) : State {
+    override fun isValid(): Boolean {
+//        TODO("Not yet implemented")
+        return false
+    }
+}

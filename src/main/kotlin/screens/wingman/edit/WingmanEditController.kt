@@ -10,10 +10,12 @@ import utils.toValidOrder
 
 class WingmanEditController : BaseEditController<WingmanEditState>() {
 
+    override val defaultItemState: WingmanEditState = WingmanEditState()
+
     override var state: ViewState<WingmanEditState> by mutableStateOf(
         ViewState(
             title = "Edit rank",
-            item = WingmanEditState()
+            item = defaultItemState
         )
     )
 

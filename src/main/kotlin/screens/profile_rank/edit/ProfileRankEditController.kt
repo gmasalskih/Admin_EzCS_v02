@@ -10,10 +10,13 @@ import utils.toValidOrder
 import utils.toValidXP
 
 class ProfileRankEditController : BaseEditController<ProfileRankEditState>() {
+
+    override val defaultItemState: ProfileRankEditState = ProfileRankEditState()
+
     override var state: ViewState<ProfileRankEditState> by mutableStateOf(
         ViewState(
             title = "Edit profile rank",
-            item = ProfileRankEditState()
+            item = defaultItemState
         )
     )
 

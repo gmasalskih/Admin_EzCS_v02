@@ -9,15 +9,18 @@ import org.koin.core.inject
 import providers.Service
 import router.Router
 
-abstract class BaseController<I> : KoinComponent {
+abstract class BaseController<I : State> : KoinComponent {
 
     protected abstract var state: ViewState<I>
+    protected abstract val defaultItemState: I
     protected val router by inject<Router>()
     protected val service by inject<Service>()
     protected lateinit var cs: CoroutineScope
         private set
 
-    protected abstract fun initState()
+    fun onClear() {
+        setItemState(defaultItemState)
+    }
 
     fun getViewState() = state
 

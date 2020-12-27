@@ -3,6 +3,7 @@ package screens.map_point.add
 import data.types.EntityType
 import data.types.GrenadeType
 import data.types.TickrateType
+import screens.State
 
 data class MapPointAddState(
     val name: String = "",
@@ -14,4 +15,9 @@ data class MapPointAddState(
     val previewEnd: String = "",
     val previewStart: String = "",
     val tickrateTypes: List<TickrateType> = listOf(),
-)
+):State {
+    override fun isValid(): Boolean {
+//        TODO("Not yet implemented")
+        return false
+    }
+}

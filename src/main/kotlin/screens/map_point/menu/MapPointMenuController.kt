@@ -1,16 +1,19 @@
 package screens.map_point.menu
 
 import androidx.compose.runtime.*
-import data.entitys.MapHolder
+import kotlinx.coroutines.launch
 import router.NavigationTargets
-import screens.BaseController
+import screens.BaseMenuController
 import screens.ViewState
 
-class MapPointMenuController : BaseController<List<MapHolder>>() {
-    override var state: ViewState<List<MapHolder>> by mutableStateOf(
+class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
+
+    override val defaultItemState: MapPointMenuState = MapPointMenuState()
+
+    override var state: ViewState<MapPointMenuState> by mutableStateOf(
         ViewState(
             title = "Map points",
-            item = listOf()
+            item = defaultItemState
         )
     )
 
@@ -22,7 +25,8 @@ class MapPointMenuController : BaseController<List<MapHolder>>() {
         router.navigateTo(NavigationTargets.MapPointsEdit(id))
     }
 
-    override fun initState() {
+    override suspend fun setEntity() {
 //        TODO("Not yet implemented")
     }
+
 }

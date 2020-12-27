@@ -7,17 +7,13 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
     protected abstract suspend fun setEntity()
     protected abstract suspend fun update(stateItem: I)
 
-    override fun initState() {
+    override fun onViewCreate() {
+        super.onViewCreate()
+        showLoading()
         cs.launch {
             setEntity()
             showData()
         }
-    }
-
-    override fun onViewCreate() {
-        super.onViewCreate()
-        showLoading()
-        initState()
     }
 
     @JvmName("documentName")

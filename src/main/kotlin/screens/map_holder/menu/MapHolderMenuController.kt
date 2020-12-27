@@ -3,16 +3,18 @@ package screens.map_holder.menu
 import androidx.compose.runtime.*
 import data.types.EntityType
 import data.entitys.MapHolder
-import data.types.ContentSourceType
 import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class MapHolderMenuController : BaseMenuController<List<MapHolderMenuState>>() {
-    override var state: ViewState<List<MapHolderMenuState>> by mutableStateOf(
+class MapHolderMenuController : BaseMenuController<MapHolderMenuState>() {
+
+    override val defaultItemState: MapHolderMenuState = MapHolderMenuState()
+
+    override var state: ViewState<MapHolderMenuState> by mutableStateOf(
         ViewState(
             title = "Maps",
-            item = listOf()
+            item = defaultItemState
         )
     )
 
@@ -24,22 +26,7 @@ class MapHolderMenuController : BaseMenuController<List<MapHolderMenuState>>() {
         router.navigateTo(NavigationTargets.MapHolderEdit(documentName))
     }
 
-    override fun onClear() {
-        setItemState(listOf())
-    }
-
-    override suspend fun setEntities() {
-        setItemState(
-            service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class).map { mapHolder ->
-                MapHolderMenuState(
-                    documentName = mapHolder.getDocumentName(),
-                    name = mapHolder.name,
-                    isCompetitive = mapHolder.isCompetitive,
-                    logo = ContentSourceType.ContentStorageOriginal(mapHolder.getDocumentName(), mapHolder.logo),
-                    map = ContentSourceType.ContentStorageThumbnail(mapHolder.getDocumentName(), mapHolder.map),
-                    wallpaper = ContentSourceType.ContentStorageThumbnail(mapHolder.getDocumentName(), mapHolder.wallpaper),
-                )
-            }
-        )
+    override suspend fun setEntity() {
+        setItemState(MapHolderMenuState(service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class)))
     }
 }

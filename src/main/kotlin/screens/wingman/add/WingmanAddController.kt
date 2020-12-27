@@ -11,14 +11,16 @@ import utils.toValidOrder
 
 class WingmanAddController : BaseAddController<WingmanAddState>() {
 
+    override val defaultItemState: WingmanAddState = WingmanAddState()
+
     override var state: ViewState<WingmanAddState> by mutableStateOf(
         ViewState(
             title = "Add new wingman rank",
-            item = WingmanAddState()
+            item = defaultItemState
         )
     )
 
-    override fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
 
     fun onLogoAdd() {
         val newLogo = fileChooser("Select logo", "png") ?: return
@@ -27,10 +29,6 @@ class WingmanAddController : BaseAddController<WingmanAddState>() {
     }
 
     fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
-
-    override fun onClear() {
-        setItemState(item = WingmanAddState())
-    }
 
     override suspend fun upload(stateItem: WingmanAddState) {
         service.uploadEntity(
