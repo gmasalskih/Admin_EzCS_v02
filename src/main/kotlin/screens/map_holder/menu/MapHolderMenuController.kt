@@ -13,7 +13,7 @@ class MapHolderMenuController : BaseMenuController<MapHolderMenuState>() {
 
     override var state: ViewState<MapHolderMenuState> by mutableStateOf(
         ViewState(
-            title = "Maps",
+            title = "Map holder",
             item = defaultItemState
         )
     )

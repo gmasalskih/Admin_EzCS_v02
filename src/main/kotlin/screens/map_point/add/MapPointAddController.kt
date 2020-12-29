@@ -1,15 +1,22 @@
 package screens.map_point.add
 
 import androidx.compose.runtime.*
-import data.types.GrenadeType
-import data.types.TickrateType
+import data.entitys.MapHolder
+import data.entitys.MapPoint
+import data.types.*
+import kotlinx.coroutines.launch
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
+import utils.toValidName
 
 class MapPointAddController : BaseAddController<MapPointAddState>() {
 
     override val defaultItemState: MapPointAddState = MapPointAddState()
+    var listMapHolder: List<MapHolder> by mutableStateOf(listOf())
+        private set
+    var selectedMapHolder: MapHolder? by mutableStateOf(null)
+        private set
 
     override var state: ViewState<MapPointAddState> by mutableStateOf(
         ViewState(
@@ -18,57 +25,145 @@ class MapPointAddController : BaseAddController<MapPointAddState>() {
         )
     )
 
-    fun onMapIdChange(mapId: String) = setItemState(state.item.copy(mapId = mapId))
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name))
-    fun onGrenadeTypeChange(grenadeType: GrenadeType) = setItemState(state.item.copy(grenadeType = grenadeType))
-    fun onTickrateChange(tickrate: TickrateType) =
-        setItemState(state.item.copy(
-            tickrateTypes = if (state.item.tickrateTypes.contains(tickrate)) state.item.tickrateTypes.filter { it != tickrate }
-            else state.item.tickrateTypes + listOf(tickrate)
-        ))
+    fun onMapHolderSelect(mapHolder: MapHolder) {
+        selectedMapHolder = mapHolder
+        setItemState(
+            state.item.copy(
+                mapDocumentName = mapHolder.getDocumentName()
+            )
+        )
+    }
+
+    fun onNameChange(name: String) {
+        setItemState(
+            state.item.copy(
+                name = name.toValidName()
+            )
+        )
+    }
+
+    fun onGrenadeTypeChange(grenadeType: GrenadeType) {
+        setItemState(
+            state.item.copy(
+                grenadeType = grenadeType
+            )
+        )
+    }
+
+    fun onTickrateChange(tickrate: TickrateType) {
+        setItemState(
+            state.item.copy(
+                tickrateTypes = if (state.item.tickrateTypes.contains(tickrate)) {
+                    state.item.tickrateTypes.filter { it != tickrate }
+                } else {
+                    state.item.tickrateTypes + listOf(tickrate)
+                }
+            )
+        )
+    }
 
     fun onPreviewStartChange() {
-        val newImage = fileChooser("Select preview start", "png") ?: return
-        setItemState(state.item.copy(previewStart = newImage))
+        fileChooser("Select preview start", FileType.PNG, state.item.previewStart) { newPreviewStart ->
+            setItemState(
+                state.item.copy(
+                    previewStart = newPreviewStart
+                )
+            )
+        }
     }
 
     fun onPreviewEndChange() {
-        val newImage = fileChooser("Select preview end", "png") ?: return
-        setItemState(state.item.copy(previewEnd = newImage))
+        fileChooser("Select preview end", FileType.PNG, state.item.previewEnd) { newPreviewEnd ->
+            setItemState(
+                state.item.copy(
+                    previewEnd = newPreviewEnd
+                )
+            )
+        }
     }
 
     fun onVideoAdd() {
-        val newVideo = fileChooser("Select video", "mp4") ?: return
-        if (!state.item.contentVideos.contains(newVideo))
-            setItemState(state.item.copy(contentVideos = state.item.contentVideos + listOf(newVideo)))
+        fileChooser("Select video", FileType.MP4, state.item.contentVideos) { newVideo ->
+            setItemState(
+                state.item.copy(
+                    contentVideos = state.item.contentVideos + listOf(newVideo)
+                )
+            )
+        }
     }
 
-    fun onVideoChange(oldVideo: String) {
-        val newVideo = fileChooser("Select video", "mp4") ?: return
-        if (!state.item.contentVideos.contains(newVideo))
-            setItemState(state.item.copy(contentVideos = state.item.contentVideos.map { video -> if (video == oldVideo) newVideo else video }))
+    fun onVideoChange(oldVideo: ContentSourceType) {
+        fileChooser("Select video", FileType.MP4, state.item.contentVideos) { newVideo ->
+            setItemState(
+                state.item.copy(
+                    contentVideos = state.item.contentVideos.map { video ->
+                        if (video == oldVideo) newVideo else video
+                    }
+                )
+            )
+        }
     }
 
     fun onImageAdd() {
-        val newImage = fileChooser("Select image", "png") ?: return
-        if (!state.item.contentImages.contains(newImage))
-            setItemState(state.item.copy(contentImages = state.item.contentImages + listOf(newImage)))
+        fileChooser("Select image", FileType.PNG, state.item.contentImages) { newImage ->
+            setItemState(
+                state.item.copy(
+                    contentImages = state.item.contentImages + listOf(newImage)
+                )
+            )
+        }
     }
 
-    fun onImageChange(oldImage: String) {
-        val newImage = fileChooser("Select image", "png") ?: return
-        if (!state.item.contentImages.contains(newImage))
-            setItemState(state.item.copy(contentImages = state.item.contentImages.map { image -> if (image == oldImage) newImage else image }))
+    fun onImageChange(oldImage: ContentSourceType) {
+        fileChooser("Select image", FileType.PNG, state.item.contentImages) { newImage ->
+            setItemState(
+                state.item.copy(
+                    contentImages = state.item.contentImages.map { image ->
+                        if (image == oldImage) newImage else image
+                    }
+                )
+            )
+        }
     }
 
-    fun onImageDelete(image: String) =
-        setItemState(state.item.copy(contentImages = state.item.contentImages.filter { it != image }))
+    fun onImageDelete(image: ContentSourceType) {
+        setItemState(
+            state.item.copy(
+                contentImages = state.item.contentImages.filter { it != image }
+            )
+        )
+    }
 
-    fun onVideoDelete(video: String) =
-        setItemState(state.item.copy(contentVideos = state.item.contentVideos.filter { it != video }))
+    fun onVideoDelete(video: ContentSourceType) {
+        setItemState(
+            state.item.copy(
+                contentVideos = state.item.contentVideos.filter { it != video }
+            )
+        )
+    }
+
+    override fun onClear() {
+        super.onClear()
+        selectedMapHolder = null
+    }
 
     override suspend fun upload(stateItem: MapPointAddState) {
-//        TODO("Not yet implemented")
+        service.uploadEntity(
+            MapPoint(
+                name = stateItem.name,
+                mapDocumentName = stateItem.mapDocumentName,
+                grenadeType = stateItem.grenadeType,
+                tickrateTypes = stateItem.tickrateTypes,
+                previewStart = stateItem.previewStart.value,
+                previewEnd = stateItem.previewEnd.value,
+                contentImages = stateItem.contentImages.map { it.value },
+                contentVideos = stateItem.contentVideos.map { it.value },
+            )
+        )
     }
 
+    override fun onViewCreate() {
+        super.onViewCreate()
+        cs.launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
+    }
 }

@@ -38,7 +38,7 @@ fun CardRank(
             ) {
                 ImageLoader.Image(
                     modifier = Modifier.align(Alignment.Center).fillMaxSize(),
-                    contentSourceType = pathToImage,
+                    content = pathToImage,
                     contentScale = ContentScale.FillWidth,
                     progressIndicatorColor = progressIndicatorColor
                 )

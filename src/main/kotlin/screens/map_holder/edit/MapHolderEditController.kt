@@ -3,12 +3,15 @@ package screens.map_holder.edit
 import androidx.compose.runtime.*
 import data.entitys.MapHolder
 import data.types.ContentSourceType
+import data.types.FileType
 import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
 
 class MapHolderEditController : BaseEditController<MapHolderEditState>() {
+
     override val defaultItemState: MapHolderEditState = MapHolderEditState()
+
     override var state: ViewState<MapHolderEditState> by mutableStateOf(
         ViewState(
             title = "Edit map",
@@ -43,23 +46,41 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
         )
     }
 
-    fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
+    fun onCompetitiveChange(value: Boolean) {
+        setItemState(
+            state.item.copy(
+                isCompetitive = value
+            )
+        )
+    }
 
     fun onWallpaperChange() {
-        val newWallpaper = fileChooser("Select logo", "png") ?: return
-        if (!state.item.wallpaper.value.contains(newWallpaper))
-            setItemState(state.item.copy(wallpaper = ContentSourceType.File(newWallpaper)))
+        fileChooser("Select logo", FileType.PNG, state.item.wallpaper) { newWallpaper ->
+            setItemState(
+                state.item.copy(
+                    wallpaper = newWallpaper
+                )
+            )
+        }
     }
 
     fun onMapChange() {
-        val newMap = fileChooser("Select logo", "png") ?: return
-        if (!state.item.map.value.contains(newMap))
-            setItemState(state.item.copy(map = ContentSourceType.File(newMap)))
+        fileChooser("Select logo", FileType.PNG, state.item.map) { newMap ->
+            setItemState(
+                state.item.copy(
+                    map = newMap
+                )
+            )
+        }
     }
 
     fun onLogoChange() {
-        val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.value.contains(newLogo))
-            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
+        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
+            setItemState(
+                state.item.copy(
+                    logo = newLogo
+                )
+            )
+        }
     }
 }

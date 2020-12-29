@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import ui.spacedBy20dp
 
 @Composable
-fun <T> ScrollableRowAdd(
+fun <T> ScrollableAddRow(
     modifier: Modifier = Modifier,
     cardAdd: @Composable () -> Unit,
     cardItem: @Composable (T) -> Unit,

@@ -49,6 +49,14 @@ fun String.toValidOrder(): Int = this.replace("[^0-9]".toRegex(), "").let { orde
 
 fun Int.toOrderString(): String = if (this > 0) this.toString() else ""
 
+fun <E> List<E>.containsOnly(element: E): Boolean {
+    return try {
+        this.single() == element
+    } catch (e: Exception) {
+        false
+    }
+}
+
 fun Int.toXPString(): String = if (this > 0) this.toString() else ""
 
 fun String.isValidURL() = try {

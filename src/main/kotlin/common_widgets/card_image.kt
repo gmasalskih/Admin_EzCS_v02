@@ -1,88 +1,79 @@
 package common_widgets
 
+import androidx.compose.ui.text.style.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import data.types.ContentSourceType
 import ui.*
-import utils.toValidFileName
 
 @Composable
 fun CardImage(
+    label: String = "",
     modifier: Modifier = Modifier,
-    pathToFile: String,
+    pathToFile: ContentSourceType,
     progressIndicatorColor: Color = dark,
     onClickDel: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.size(100.dp, 150.dp).then(modifier),
+        modifier = Modifier.size(100.dp, 150.dp).clickable(onClick = onClick).then(modifier),
         shape = roundedCorner5dp,
         elevation = elevation6dp,
         backgroundColor = greyAccent
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (onClickDel == null) Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
-            else Box(
-                Modifier.weight(weight = 1f, fill = true).aspectRatio(1f).align(Alignment.End)
-                    .clickable(onClick = onClickDel).padding(5.dp)
-            ) {
-                IconApp(
-                    pathToIcon = "icons/icon_trash.png",
-                    tint = dark
-                )
-            }
             Box(
-                modifier = Modifier.fillMaxWidth().aspectRatio(1f).clickable(onClick = onClick)
+                modifier = Modifier.fillMaxWidth().weight(1f).padding(5.dp)
             ) {
-                when {
-                    pathToFile.toLowerCase().contains("(\\.png\$)|(\\.gif\$)".toRegex()) -> {
-                        ImageUrl(
-                            url = pathToFile,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.FillWidth,
-                            progressIndicatorColor = progressIndicatorColor
-                        )
-                    }
-                    pathToFile.toLowerCase().contains("\\.mp4$".toRegex()) -> {
-                        Icon(
-                            modifier = Modifier.padding(10.dp).fillMaxSize(),
-                            bitmap = imageResource("icons/icon_video.png"),
-                            tint = dark
-                        )
-                    }
-                    else -> {
-                        Icon(
-                            modifier = Modifier.padding(10.dp).fillMaxSize(),
-                            bitmap = imageResource("icons/icon_err.png"),
-                            tint = dark
-                        )
-                    }
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = label,
+                    textAlign = TextAlign.Center,
+                    fontSize = fontSize8sp,
+                    fontFamily = verdanaBold,
+                    color = dark,
+                )
+                if (onClickDel != null) {
+                    Icon(
+                        modifier = Modifier.align(Alignment.TopEnd).size(20.dp).clickable(onClick = onClickDel),
+                        bitmap = imageResource(Icons.Cross),
+                        tint = dark
+                    )
                 }
             }
             Box(
-                modifier = Modifier.weight(1f, true)
+                modifier = Modifier.aspectRatio(1f).fillMaxSize()
+            ) {
+                ImageLoader.Image(
+                    content = pathToFile,
+                    modifier = Modifier.aspectRatio(1f).fillMaxSize(),
+                    contentScale = ContentScale.FillWidth,
+                    progressIndicatorColor = progressIndicatorColor
+                )
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth().weight(1f).padding(5.dp)
             ) {
                 Text(
-                    text = pathToFile.toValidFileName(),
+                    text = pathToFile.value.substringAfterLast("/"),
                     modifier = Modifier.align(Alignment.Center),
                     textAlign = TextAlign.Center,
                     fontFamily = verdanaBold,
                     fontSize = fontSize8sp,
-                    color = dark,
+                    color = dark
                 )
             }
         }

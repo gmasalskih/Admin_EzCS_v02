@@ -20,7 +20,7 @@ fun TopBarApp(title: String, hasBackArrowButton: Boolean = false, clickBack: () 
                 contentAlignment = Alignment.Center
             ) {
                 IconApp(
-                    pathToIcon = "icons/back_arrow.png",
+                    pathToIcon = "icons/icon_back_arrow.png",
                     tint = greyAccent
                 )
             }

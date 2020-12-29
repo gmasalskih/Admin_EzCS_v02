@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ui.*
 
@@ -22,16 +23,17 @@ fun CardAdd(label: String, onClick: () -> Unit) {
             modifier = Modifier.fillMaxSize()
         ) {
             IconApp(
-                pathToIcon = "icons/icon_add.png",
+                pathToIcon = Icons.Add,
                 tint = light,
                 modifier = Modifier.align(Alignment.Center)
             )
             Text(
                 text = label.toUpperCase(),
+                textAlign = TextAlign.Center,
                 fontFamily = verdanaBold,
                 fontSize = fontSize8sp,
                 color = light,
-                modifier = Modifier.align(Alignment.BottomCenter).offset(y=(-10).dp)
+                modifier = Modifier.align(Alignment.BottomCenter).offset(y = (-10).dp)
             )
         }
     }

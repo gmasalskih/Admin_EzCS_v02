@@ -34,7 +34,7 @@ class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditContro
                     label = "Change order",
                     onTextChanged = controller::onOrderChange
                 )
-                CardImageUrl(
+                CardImage(
                     label = "Change logo",
                     pathToFile = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
-import common_widgets.CardImageUrl
+import common_widgets.CardImage
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
 import org.koin.core.inject
@@ -38,7 +38,7 @@ class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditControll
                     label = "Change order",
                     onTextChanged = controller::onOrderChange
                 )
-                CardImageUrl(
+                CardImage(
                     label = "Change logo",
                     pathToFile = controller.getViewState().item.logo,
                     onClick = controller::onLogoChange

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import common_widgets.CardAdd
 import common_widgets.CardRank
-import common_widgets.ScrollableRowAdd
+import common_widgets.ScrollableAddRow
 import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
@@ -15,7 +15,7 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
 
     @Composable
     override fun setContent(controller: CompetitiveMenuController) {
-        ScrollableRowAdd(
+        ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
             items = controller.getViewState().item.listCompetitive,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToCompetitiveAdd) },

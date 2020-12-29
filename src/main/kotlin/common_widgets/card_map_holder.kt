@@ -21,16 +21,17 @@ import ui.*
 @Composable
 fun CardMapHolder(
     modifier: Modifier = Modifier,
-    background: ContentSourceType,
-    logo: ContentSourceType,
     name: String,
+    logo: ContentSourceType,
+    background: ContentSourceType,
+    isSelected: Boolean = false,
     isCompetitive: Boolean,
     onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.size(100.dp, 150.dp).then(modifier).clickable(onClick = onClick),
         shape = roundedCorner5dp,
-        border = BorderStroke(1.dp, orangeAccent),
+        border = BorderStroke(if (isSelected) 3.dp else 1.dp, orangeAccent),
         elevation = elevation6dp
     ) {
         Box(
@@ -38,7 +39,7 @@ fun CardMapHolder(
         ) {
             ImageLoader.Image(
                 modifier = Modifier.fillMaxSize(),
-                contentSourceType = background,
+                content = background,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter(Color.Black.copy(alpha = 0.4f), BlendMode.SrcOver)
             )
@@ -47,7 +48,7 @@ fun CardMapHolder(
             ) {
                 ImageLoader.Image(
                     modifier = Modifier.size(60.dp).align(Alignment.Center),
-                    contentSourceType = logo,
+                    content = logo,
                 )
                 if (isCompetitive) {
                     Icon(

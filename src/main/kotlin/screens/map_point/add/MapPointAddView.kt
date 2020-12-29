@@ -6,11 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
+import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
+import ui.spacedBy40dp
 
 class MapPointAddView : BaseView<MapPointAddController>() {
     override val controller by inject<MapPointAddController>()
@@ -24,29 +26,40 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = spacedBy20dp
             ) {
-                Row(
+                TextFieldApp(
+                    value = controller.getViewState().item.name,
+                    label = "Enter map point name",
+                    onTextChanged = controller::onNameChange
+                )
+                ScrollableItemRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    TextFieldApp(
-                        value = controller.getViewState().item.mapId,
-                        label = "Enter map ID",
-                        onTextChanged = controller::onMapIdChange
-                    )
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Enter map point name",
-                        onTextChanged = controller::onNameChange
+                    items = controller.listMapHolder
+                ) { mapHolder ->
+                    CardMapHolder(
+                        background = ContentSourceType.ContentStorageThumbnail(
+                            mapHolder.getDocumentName(),
+                            mapHolder.wallpaper
+                        ),
+                        isSelected = mapHolder === controller.selectedMapHolder,
+                        logo = ContentSourceType.ContentStorageOriginal(mapHolder.getDocumentName(), mapHolder.logo),
+                        name = mapHolder.name,
+                        isCompetitive = mapHolder.isCompetitive,
+                        onClick = { controller.onMapHolderSelect(mapHolder) }
                     )
                 }
-                RadioGroupGrenadeTypes(
-                    onTypeSelected = controller::onGrenadeTypeChange,
-                    grenadeTypeSelected = controller.getViewState().item.grenadeType
-                )
-                CheckboxGroupTickrateTypes(
-                    listTickrateTypes = controller.getViewState().item.tickrateTypes,
-                    onTickrateTypeClick = controller::onTickrateChange
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = spacedBy40dp,
+                ) {
+                    RadioGroupGrenadeTypes(
+                        onTypeSelected = controller::onGrenadeTypeChange,
+                        grenadeTypeSelected = controller.getViewState().item.grenadeType
+                    )
+                    CheckboxGroupTickrateTypes(
+                        listTickrateTypes = controller.getViewState().item.tickrateTypes,
+                        onTickrateTypeClick = controller::onTickrateChange
+                    )
+                }
                 Row(
                     horizontalArrangement = spacedBy20dp
                 ) {
@@ -61,7 +74,7 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                         image = controller.getViewState().item.previewEnd
                     )
                 }
-                ScrollableRowAdd(
+                ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
                     items = controller.getViewState().item.contentVideos,
                     cardAdd = {
@@ -78,7 +91,7 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                         )
                     }
                 )
-                ScrollableRowAdd(
+                ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
                     items = controller.getViewState().item.contentImages,
                     cardAdd = {
@@ -107,6 +120,7 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

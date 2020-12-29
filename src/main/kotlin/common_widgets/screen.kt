@@ -22,7 +22,7 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable 
     ) {
         //AppBar
         TopBarApp(
-            viewComponent.controller.getViewState().title,
+            viewComponent.controller.getViewState().title.toUpperCase(),
             viewComponent.controller.isNavigableBack(),
             viewComponent.controller::back
         )

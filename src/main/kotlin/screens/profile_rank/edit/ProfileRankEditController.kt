@@ -3,6 +3,7 @@ package screens.profile_rank.edit
 import androidx.compose.runtime.*
 import data.entitys.ProfileRank
 import data.types.ContentSourceType
+import data.types.FileType
 import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
@@ -34,14 +35,30 @@ class ProfileRankEditController : BaseEditController<ProfileRankEditState>() {
         }
     }
 
-    fun onXPChange(xp: String) = setItemState(state.item.copy(xp = xp.toValidXP()))
+    fun onXPChange(xp: String) {
+        setItemState(
+            state.item.copy(
+                xp = xp.toValidXP()
+            )
+        )
+    }
 
-    fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
+    fun onOrderChange(order: String) {
+        setItemState(
+            state.item.copy(
+                order = order.toValidOrder()
+            )
+        )
+    }
 
     fun onLogoChange() {
-        val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.value.contains(newLogo))
-            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
+        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
+            setItemState(
+                state.item.copy(
+                    logo = newLogo
+                )
+            )
+        }
     }
 
     override suspend fun update(stateItem: ProfileRankEditState) {

@@ -3,6 +3,7 @@ package screens.competitive.add
 import androidx.compose.runtime.*
 import data.entitys.Competitive
 import data.types.ContentSourceType
+import data.types.FileType
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -15,22 +16,38 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
 
     override var state: ViewState<CompetitiveAddState> by mutableStateOf(
         ViewState(
-            title = "Add new competitive rank",
+            title = "new competitive rank",
             item = defaultItemState
         )
     )
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
-
-    fun onOrderChange(order: String) = setItemState(state.item.copy(order = order.toValidOrder()))
-
-    fun onLogoAdd() {
-        val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.value.contains(newLogo))
-            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
+    fun onNameChange(name: String) {
+        setItemState(
+            state.item.copy(
+                name = name.toValidName()
+            )
+        )
     }
 
-    override suspend fun upload(stateItem: CompetitiveAddState) =
+    fun onOrderChange(order: String) {
+        setItemState(
+            state.item.copy(
+                order = order.toValidOrder()
+            )
+        )
+    }
+
+    fun onLogoAdd() {
+        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
+            setItemState(
+                state.item.copy(
+                    logo = newLogo
+                )
+            )
+        }
+    }
+
+    override suspend fun upload(stateItem: CompetitiveAddState) {
         service.uploadEntity(
             Competitive(
                 name = stateItem.name,
@@ -38,4 +55,5 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
                 order = stateItem.order
             )
         )
+    }
 }

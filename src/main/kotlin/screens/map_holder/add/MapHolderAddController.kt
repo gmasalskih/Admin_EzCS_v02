@@ -2,7 +2,7 @@ package screens.map_holder.add
 
 import androidx.compose.runtime.*
 import data.entitys.MapHolder
-import data.types.ContentSourceType
+import data.types.FileType
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -14,12 +14,12 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
 
     override var state: ViewState<MapHolderAddState> by mutableStateOf(
         ViewState(
-            title = "Add Map",
+            title = "new map",
             item = defaultItemState
         )
     )
 
-    override suspend fun upload(stateItem: MapHolderAddState) =
+    override suspend fun upload(stateItem: MapHolderAddState) {
         service.uploadEntity(
             MapHolder(
                 name = stateItem.name,
@@ -29,26 +29,51 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
                 wallpaper = stateItem.wallpaper.value
             )
         )
+    }
 
-    fun onNameChange(name: String) = setItemState(state.item.copy(name = name.toValidName()))
+    fun onNameChange(name: String) {
+        setItemState(
+            state.item.copy(
+                name = name.toValidName()
+            )
+        )
+    }
 
     fun onLogoAdd() {
-        val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.value.contains(newLogo))
-            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
+        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
+            setItemState(
+                state.item.copy(
+                    logo = newLogo
+                )
+            )
+        }
     }
 
     fun onMapAdd() {
-        val newMap = fileChooser("Select map", "png") ?: return
-        if (!state.item.map.value.contains(newMap))
-            setItemState(state.item.copy(map = ContentSourceType.File(newMap)))
+        fileChooser("Select map", FileType.PNG, state.item.map) { newMap ->
+            setItemState(
+                state.item.copy(
+                    map = newMap
+                )
+            )
+        }
     }
 
     fun onWallpaperAdd() {
-        val newWallpaper = fileChooser("Select wallpaper", "png") ?: return
-        if (!state.item.wallpaper.value.contains(newWallpaper))
-            setItemState(state.item.copy(wallpaper = ContentSourceType.File(newWallpaper)))
+        fileChooser("Select wallpaper", FileType.PNG, state.item.wallpaper) { newWallpaper ->
+            setItemState(
+                state.item.copy(
+                    wallpaper = newWallpaper
+                )
+            )
+        }
     }
 
-    fun onCompetitiveChange(value: Boolean) = setItemState(state.item.copy(isCompetitive = value))
+    fun onCompetitiveChange(value: Boolean) {
+        setItemState(
+            state.item.copy(
+                isCompetitive = value
+            )
+        )
+    }
 }

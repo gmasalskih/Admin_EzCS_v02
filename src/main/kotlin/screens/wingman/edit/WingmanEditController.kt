@@ -3,6 +3,7 @@ package screens.wingman.edit
 import androidx.compose.runtime.*
 import data.entitys.Wingman
 import data.types.ContentSourceType
+import data.types.FileType
 import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
@@ -20,13 +21,21 @@ class WingmanEditController : BaseEditController<WingmanEditState>() {
     )
 
     fun onLogoChange() {
-        val newLogo = fileChooser("Select logo", "png") ?: return
-        if (!state.item.logo.value.contains(newLogo))
-            setItemState(state.item.copy(logo = ContentSourceType.File(newLogo)))
+        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
+            setItemState(
+                state.item.copy(
+                    logo = newLogo
+                )
+            )
+        }
     }
 
     fun onOrderChange(order: String) {
-        setItemState(state.item.copy(order = order.toValidOrder()))
+        setItemState(
+            state.item.copy(
+                order = order.toValidOrder()
+            )
+        )
     }
 
     override suspend fun setEntity() {

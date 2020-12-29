@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import common_widgets.*
 import org.koin.core.inject
 import screens.BaseView
+import ui.greyAccent
 import ui.orangeAccent
 import ui.spacedBy20dp
 
@@ -31,29 +32,6 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                 verticalArrangement = spacedBy20dp
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = spacedBy20dp
-                ) {
-                    TextFieldApp(
-                        value = controller.getViewState().item.mapId,
-                        label = "Map ID",
-                        onTextChanged = {}
-                    )
-                    TextFieldApp(
-                        value = controller.getViewState().item.name,
-                        label = "Map point name",
-                        onTextChanged = controller::onNameChange
-                    )
-                }
-                RadioGroupGrenadeTypes(
-                    onTypeSelected = controller::onGrenadeTypeChange,
-                    grenadeTypeSelected = controller.getViewState().item.grenadeType
-                )
-                CheckboxGroupTickrateTypes(
-                    listTickrateTypes = controller.getViewState().item.tickrateTypes,
-                    onTickrateTypeClick = controller::onTickrateChange
-                )
-                Row(
                     horizontalArrangement = spacedBy20dp
                 ) {
                     CardImage(
@@ -65,7 +43,7 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                         pathToFile = controller.getViewState().item.previewEnd
                     )
                 }
-                ScrollableRowAdd(
+                ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
                     items = controller.getViewState().item.contentVideos,
                     cardAdd = {
@@ -82,7 +60,7 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                         )
                     }
                 )
-                ScrollableRowAdd(
+                ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
                     items = controller.getViewState().item.contentImages,
                     cardAdd = {
@@ -100,12 +78,22 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                     }
                 )
             }
-            ButtonApp(
+            Row(
                 modifier = Modifier.align(Alignment.BottomEnd),
-                label = "submit",
-                color = orangeAccent,
-                onClick = controller::onSubmit
-            )
+                horizontalArrangement = spacedBy20dp
+            ) {
+                ButtonApp(
+                    label = "delete",
+                    color = greyAccent,
+                    onClick = controller::onDelete,
+                )
+                ButtonApp(
+                    label = "submit",
+                    isActive = controller.getViewState().item.isValid(),
+                    color = orangeAccent,
+                    onClick = controller::onSubmit,
+                )
+            }
         }
     }
 }

@@ -1,23 +1,25 @@
 package screens.map_point.add
 
-import data.types.EntityType
+import data.types.ContentSourceType
 import data.types.GrenadeType
 import data.types.TickrateType
 import screens.State
 
 data class MapPointAddState(
     val name: String = "",
-    val entityType: EntityType = EntityType.MAP_POINT,
-    val contentImages: List<String> = listOf(),
-    val contentVideos: List<String> = listOf(),
+    val mapDocumentName: String = "",
     val grenadeType: GrenadeType = GrenadeType.SMOKE,
-    val mapId: String = "",
-    val previewEnd: String = "",
-    val previewStart: String = "",
     val tickrateTypes: List<TickrateType> = listOf(),
-):State {
-    override fun isValid(): Boolean {
-//        TODO("Not yet implemented")
-        return false
-    }
+    val previewStart: ContentSourceType = ContentSourceType.Empty,
+    val previewEnd: ContentSourceType = ContentSourceType.Empty,
+    val contentImages: List<ContentSourceType> = listOf(),
+    val contentVideos: List<ContentSourceType> = listOf(),
+) : State {
+    override fun isValid(): Boolean = name.isNotBlank() &&
+            mapDocumentName.isNotEmpty() &&
+            tickrateTypes.isNotEmpty() &&
+            previewStart !is ContentSourceType.Empty &&
+            previewEnd !is ContentSourceType.Empty &&
+            contentImages.isNotEmpty() &&
+            contentVideos.isNotEmpty()
 }

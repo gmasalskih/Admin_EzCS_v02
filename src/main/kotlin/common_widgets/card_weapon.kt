@@ -56,12 +56,12 @@ fun CardWeapon(
             Box(
                 modifier = Modifier.fillMaxWidth().aspectRatio(1f).align(Alignment.TopCenter).padding(10.dp)
             ) {
-                ImageUrl(
-                    modifier = Modifier.align(Alignment.Center).fillMaxSize(),
-                    url = image,
-                    contentScale = ContentScale.FillWidth,
-                    progressIndicatorColor = progressIndicatorColor
-                )
+//                ImageUrl(
+//                    modifier = Modifier.align(Alignment.Center).fillMaxSize(),
+//                    url = image,
+//                    contentScale = ContentScale.FillWidth,
+//                    progressIndicatorColor = progressIndicatorColor
+//                )
             }
             Text(
                 text = name.toUpperCase(),

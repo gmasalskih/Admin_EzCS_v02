@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import common_widgets.CardAdd
 import common_widgets.CardMapHolder
-import common_widgets.ScrollableRowAdd
+import common_widgets.ScrollableAddRow
 import data.types.ContentSourceType
 import org.koin.core.inject
 import screens.BaseView
@@ -21,7 +21,7 @@ class MapHolderMenuView : BaseView<MapHolderMenuController>() {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            ScrollableRowAdd(
+            ScrollableAddRow(
                 modifier = Modifier.fillMaxWidth().zIndex(2f),
                 items = controller.getViewState().item.listMapHolder,
                 cardAdd = { CardAdd(label = "add map holder", onClick = controller::navigateToMapHolderAdd) },

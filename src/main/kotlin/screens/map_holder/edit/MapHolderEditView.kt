@@ -31,17 +31,17 @@ class MapHolderEditView(documentName: String) : BaseView<MapHolderEditController
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = spacedBy20dp
                 ) {
-                    CardImageUrl(
+                    CardImage(
                         label = "add logo",
                         pathToFile = controller.getViewState().item.logo,
                         onClick = controller::onLogoChange
                     )
-                    CardImageUrl(
+                    CardImage(
                         label = "add map",
                         pathToFile = controller.getViewState().item.map,
                         onClick = controller::onMapChange
                     )
-                    CardImageUrl(
+                    CardImage(
                         label = "add wallpaper",
                         pathToFile = controller.getViewState().item.wallpaper,
                         onClick = controller::onWallpaperChange

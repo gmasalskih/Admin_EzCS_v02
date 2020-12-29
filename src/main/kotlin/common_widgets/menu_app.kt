@@ -25,19 +25,19 @@ private val buttonsMenuApp = listOf(
 private sealed class ButtonsMenuApp(val title: String, val logoPath: String, val navigationTarget: NavigationTargets) {
     object Maps : ButtonsMenuApp(
         title = "Map holder",
-        logoPath = "icons/icon_maps.png",
+        logoPath = "icons/icon_map_holder.png",
         navigationTarget = NavigationTargets.MapHolderMenu
     )
 
     object MapPoints : ButtonsMenuApp(
         title = "Map Point",
-        logoPath = "icons/icon_map_points.png",
+        logoPath = "icons/icon_map_point.png",
         navigationTarget = NavigationTargets.MapPointsMenu
     )
 
     object Weapons : ButtonsMenuApp(
         title = "Weapon",
-        logoPath = "icons/icon_weapons.png",
+        logoPath = "icons/icon_weapon.png",
         navigationTarget = NavigationTargets.WeaponsMenu
     )
 

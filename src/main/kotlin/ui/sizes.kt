@@ -11,6 +11,7 @@ val iconHeight = 30.dp
 val spacedBy5dp = Arrangement.spacedBy(5.dp)
 val spacedBy10dp = Arrangement.spacedBy(10.dp)
 val spacedBy20dp = Arrangement.spacedBy(20.dp)
+val spacedBy40dp = Arrangement.spacedBy(40.dp)
 
 //Font Sizes
 val fontSize8sp = 8.sp

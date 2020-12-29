@@ -18,7 +18,7 @@ abstract class BaseController<I : State> : KoinComponent {
     protected lateinit var cs: CoroutineScope
         private set
 
-    fun onClear() {
+    open fun onClear() {
         setItemState(defaultItemState)
     }
 
