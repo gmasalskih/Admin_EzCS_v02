@@ -32,6 +32,7 @@ import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
 import screens.test.TestController
+import screens.test.TestView
 import screens.weapon.add.WeaponAddController
 import screens.weapon.edit.WeaponEditController
 import screens.weapon.menu.WeaponMenuController

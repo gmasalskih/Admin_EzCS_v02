@@ -1,6 +1,8 @@
 package providers.service_provider
 
 import data.entitys.Entity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import providers.ContentProvider
 import providers.Service
 import providers.DataProvider
@@ -110,7 +112,9 @@ class ServiceProviderImpl(
         dataProvider.downloadDocument(documentName, clazz.java)
 
     override suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>) =
-        dataProvider.getListDocuments(collectionName, clazz.java)
+        withContext(Dispatchers.IO) {
+            dataProvider.getListDocuments(collectionName, clazz.java)
+        }
 
     override suspend fun deleteEntity(documentName: String) {
         dataProvider.deleteDocument(documentName)

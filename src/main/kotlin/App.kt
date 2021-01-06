@@ -32,6 +32,7 @@ object App : KoinComponent {
     }
 
     fun runApp(title: String) = Window(size = IntSize(1280, 800), title = title) {
+        println("--- ${Thread.currentThread().name} ---")
         AdminEzCSTheme {
             //Background
             Surface(

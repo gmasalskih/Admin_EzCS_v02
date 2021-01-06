@@ -25,11 +25,26 @@ object ImageLoader : KoinComponent {
     private val contentProvider by inject<ContentProvider>()
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun loadImage(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
-        is ContentSourceType.ContentStorageThumbnail -> {
-            contentProvider.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
-                Image.makeFromEncoded(byteArray).asImageBitmap()
+    private suspend fun loadImageAsync(contentSourceType: ContentSourceType, parentContext: CoroutineScope) =
+        parentContext.async(Dispatchers.IO) {
+            var imageBitmap: ImageBitmap? = null
+            repeat(10) {
+                if (imageBitmap == null) {
+                    imageBitmap = withTimeoutOrNull(3000) { getImageBitmap(contentSourceType) }
+                } else {
+                    return@async imageBitmap
+                }
             }
+            externalImageResource("src/main/resources/${Icons.Err}")
+        }
+
+
+    private fun getImageBitmap(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
+        is ContentSourceType.ContentStorageThumbnail -> {
+            contentProvider.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)
+                ?.let { byteArray ->
+                    Image.makeFromEncoded(byteArray).asImageBitmap()
+                }
         }
         is ContentSourceType.ContentStorageOriginal -> {
             contentProvider.getFile(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
@@ -37,54 +52,38 @@ object ImageLoader : KoinComponent {
             }
         }
         is ContentSourceType.URL -> {
-            withContext(Dispatchers.IO) {
-                URL(contentSourceType.url).openStream().use { inputStream ->
-                    BufferedInputStream(inputStream).use { bufferedInputStream ->
-                        bufferedInputStream.readAllBytes()?.let { byteArray ->
-                            Image.makeFromEncoded(byteArray).asImageBitmap()
-                        }
+            URL(contentSourceType.url).openStream().use { inputStream ->
+                BufferedInputStream(inputStream).use { bufferedInputStream ->
+                    bufferedInputStream.readAllBytes()?.let { byteArray ->
+                        Image.makeFromEncoded(byteArray).asImageBitmap()
                     }
                 }
             }
         }
         is ContentSourceType.File -> {
-            when(contentSourceType.fileType){
+            when (contentSourceType.fileType) {
                 FileType.PNG -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource(contentSourceType.pathToFile)
-                    }
+                    externalImageResource(contentSourceType.pathToFile)
                 }
                 FileType.GIF -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource(contentSourceType.pathToFile)
-                    }
+                    externalImageResource(contentSourceType.pathToFile)
                 }
                 FileType.MP4 -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource("src/main/resources/${Icons.Video}")
-                    }
+                    externalImageResource("src/main/resources/${Icons.Video}")
                 }
                 FileType.SVG -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource("src/main/resources/${Icons.SVG}")
-                    }
+                    externalImageResource("src/main/resources/${Icons.SVG}")
                 }
                 FileType.TXT -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource("src/main/resources/${Icons.TextFile}")
-                    }
+                    externalImageResource("src/main/resources/${Icons.TextFile}")
                 }
             }
         }
         is ContentSourceType.Resource -> {
-            withContext(Dispatchers.IO) {
-                externalImageResource("src/main/resources/${contentSourceType.pathToResource}")
-            }
+            externalImageResource("src/main/resources/${contentSourceType.pathToResource}")
         }
         is ContentSourceType.Empty -> {
-            withContext(Dispatchers.IO) {
-                externalImageResource("src/main/resources/${Icons.Err}")
-            }
+            externalImageResource("src/main/resources/${Icons.Err}")
         }
     }
 
@@ -102,11 +101,11 @@ object ImageLoader : KoinComponent {
             modifier = Modifier.then(modifier)
         ) {
             if (imageAsset == null) {
+                scope.launch { setImageAsset(loadImageAsync(content, this).await()) }
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
                     color = progressIndicatorColor
                 )
-                scope.launch { setImageAsset(loadImage(content)) }
             } else {
                 Image(
                     modifier = Modifier.then(modifier),

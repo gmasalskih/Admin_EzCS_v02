@@ -27,6 +27,10 @@ class MapHolderMenuController : BaseMenuController<MapHolderMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(MapHolderMenuState(service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class)))
+        setItemState(
+            MapHolderMenuState(
+                service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class)
+            )
+        )
     }
 }

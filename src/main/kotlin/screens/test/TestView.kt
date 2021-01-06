@@ -10,7 +10,6 @@ class TestView : BaseView<TestController>() {
 
     @Composable
     override fun setContent(controller: TestController) {
-
         CardImage(
             label = "",
             pathToFile = controller.getViewState().item.content,
