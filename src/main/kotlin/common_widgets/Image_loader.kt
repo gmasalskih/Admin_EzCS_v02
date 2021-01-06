@@ -12,8 +12,9 @@ import data.types.ContentSourceType
 import data.types.FileType
 import kotlinx.coroutines.*
 import org.jetbrains.skija.Image
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
 import providers.ContentProvider
 import ui.dark
 import ui.Icons

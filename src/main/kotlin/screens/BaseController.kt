@@ -1,11 +1,8 @@
 package screens
 
 import data.types.StateType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import providers.CoroutineProvider
 import providers.Service
 import router.Router
@@ -17,8 +14,6 @@ abstract class BaseController<I : State> : KoinComponent {
     protected val router by inject<Router>()
     protected val service by inject<Service>()
     protected val cs by inject<CoroutineProvider>()
-//    protected lateinit var cs: CoroutineScope
-//        private set
 
     open fun onClear() {
         setItemState(defaultItemState)

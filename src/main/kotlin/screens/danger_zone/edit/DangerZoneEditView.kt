@@ -11,7 +11,7 @@ import common_widgets.ButtonApp
 import common_widgets.CardImage
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent

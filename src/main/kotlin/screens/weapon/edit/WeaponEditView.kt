@@ -2,7 +2,7 @@ package screens.weapon.edit
 
 import androidx.compose.runtime.Composable
 import common_widgets.ButtonApp
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.orangeAccent
 

@@ -2,7 +2,7 @@ package screens.test
 
 import androidx.compose.runtime.Composable
 import common_widgets.CardImage
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 
 class TestView : BaseView<TestController>() {

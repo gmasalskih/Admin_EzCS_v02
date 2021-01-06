@@ -12,12 +12,11 @@ import common_widgets.ButtonApp
 import common_widgets.CardAddOrImage
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import utils.toOrderString
-import utils.toValidName
 
 class WingmanAddView : BaseView<WingmanAddController>() {
     override val controller by inject<WingmanAddController>()

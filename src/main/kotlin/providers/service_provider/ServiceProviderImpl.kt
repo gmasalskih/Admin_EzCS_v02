@@ -109,7 +109,9 @@ class ServiceProviderImpl(
     }
 
     override suspend fun <T : Entity> getEntity(documentName: String, clazz: KClass<T>) =
-        dataProvider.downloadDocument(documentName, clazz.java)
+        withContext(Dispatchers.IO) {
+            dataProvider.downloadDocument(documentName, clazz.java)
+        }
 
     override suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>) =
         withContext(Dispatchers.IO) {

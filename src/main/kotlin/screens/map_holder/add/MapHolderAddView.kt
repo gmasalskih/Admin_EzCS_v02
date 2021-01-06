@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.*
 

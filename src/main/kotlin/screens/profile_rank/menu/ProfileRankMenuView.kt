@@ -7,7 +7,7 @@ import common_widgets.CardAdd
 import common_widgets.CardRank
 import common_widgets.ScrollableAddRow
 import data.types.ContentSourceType
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 
 class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {

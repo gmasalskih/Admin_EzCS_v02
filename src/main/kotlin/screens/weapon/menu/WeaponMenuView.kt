@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import common_widgets.CardAdd
 import common_widgets.CardWeapon
 import common_widgets.ScrollableAddRow
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 
 class WeaponMenuView : BaseView<WeaponMenuController>() {

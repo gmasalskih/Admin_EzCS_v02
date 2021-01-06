@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import common_widgets.ButtonApp
 import common_widgets.CardAddOrImage
 import common_widgets.TextFieldApp
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.*
 import utils.toValidId
