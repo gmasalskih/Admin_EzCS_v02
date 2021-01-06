@@ -9,7 +9,9 @@ class TestView : BaseView<TestController>() {
     override val controller by inject<TestController>()
 
     @Composable
-    override fun setContent(controller: TestController) {
+    override fun setContent(
+        controller: TestController,
+    ) {
         CardImage(
             label = "",
             pathToFile = controller.getViewState().item.content,

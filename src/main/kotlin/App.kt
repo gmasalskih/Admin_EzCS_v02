@@ -5,14 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import common_widgets.MenuApp
 import di.*
+import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-
 import org.koin.core.context.startKoin
-
 import router.Router
 import ui.*
 
+@KoinApiExtension
 object App : KoinComponent {
     private val router: Router by inject()
 

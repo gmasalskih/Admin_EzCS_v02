@@ -1,8 +1,7 @@
 package providers.service_provider
 
 import data.entitys.Entity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import providers.ContentProvider
 import providers.Service
 import providers.DataProvider
@@ -12,7 +11,8 @@ import kotlin.reflect.full.declaredMemberProperties
 
 class ServiceProviderImpl(
     private val dataProvider: DataProvider,
-    private val contentProvider: ContentProvider
+    private val contentProvider: ContentProvider,
+    private val scope: CoroutineScope
 ) : Service {
 
     override suspend fun <T : Entity> updateEntity(entity: T) {
@@ -53,17 +53,27 @@ class ServiceProviderImpl(
                 }
             }
         }
-        dataProvider.updateDocument(entityMap, entity.getDocumentName())
-        uploadContentSet.forEach { fullPathToFile ->
-            contentProvider.uploadFile(
-                fullPathToFile.toValidFolder(),
-                entity.getDocumentName(),
-                fullPathToFile.toValidFileName()
-            )
-        }
-        contentProvider.getListFileNames(entity.getDocumentName()).forEach { fileName ->
-            if (!fullContentSet.contains(fileName)) contentProvider.deleteFile(entity.getDocumentName(), fileName)
-        }
+        scope.launch(Dispatchers.IO) {
+            launch { dataProvider.updateDocument(entityMap, entity.getDocumentName()) }
+            uploadContentSet.forEach { fullPathToFile ->
+                launch {
+                    contentProvider.uploadFile(
+                        fullPathToFile.toValidFolder(),
+                        entity.getDocumentName(),
+                        fullPathToFile.toValidFileName()
+                    )
+                }
+            }
+            val listFileName = async { contentProvider.getListFileNames(entity.getDocumentName()) }
+            listFileName.await().forEach { fileName ->
+                launch {
+                    if (!fullContentSet.contains(fileName)) contentProvider.deleteFile(
+                        entity.getDocumentName(),
+                        fileName
+                    )
+                }
+            }
+        }.join()
     }
 
     override suspend fun <T : Entity> uploadEntity(entity: T) {
@@ -98,29 +108,30 @@ class ServiceProviderImpl(
                 }
             }
         }
-        dataProvider.uploadDocument(entityMap, entity.getDocumentName())
-        uploadContentSet.forEach { fullPathToFile ->
-            contentProvider.uploadFile(
-                fullPathToFile.toValidFolder(),
-                entity.getDocumentName(),
-                fullPathToFile.toValidFileName()
-            )
-        }
+        scope.launch(Dispatchers.IO) {
+            launch { dataProvider.uploadDocument(entityMap, entity.getDocumentName()) }
+            uploadContentSet.forEach { fullPathToFile ->
+                launch(Dispatchers.IO) {
+                    contentProvider.uploadFile(
+                        fullPathToFile.toValidFolder(),
+                        entity.getDocumentName(),
+                        fullPathToFile.toValidFileName()
+                    )
+                }
+            }
+        }.join()
     }
 
     override suspend fun <T : Entity> getEntity(documentName: String, clazz: KClass<T>) =
-        withContext(Dispatchers.IO) {
-            dataProvider.downloadDocument(documentName, clazz.java)
-        }
+        withContext(Dispatchers.IO) { dataProvider.downloadDocument(documentName, clazz.java) }
 
     override suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>) =
-        withContext(Dispatchers.IO) {
-            dataProvider.getListDocuments(collectionName, clazz.java)
-        }
+        withContext(Dispatchers.IO) { dataProvider.getListDocuments(collectionName, clazz.java) }
 
     override suspend fun deleteEntity(documentName: String) {
-        dataProvider.deleteDocument(documentName)
-        contentProvider.deleteFolder(documentName)
+        val contentDel = scope.launch { contentProvider.deleteFolder(documentName) }
+        val dataDel = scope.launch { dataProvider.deleteDocument(documentName) }
+        joinAll(contentDel, dataDel)
     }
 
     private fun addToFullContentSet(content: String, contentSet: MutableSet<String>) {
@@ -134,15 +145,21 @@ class ServiceProviderImpl(
     }
 
     private suspend fun <T : Entity> checkEntity(entity: T, isEntityHaveToExist: Boolean) {
-        val isEntityOnFirestoreExist = dataProvider.isDocumentExist(entity.getDocumentName())
-        val isEntityOnDropboxExist = contentProvider.isFolderExist(entity.getDocumentName())
-        if (isEntityOnFirestoreExist != isEntityOnDropboxExist)
+        val deferredData = scope.async(Dispatchers.IO) {
+            dataProvider.isDocumentExist(entity.getDocumentName())
+        }
+        val deferredContent = scope.async(Dispatchers.IO) {
+            dataProvider.isDocumentExist(entity.getDocumentName())
+        }
+        val isEntityOnDataProviderExist = deferredData.await()
+        val isEntityOnContentProviderExist = deferredContent.await()
+        if (isEntityOnDataProviderExist != isEntityOnContentProviderExist)
             throw Exception("The entity ${entity.getDocumentName()} is not consistent stored!")
-        if (isEntityHaveToExist != (isEntityOnFirestoreExist && isEntityOnDropboxExist))
+        if (isEntityHaveToExist != (isEntityOnDataProviderExist && isEntityOnContentProviderExist))
             throw Exception("The ${entity.getDocumentName()} ${if (isEntityHaveToExist) "is not" else "already"} exist!")
     }
 
-    private suspend fun checkPathToFile(documentName: String, pathToFile: String) {
+    private fun checkPathToFile(documentName: String, pathToFile: String) {
         if (
             pathToFile.isPathToLocalFileValid() ||
             contentProvider.isFileExist(documentName, pathToFile.toValidFileName())
