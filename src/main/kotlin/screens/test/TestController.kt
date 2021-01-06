@@ -3,8 +3,8 @@ package screens.test
 import androidx.compose.runtime.*
 import data.types.FileType
 import org.koin.core.inject
-import providers.content_provider.DropboxProvider
-import providers.data_provider.FirestoreProvider
+import providers.content_provider.ContentProviderImpl
+import providers.data_provider.DataProviderImpl
 import screens.BaseController
 import screens.ViewState
 import utils.fileChooser
@@ -19,8 +19,8 @@ class TestController : BaseController<TestState>() {
             item = defaultItemState
         )
     )
-    private val dropbox by inject<DropboxProvider>()
-    private val firestore by inject<FirestoreProvider>()
+    private val dropbox by inject<ContentProviderImpl>()
+    private val firestore by inject<DataProviderImpl>()
 
     fun onVideoAdd() {
         fileChooser("Select content", FileType.PNG, state.item.content) { newItem ->

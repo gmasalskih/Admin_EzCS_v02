@@ -1,16 +1,16 @@
 package providers.service_provider
 
 import data.entitys.Entity
-import providers.ContentStorage
+import providers.ContentProvider
 import providers.Service
-import providers.DataStorage
+import providers.DataProvider
 import utils.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 
-class ServiceProvider(
-    private val dataStorage: DataStorage,
-    private val contentStorage: ContentStorage
+class ServiceProviderImpl(
+    private val dataProvider: DataProvider,
+    private val contentProvider: ContentProvider
 ) : Service {
 
     override suspend fun <T : Entity> updateEntity(entity: T) {
@@ -51,16 +51,16 @@ class ServiceProvider(
                 }
             }
         }
-        dataStorage.updateDocument(entityMap, entity.getDocumentName())
+        dataProvider.updateDocument(entityMap, entity.getDocumentName())
         uploadContentSet.forEach { fullPathToFile ->
-            contentStorage.uploadFile(
+            contentProvider.uploadFile(
                 fullPathToFile.toValidFolder(),
                 entity.getDocumentName(),
                 fullPathToFile.toValidFileName()
             )
         }
-        contentStorage.getListFileNames(entity.getDocumentName()).forEach { fileName ->
-            if (!fullContentSet.contains(fileName)) contentStorage.deleteFile(entity.getDocumentName(), fileName)
+        contentProvider.getListFileNames(entity.getDocumentName()).forEach { fileName ->
+            if (!fullContentSet.contains(fileName)) contentProvider.deleteFile(entity.getDocumentName(), fileName)
         }
     }
 
@@ -96,9 +96,9 @@ class ServiceProvider(
                 }
             }
         }
-        dataStorage.uploadDocument(entityMap, entity.getDocumentName())
+        dataProvider.uploadDocument(entityMap, entity.getDocumentName())
         uploadContentSet.forEach { fullPathToFile ->
-            contentStorage.uploadFile(
+            contentProvider.uploadFile(
                 fullPathToFile.toValidFolder(),
                 entity.getDocumentName(),
                 fullPathToFile.toValidFileName()
@@ -107,14 +107,14 @@ class ServiceProvider(
     }
 
     override suspend fun <T : Entity> getEntity(documentName: String, clazz: KClass<T>) =
-        dataStorage.downloadDocument(documentName, clazz.java)
+        dataProvider.downloadDocument(documentName, clazz.java)
 
     override suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>) =
-        dataStorage.getListDocuments(collectionName, clazz.java)
+        dataProvider.getListDocuments(collectionName, clazz.java)
 
     override suspend fun deleteEntity(documentName: String) {
-        dataStorage.deleteDocument(documentName)
-        contentStorage.deleteFolder(documentName)
+        dataProvider.deleteDocument(documentName)
+        contentProvider.deleteFolder(documentName)
     }
 
     private fun addToFullContentSet(content: String, contentSet: MutableSet<String>) {
@@ -128,8 +128,8 @@ class ServiceProvider(
     }
 
     private suspend fun <T : Entity> checkEntity(entity: T, isEntityHaveToExist: Boolean) {
-        val isEntityOnFirestoreExist = dataStorage.isDocumentExist(entity.getDocumentName())
-        val isEntityOnDropboxExist = contentStorage.isFolderExist(entity.getDocumentName())
+        val isEntityOnFirestoreExist = dataProvider.isDocumentExist(entity.getDocumentName())
+        val isEntityOnDropboxExist = contentProvider.isFolderExist(entity.getDocumentName())
         if (isEntityOnFirestoreExist != isEntityOnDropboxExist)
             throw Exception("The entity ${entity.getDocumentName()} is not consistent stored!")
         if (isEntityHaveToExist != (isEntityOnFirestoreExist && isEntityOnDropboxExist))
@@ -139,7 +139,7 @@ class ServiceProvider(
     private suspend fun checkPathToFile(documentName: String, pathToFile: String) {
         if (
             pathToFile.isPathToLocalFileValid() ||
-            contentStorage.isFileExist(documentName, pathToFile.toValidFileName())
+            contentProvider.isFileExist(documentName, pathToFile.toValidFileName())
         ) return
         throw Exception("Entity have field contains not valid pathToFile: $pathToFile")
     }

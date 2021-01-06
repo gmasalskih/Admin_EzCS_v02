@@ -4,9 +4,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.FirestoreClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import providers.DataStorage
+import providers.DataProvider
 
-class FirestoreProvider(app: FirebaseApp) : DataStorage {
+class DataProviderImpl(app: FirebaseApp) : DataProvider {
     private val db = FirestoreClient.getFirestore(app)
 
     @Suppress("BlockingMethodInNonBlockingContext")

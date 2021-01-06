@@ -7,11 +7,11 @@ import com.dropbox.core.v2.files.ThumbnailFormat
 import com.dropbox.core.v2.files.ThumbnailSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import providers.ContentStorage
+import providers.ContentProvider
 import utils.DROPBOX_TOKEN
 import java.io.*
 
-class DropboxProvider : ContentStorage {
+class ContentProviderImpl : ContentProvider {
     private val dropbox = DbxClientV2(DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(), DROPBOX_TOKEN).files()
 
     override suspend fun isFolderExist(pathToFolder: String): Boolean = withContext(Dispatchers.IO) {
@@ -74,6 +74,7 @@ class DropboxProvider : ContentStorage {
             }
             true
         }
+
+    private fun String.toValidPath() = if (this.contains("^[/]".toRegex())) this else "/$this"
 }
 
-private fun String.toValidPath() = if (this.contains("^[/]".toRegex())) this else "/$this"

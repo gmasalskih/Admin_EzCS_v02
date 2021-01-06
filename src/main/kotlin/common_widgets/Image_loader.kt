@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 import org.jetbrains.skija.Image
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import providers.ContentStorage
+import providers.ContentProvider
 import ui.dark
 import ui.Icons
 import utils.externalImageResource
@@ -22,17 +22,17 @@ import java.io.BufferedInputStream
 import java.net.URL
 
 object ImageLoader : KoinComponent {
-    private val dropbox by inject<ContentStorage>()
+    private val contentProvider by inject<ContentProvider>()
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun loadImage(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
         is ContentSourceType.ContentStorageThumbnail -> {
-            dropbox.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
+            contentProvider.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
                 Image.makeFromEncoded(byteArray).asImageBitmap()
             }
         }
         is ContentSourceType.ContentStorageOriginal -> {
-            dropbox.getFile(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
+            contentProvider.getFile(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
                 Image.makeFromEncoded(byteArray).asImageBitmap()
             }
         }

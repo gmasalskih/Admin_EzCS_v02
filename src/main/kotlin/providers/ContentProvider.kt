@@ -1,6 +1,6 @@
 package providers
 
-interface ContentStorage {
+interface ContentProvider {
     suspend fun isFolderExist(pathToFolder: String): Boolean
     suspend fun deleteFile(pathToFolder: String, fileName: String)
     suspend fun deleteFolder(pathToFolder: String)

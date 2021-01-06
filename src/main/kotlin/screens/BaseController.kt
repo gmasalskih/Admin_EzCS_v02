@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import providers.CoroutineProvider
 import providers.Service
 import router.Router
 
@@ -15,8 +16,9 @@ abstract class BaseController<I : State> : KoinComponent {
     protected abstract val defaultItemState: I
     protected val router by inject<Router>()
     protected val service by inject<Service>()
-    protected lateinit var cs: CoroutineScope
-        private set
+    protected val cs by inject<CoroutineProvider>()
+//    protected lateinit var cs: CoroutineScope
+//        private set
 
     open fun onClear() {
         setItemState(defaultItemState)
@@ -45,11 +47,11 @@ abstract class BaseController<I : State> : KoinComponent {
     }
 
     open fun onViewCreate() {
-        cs = CoroutineScope(Dispatchers.Default)
+        cs.onStart()
     }
 
     open fun onViewDestroy() {
-        cs.cancel()
+        cs.onStop()
     }
 }
 

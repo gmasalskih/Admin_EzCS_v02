@@ -1,17 +1,18 @@
 package di
 
 import com.google.firebase.FirebaseApp
-import com.google.firebase.cloud.StorageClient
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
-import providers.ContentStorage
+import providers.ContentProvider
+import providers.CoroutineProvider
 import providers.Service
-import providers.content_provider.DropboxProvider
-import providers.DataStorage
+import providers.content_provider.ContentProviderImpl
+import providers.DataProvider
+import providers.coroutine_provider.CoroutineProviderImpl
 import providers.data_provider.FirebaseAppProvider
-import providers.data_provider.FirestoreProvider
-import providers.service_provider.ServiceProvider
+import providers.data_provider.DataProviderImpl
+import providers.service_provider.ServiceProviderImpl
 import router.NavigationTargets
 import router.Router
 import screens.competitive.add.CompetitiveAddController
@@ -31,7 +32,6 @@ import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
 import screens.test.TestController
-import screens.test.TestView
 import screens.weapon.add.WeaponAddController
 import screens.weapon.edit.WeaponEditController
 import screens.weapon.menu.WeaponMenuController
@@ -44,25 +44,18 @@ val appModule = module {
 //    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
-val dropboxModule = module {
-    single<ContentStorage> { DropboxProvider() }
-}
-
-val fbModules = module {
+val providerModule = module {
+    single<ContentProvider> { ContentProviderImpl() }
     single<FirebaseApp> {
         FirebaseAppProvider(
             fullPathToSecretKey = FULL_PATH_TO_SECRET_KEY,
             databaseUrl = DATABASE_URL
         ).getApp()
     }
-    single<StorageClient> { StorageClient.getInstance(get()) }
-    single<DataStorage> { FirestoreProvider(get()) }
+    single<DataProvider> { DataProviderImpl(get()) }
+    single<CoroutineProvider> { CoroutineProviderImpl() }
+    factory<Service> { ServiceProviderImpl(get(), get()) }
 }
-
-val serviceModule = module {
-    single<Service> { ServiceProvider(get(), get()) }
-}
-
 val competitiveModule = module {
     single<CompetitiveAddController> { CompetitiveAddController() }
     single<CompetitiveEditController> { CompetitiveEditController() }
