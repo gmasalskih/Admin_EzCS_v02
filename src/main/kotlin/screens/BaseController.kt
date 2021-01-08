@@ -1,22 +1,29 @@
 package screens
 
 import data.types.StateType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import providers.CoroutineProvider
 import providers.Service
 import router.Router
+import kotlin.coroutines.CoroutineContext
 
 @KoinApiExtension
-abstract class BaseController<I : State> : KoinComponent {
+abstract class BaseController<I : State> : KoinComponent, CoroutineScope {
 
     protected abstract var state: ViewState<I>
     protected abstract val defaultItemState: I
     protected val router by inject<Router>()
-    protected val cs by inject<CoroutineProvider>()
-    protected val service by inject<Service> { parametersOf(cs) }
+    protected val service by inject<Service> { parametersOf(this) }
+
+    private var job: Job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Default + job
 
     open fun onClear() {
         setItemState(defaultItemState)
@@ -45,11 +52,11 @@ abstract class BaseController<I : State> : KoinComponent {
     }
 
     open fun onViewCreate() {
-        cs.onStart()
+        job = Job()
     }
 
     open fun onViewDestroy() {
-        cs.onStop()
+        job.cancel()
     }
 }
 

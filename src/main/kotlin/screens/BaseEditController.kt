@@ -11,7 +11,7 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
     override fun onViewCreate() {
         super.onViewCreate()
         showLoading()
-        cs.launch {
+        launch {
             setEntity()
             showData()
         }
@@ -22,7 +22,7 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         this.documentName = documentName
     }
 
-    fun onSubmit() = cs.launch {
+    fun onSubmit() = launch {
         showLoading()
         val stateItem = state.item
         try {
@@ -37,7 +37,7 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
 
     fun onDelete(){
         val d = measureDuration {
-            cs.launch {
+            launch {
                 showLoading()
                 service.deleteEntity(documentName)
                 router.back()

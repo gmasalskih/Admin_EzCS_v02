@@ -10,7 +10,7 @@ abstract class BaseMenuController<I : State> : BaseController<I>() {
         super.onViewCreate()
         showLoading()
         onClear()
-        cs.launch {
+        launch {
             try {
                 setEntity()
                 showData()

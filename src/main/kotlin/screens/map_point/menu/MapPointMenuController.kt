@@ -150,7 +150,7 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
             defaultListMapHolder.find { it.getDocumentName() == mapPoint.mapDocumentName }
                 ?: throw Exception("Map point $mapPoint can't find corresponding map holder")
         } catch (e: Exception) {
-            cs.launch { showError(e) }
+            launch { showError(e) }
             null
         }
     }

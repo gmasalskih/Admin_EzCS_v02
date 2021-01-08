@@ -2,16 +2,13 @@ package di
 
 import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
 import providers.ContentProvider
-import providers.CoroutineProvider
 import providers.Service
 import providers.content_provider.ContentProviderImpl
 import providers.DataProvider
-import providers.coroutine_provider.CoroutineProviderImpl
 import providers.data_provider.FirebaseAppProvider
 import providers.data_provider.DataProviderImpl
 import providers.service_provider.ServiceProviderImpl
@@ -27,7 +24,6 @@ import screens.map_point.menu.MapPointMenuController
 import screens.map_point.add.MapPointAddController
 import screens.map_point.edit.MapPointEditController
 import screens.map_holder.menu.MapHolderMenuController
-import screens.map_holder.menu.MapHolderMenuView
 import screens.map_holder.add.MapHolderAddController
 import screens.map_holder.edit.MapHolderEditController
 import screens.profile_rank.add.ProfileRankAddController
@@ -56,7 +52,6 @@ val providerModule = module {
         ).getApp()
     }
     single<DataProvider> { DataProviderImpl(get()) }
-    single<CoroutineProvider> { CoroutineProviderImpl() }
     factory<Service> { (coroutineScope: CoroutineScope) -> ServiceProviderImpl(get(), get(), coroutineScope) }
 }
 val competitiveModule = module {
