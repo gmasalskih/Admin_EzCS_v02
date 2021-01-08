@@ -2,10 +2,7 @@ package screens.test
 
 import androidx.compose.runtime.*
 import data.types.FileType
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.swing.Swing
-import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.inject
 import providers.content_provider.ContentProviderImpl
 import providers.data_provider.DataProviderImpl

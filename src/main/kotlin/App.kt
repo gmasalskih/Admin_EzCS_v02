@@ -24,9 +24,9 @@ object App : KoinComponent {
                 competitiveModule,
                 dangerZoneModule,
                 mapPointsModule,
-                mapsModule,
+                mapHolderModule,
                 profileRankModule,
-                weaponsModule,
+                weaponModule,
                 wingmanModule,
                 testModule
             )

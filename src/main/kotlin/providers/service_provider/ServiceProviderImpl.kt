@@ -3,17 +3,26 @@ package providers.service_provider
 import data.entitys.Entity
 import kotlinx.coroutines.*
 import providers.ContentProvider
-import providers.Service
+import providers.ServiceProvider
 import providers.DataProvider
 import utils.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 
 class ServiceProviderImpl(
     private val dataProvider: DataProvider,
-    private val contentProvider: ContentProvider,
-    private val scope: CoroutineScope
-) : Service {
+    private val contentProvider: ContentProvider
+) : ServiceProvider, CoroutineScope {
+
+    private lateinit var job: Job
+
+    override fun setJob(job: Job) {
+        this.job = job
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
 
     override suspend fun <T : Entity> updateEntity(entity: T) {
         checkEntity(entity, true)
@@ -53,7 +62,7 @@ class ServiceProviderImpl(
                 }
             }
         }
-        scope.launch(Dispatchers.IO) {
+        launch {
             launch { dataProvider.updateDocument(entityMap, entity.getDocumentName()) }
             uploadContentSet.forEach { fullPathToFile ->
                 launch {
@@ -108,10 +117,10 @@ class ServiceProviderImpl(
                 }
             }
         }
-        scope.launch(Dispatchers.IO) {
+        launch {
             launch { dataProvider.uploadDocument(entityMap, entity.getDocumentName()) }
             uploadContentSet.forEach { fullPathToFile ->
-                launch(Dispatchers.IO) {
+                launch {
                     contentProvider.uploadFile(
                         fullPathToFile.toValidFolder(),
                         entity.getDocumentName(),
@@ -129,8 +138,8 @@ class ServiceProviderImpl(
         withContext(Dispatchers.IO) { dataProvider.getListDocuments(collectionName, clazz.java) }
 
     override suspend fun deleteEntity(documentName: String) {
-        val contentDel = scope.launch { contentProvider.deleteFolder(documentName) }
-        val dataDel = scope.launch { dataProvider.deleteDocument(documentName) }
+        val contentDel = launch { contentProvider.deleteFolder(documentName) }
+        val dataDel = launch { dataProvider.deleteDocument(documentName) }
         joinAll(contentDel, dataDel)
     }
 
@@ -145,10 +154,10 @@ class ServiceProviderImpl(
     }
 
     private suspend fun <T : Entity> checkEntity(entity: T, isEntityHaveToExist: Boolean) {
-        val deferredData = scope.async(Dispatchers.IO) {
+        val deferredData = async {
             dataProvider.isDocumentExist(entity.getDocumentName())
         }
-        val deferredContent = scope.async(Dispatchers.IO) {
+        val deferredContent = async {
             dataProvider.isDocumentExist(entity.getDocumentName())
         }
         val isEntityOnDataProviderExist = deferredData.await()

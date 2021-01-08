@@ -21,6 +21,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.google.firebase:firebase-admin:7.0.1")
     implementation("org.koin:koin-core:2.2.2")
+    implementation("org.koin:koin-core-ext:2.2.2")
     implementation("org.slf4j:slf4j-api:1.7.30")
     implementation("org.slf4j:slf4j-simple:1.7.30")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")

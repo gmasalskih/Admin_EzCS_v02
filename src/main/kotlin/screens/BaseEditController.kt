@@ -1,7 +1,6 @@
 package screens
 
 import kotlinx.coroutines.launch
-import org.koin.core.time.measureDuration
 
 abstract class BaseEditController<I : State> : BaseController<I>() {
     protected lateinit var documentName: String
@@ -36,13 +35,10 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
 
 
     fun onDelete(){
-        val d = measureDuration {
-            launch {
-                showLoading()
-                service.deleteEntity(documentName)
-                router.back()
-            }
+        launch {
+            showLoading()
+            service.deleteEntity(documentName)
+            router.back()
         }
-        println("-- $d --")
     }
 }

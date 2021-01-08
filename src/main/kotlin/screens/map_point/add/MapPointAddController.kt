@@ -5,6 +5,7 @@ import data.entitys.MapHolder
 import data.entitys.MapPoint
 import data.types.*
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinApiExtension
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -13,6 +14,7 @@ import utils.toValidName
 class MapPointAddController : BaseAddController<MapPointAddState>() {
 
     override val defaultItemState: MapPointAddState = MapPointAddState()
+
     var listMapHolder: List<MapHolder> by mutableStateOf(listOf())
         private set
     var selectedMapHolder: MapHolder? by mutableStateOf(null)
@@ -164,6 +166,6 @@ class MapPointAddController : BaseAddController<MapPointAddState>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-        launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
+//        launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
     }
 }

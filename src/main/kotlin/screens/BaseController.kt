@@ -8,19 +8,17 @@ import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import providers.Service
+import providers.ServiceProvider
 import router.Router
 import kotlin.coroutines.CoroutineContext
 
-@KoinApiExtension
 abstract class BaseController<I : State> : KoinComponent, CoroutineScope {
 
     protected abstract var state: ViewState<I>
     protected abstract val defaultItemState: I
-    protected val router by inject<Router>()
-    protected val service by inject<Service> { parametersOf(this) }
-
     private var job: Job = Job()
+    protected val router by inject<Router>()
+    protected val service by inject<ServiceProvider> { parametersOf(job) }
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
@@ -53,6 +51,7 @@ abstract class BaseController<I : State> : KoinComponent, CoroutineScope {
 
     open fun onViewCreate() {
         job = Job()
+        service.setJob(job)
     }
 
     open fun onViewDestroy() {

@@ -1,12 +1,13 @@
 package di
 
 import com.google.firebase.FirebaseApp
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import org.koin.core.component.KoinApiExtension
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
 import providers.ContentProvider
-import providers.Service
+import providers.ServiceProvider
 import providers.content_provider.ContentProviderImpl
 import providers.DataProvider
 import providers.data_provider.FirebaseAppProvider
@@ -26,6 +27,7 @@ import screens.map_point.edit.MapPointEditController
 import screens.map_holder.menu.MapHolderMenuController
 import screens.map_holder.add.MapHolderAddController
 import screens.map_holder.edit.MapHolderEditController
+import screens.map_holder.menu.MapHolderMenuView
 import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
@@ -39,8 +41,8 @@ import screens.wingman.edit.WingmanEditController
 import screens.wingman.menu.WingmanMenuController
 
 val appModule = module {
-//    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
-    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
+    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
+//    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
 val providerModule = module {
@@ -52,8 +54,9 @@ val providerModule = module {
         ).getApp()
     }
     single<DataProvider> { DataProviderImpl(get()) }
-    factory<Service> { (coroutineScope: CoroutineScope) -> ServiceProviderImpl(get(), get(), coroutineScope) }
+    single<ServiceProvider> { ServiceProviderImpl(get(), get()) }
 }
+
 val competitiveModule = module {
     single<CompetitiveAddController> { CompetitiveAddController() }
     single<CompetitiveEditController> { CompetitiveEditController() }
@@ -72,7 +75,7 @@ val mapPointsModule = module {
     single<MapPointMenuController> { MapPointMenuController() }
 }
 
-val mapsModule = module {
+val mapHolderModule = module {
     single<MapHolderAddController> { MapHolderAddController() }
     single<MapHolderEditController> { MapHolderEditController() }
     single<MapHolderMenuController> { MapHolderMenuController() }
@@ -84,7 +87,7 @@ val profileRankModule = module {
     single<ProfileRankMenuController> { ProfileRankMenuController() }
 }
 
-val weaponsModule = module {
+val weaponModule = module {
     single<WeaponAddController> { WeaponAddController() }
     single<WeaponEditController> { WeaponEditController() }
     single<WeaponMenuController> { WeaponMenuController() }
