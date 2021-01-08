@@ -31,7 +31,14 @@ object ImageLoader : KoinComponent {
             var imageBitmap: ImageBitmap? = null
             repeat(10) {
                 if (imageBitmap == null) {
-                    imageBitmap = withTimeoutOrNull(3000) { getImageBitmap(contentSourceType) }
+                    imageBitmap = withTimeoutOrNull(3000) {
+                        return@withTimeoutOrNull try {
+                            getImageBitmap(contentSourceType)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            externalImageResource("src/main/resources/${Icons.Err}")
+                        }
+                    }
                 } else {
                     return@async imageBitmap
                 }
