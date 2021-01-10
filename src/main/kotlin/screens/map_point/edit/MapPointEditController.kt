@@ -99,7 +99,7 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
         )
     }
 
-    fun onDelete(){
+    fun onDelete() {
         launchDeletingEntityOnServer()
     }
 
@@ -110,33 +110,35 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
     override suspend fun setEntity() {
         service.getEntity(documentName, MapPoint::class).let { mapPoint ->
             state = state.copy(title = mapPoint.getDocumentName().substringAfter("/"))
+            val mpes = MapPointEditState(
+                name = mapPoint.name,
+                mapDocumentName = mapPoint.mapDocumentName,
+                grenadeType = mapPoint.grenadeType,
+                tickrateTypes = mapPoint.tickrateTypes,
+                previewStart = ContentSourceType.ContentStorageThumbnail(
+                    mapPoint.getDocumentName(),
+                    mapPoint.previewStart
+                ),
+                previewEnd = ContentSourceType.ContentStorageThumbnail(
+                    mapPoint.getDocumentName(),
+                    mapPoint.previewEnd
+                ),
+                contentImages = mapPoint.contentImages.map { img ->
+                    ContentSourceType.ContentStorageThumbnail(
+                        mapPoint.getDocumentName(),
+                        img
+                    )
+                },
+                contentVideos = mapPoint.contentVideos.map { video ->
+                    ContentSourceType.ContentStorageThumbnail(
+                        mapPoint.getDocumentName(),
+                        video
+                    )
+                }
+            )
+            println(mpes)
             setItemState(
-                MapPointEditState(
-                    name = mapPoint.name,
-                    mapDocumentName = mapPoint.mapDocumentName,
-                    grenadeType = mapPoint.grenadeType,
-                    tickrateTypes = mapPoint.tickrateTypes,
-                    previewStart = ContentSourceType.ContentStorageThumbnail(
-                        mapPoint.getDocumentName(),
-                        mapPoint.previewStart
-                    ),
-                    previewEnd = ContentSourceType.ContentStorageThumbnail(
-                        mapPoint.getDocumentName(),
-                        mapPoint.previewEnd
-                    ),
-                    contentImages = mapPoint.contentImages.map { img ->
-                        ContentSourceType.ContentStorageThumbnail(
-                            mapPoint.getDocumentName(),
-                            img
-                        )
-                    },
-                    contentVideos = mapPoint.contentVideos.map { video ->
-                        ContentSourceType.ContentStorageThumbnail(
-                            mapPoint.getDocumentName(),
-                            video
-                        )
-                    }
-                )
+                mpes
             )
         }
     }

@@ -15,7 +15,8 @@ class ServiceProviderImpl(
     private val contentProvider: ContentProvider
 ) : ServiceProvider {
 
-    private val cs: CoroutineScope = CoroutineScope(Dispatchers.IO)
+    private val serviceDispatcher = Dispatchers.IO
+    private val cs: CoroutineScope = CoroutineScope(serviceDispatcher)
 
     override suspend fun test() {
         cs.launch(coroutineContext.job) {
@@ -28,121 +29,127 @@ class ServiceProviderImpl(
 
     override suspend fun <T : Entity> updateEntity(entity: T) {
         checkEntity(entity, true)
-        val entityMap = mutableMapOf<String, Any>()
-        val uploadContentSet = mutableSetOf<String>()
-        val fullContentSet = mutableSetOf<String>()
-        entity::class.declaredMemberProperties.forEach { prop ->
-            when {
-                prop.annotations.find { it is ContentType } != null -> {
-                    val content = prop.call(entity)
-                        ?: throw Exception("Entity ${entity.name} have field ${prop.name} contains null")
-                    when (content) {
-                        is List<*> -> {
-                            val contentList = content.filterIsInstance<String>().map { pathToFileContent ->
-                                checkPathToFile(entity.getDocumentName(), pathToFileContent)
-                                if (pathToFileContent.isPathToLocalFileValid())
-                                    addToUploadContentSet(pathToFileContent, uploadContentSet)
-                                addToFullContentSet(pathToFileContent, fullContentSet)
-                                pathToFileContent.toValidFileName()
-                            }.toList()
-                            if (fullContentSet.isEmpty()) throw Exception("Entity ${entity.name} have field ${prop.name} contains empty list or list of incompatible type.")
-                            entityMap[prop.name] = contentList
+        cs.launch(Dispatchers.Default + coroutineContext.job) {
+            val entityMap = mutableMapOf<String, Any>()
+            val uploadContentSet = mutableSetOf<String>()
+            val fullContentSet = mutableSetOf<String>()
+            entity::class.declaredMemberProperties.forEach { prop ->
+                when {
+                    prop.annotations.find { it is ContentType } != null -> {
+                        val content = prop.call(entity)
+                            ?: throw Exception("Entity ${entity.name} have field ${prop.name} contains null")
+                        when (content) {
+                            is List<*> -> {
+                                val contentList = content.filterIsInstance<String>().map { pathToFileContent ->
+                                    checkPathToFile(entity.getDocumentName(), pathToFileContent)
+                                    if (pathToFileContent.isPathToLocalFileValid())
+                                        addToUploadContentSet(pathToFileContent, uploadContentSet)
+                                    addToFullContentSet(pathToFileContent, fullContentSet)
+                                    pathToFileContent.toValidFileName()
+                                }.toList()
+                                if (fullContentSet.isEmpty()) throw Exception("Entity ${entity.name} have field ${prop.name} contains empty list or list of incompatible type.")
+                                entityMap[prop.name] = contentList
+                            }
+                            is String -> {
+                                checkPathToFile(entity.getDocumentName(), content)
+                                if (content.isPathToLocalFileValid()) addToUploadContentSet(content, uploadContentSet)
+                                addToFullContentSet(content, fullContentSet)
+                                entityMap[prop.name] = content.toValidFileName()
+                            }
+                            else -> {
+                                throw Exception("Entity ${entity.name} have field ${prop.name} contains incompatible type of ${prop.returnType}")
+                            }
                         }
-                        is String -> {
-                            checkPathToFile(entity.getDocumentName(), content)
-                            if (content.isPathToLocalFileValid()) addToUploadContentSet(content, uploadContentSet)
-                            addToFullContentSet(content, fullContentSet)
-                            entityMap[prop.name] = content.toValidFileName()
-                        }
-                        else -> {
-                            throw Exception("Entity ${entity.name} have field ${prop.name} contains incompatible type of ${prop.returnType}")
+                    }
+                    prop.annotations.find { it is DataType } != null -> {
+                        prop.call(entity)?.let { obj -> entityMap.put(prop.name, obj) }
+                    }
+                }
+            }
+            if (!isActive) throw CancellationException()
+            withContext(serviceDispatcher + NonCancellable) {
+                launch { dataProvider.updateDocument(entityMap, entity.getDocumentName()) }
+                uploadContentSet.forEach { fullPathToFile ->
+                    launch {
+                        contentProvider.uploadFile(
+                            fullPathToFile.toValidFolder(),
+                            entity.getDocumentName(),
+                            fullPathToFile.toValidFileName()
+                        )
+                    }
+                }
+                launch {
+                    contentProvider.getListFileNames(entity.getDocumentName()).forEach { fileName ->
+                        launch {
+                            if (!fullContentSet.contains(fileName))
+                                contentProvider.deleteFile(entity.getDocumentName(), fileName)
                         }
                     }
                 }
-                prop.annotations.find { it is DataType } != null -> {
-                    prop.call(entity)?.let { obj -> entityMap.put(prop.name, obj) }
-                }
             }
         }
-        cs.launch(coroutineContext.job) {
-            launch { dataProvider.updateDocument(entityMap, entity.getDocumentName()) }
-            uploadContentSet.forEach { fullPathToFile ->
-                launch {
-                    contentProvider.uploadFile(
-                        fullPathToFile.toValidFolder(),
-                        entity.getDocumentName(),
-                        fullPathToFile.toValidFileName()
-                    )
-                }
-            }
-            val listFileName = async { contentProvider.getListFileNames(entity.getDocumentName()) }
-            listFileName.await().forEach { fileName ->
-                launch {
-                    if (!fullContentSet.contains(fileName)) contentProvider.deleteFile(
-                        entity.getDocumentName(),
-                        fileName
-                    )
-                }
-            }
-        }.join()
     }
 
     override suspend fun <T : Entity> uploadEntity(entity: T) {
         checkEntity(entity, false)
-        val entityMap = mutableMapOf<String, Any>()
-        val uploadContentSet = mutableSetOf<String>()
-        entity::class.declaredMemberProperties.forEach { prop ->
-            when {
-                prop.annotations.find { it is ContentType } != null -> {
-                    val content = prop.call(entity)
-                        ?: throw Exception("Entity ${entity.name} have field ${prop.name} contains null")
-                    when (content) {
-                        is List<*> -> {
-                            val contentList = content.filterIsInstance<String>().map { pathToFileContent ->
-                                addToUploadContentSet(pathToFileContent, uploadContentSet)
-                                pathToFileContent.toValidFileName()
-                            }.toList()
-                            if (contentList.isEmpty()) throw Exception("Entity ${entity.name} have field ${prop.name} contains empty list or list of incompatible type.")
-                            entityMap[prop.name] = contentList
-                        }
-                        is String -> {
-                            addToUploadContentSet(content, uploadContentSet)
-                            entityMap[prop.name] = content.toValidFileName()
-                        }
-                        else -> {
-                            throw Exception("Entity ${entity.name} have field ${prop.name} contains incompatible type of ${prop.returnType}")
+        cs.launch(Dispatchers.Default + coroutineContext.job) {
+            val entityMap = mutableMapOf<String, Any>()
+            val uploadContentSet = mutableSetOf<String>()
+            entity::class.declaredMemberProperties.forEach { prop ->
+                when {
+                    prop.annotations.find { it is ContentType } != null -> {
+                        val content = prop.call(entity)
+                            ?: throw Exception("Entity ${entity.name} have field ${prop.name} contains null")
+                        when (content) {
+                            is List<*> -> {
+                                val contentList = content.filterIsInstance<String>().map { pathToFileContent ->
+                                    addToUploadContentSet(pathToFileContent, uploadContentSet)
+                                    pathToFileContent.toValidFileName()
+                                }.toList()
+                                if (contentList.isEmpty()) throw Exception("Entity ${entity.name} have field ${prop.name} contains empty list or list of incompatible type.")
+                                entityMap[prop.name] = contentList
+                            }
+                            is String -> {
+                                addToUploadContentSet(content, uploadContentSet)
+                                entityMap[prop.name] = content.toValidFileName()
+                            }
+                            else -> {
+                                throw Exception("Entity ${entity.name} have field ${prop.name} contains incompatible type of ${prop.returnType}")
+                            }
                         }
                     }
+                    prop.annotations.find { it is DataType } != null -> {
+                        prop.call(entity)?.let { obj -> entityMap.put(prop.name, obj) }
+                    }
                 }
-                prop.annotations.find { it is DataType } != null -> {
-                    prop.call(entity)?.let { obj -> entityMap.put(prop.name, obj) }
+            }
+            if (!isActive) throw CancellationException()
+            withContext(serviceDispatcher + NonCancellable) {
+                launch { dataProvider.uploadDocument(entityMap, entity.getDocumentName()) }
+                uploadContentSet.forEach { fullPathToFile ->
+                    launch {
+                        contentProvider.uploadFile(
+                            fullPathToFile.toValidFolder(),
+                            entity.getDocumentName(),
+                            fullPathToFile.toValidFileName()
+                        )
+                    }
                 }
             }
         }
-        cs.launch(coroutineContext.job) {
-            launch { dataProvider.uploadDocument(entityMap, entity.getDocumentName()) }
-            uploadContentSet.forEach { fullPathToFile ->
-                launch {
-                    contentProvider.uploadFile(
-                        fullPathToFile.toValidFolder(),
-                        entity.getDocumentName(),
-                        fullPathToFile.toValidFileName()
-                    )
-                }
-            }
-        }.join()
     }
 
     override suspend fun <T : Entity> getEntity(documentName: String, clazz: KClass<T>) =
-        withContext(Dispatchers.IO) { dataProvider.downloadDocument(documentName, clazz.java) }
+        withContext(serviceDispatcher) { dataProvider.downloadDocument(documentName, clazz.java) }
 
     override suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>) =
-        withContext(Dispatchers.IO) { dataProvider.getListDocuments(collectionName, clazz.java) }
+        withContext(serviceDispatcher) { dataProvider.getListDocuments(collectionName, clazz.java) }
 
     override suspend fun deleteEntity(documentName: String) {
-        val contentDel = cs.launch(coroutineContext.job) { contentProvider.deleteFolder(documentName) }
-        val dataDel = cs.launch(coroutineContext.job) { dataProvider.deleteDocument(documentName) }
-        joinAll(contentDel, dataDel)
+        withContext(NonCancellable + serviceDispatcher) {
+            launch { contentProvider.deleteFolder(documentName) }
+            launch { dataProvider.deleteDocument(documentName) }
+        }
     }
 
     private fun addToFullContentSet(content: String, contentSet: MutableSet<String>) {

@@ -18,6 +18,7 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
     }
 
     private fun launchSetInitState() = launch {
+        setDefaultState()
         showLoading()
         setEntity()
         showData()

@@ -150,6 +150,7 @@ class MapPointAddController : BaseAddController<MapPointAddState>() {
 
     fun onSubmit() {
         launchUploadingEntityOnServer(state.item)
+        selectedMapHolder = null
     }
 
     override suspend fun upload(stateItem: MapPointAddState) {

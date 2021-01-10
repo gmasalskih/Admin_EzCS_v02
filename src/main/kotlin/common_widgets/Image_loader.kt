@@ -21,30 +21,31 @@ import ui.Icons
 import utils.externalImageResource
 import java.io.BufferedInputStream
 import java.net.URL
+import kotlin.coroutines.coroutineContext
 
 object ImageLoader : KoinComponent {
     private val contentProvider by inject<ContentProvider>()
+    private val cs: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun loadImageAsync(contentSourceType: ContentSourceType, parentContext: CoroutineScope) =
-        parentContext.async(Dispatchers.IO) {
-            var imageBitmap: ImageBitmap? = null
-            repeat(10) {
-                if (imageBitmap == null) {
-                    imageBitmap = withTimeoutOrNull(3000) {
-                        return@withTimeoutOrNull try {
-                            getImageBitmap(contentSourceType)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            externalImageResource("src/main/resources/${Icons.Err}")
-                        }
+    private suspend fun loadImageAsync(contentSourceType: ContentSourceType) = cs.async(coroutineContext.job) {
+        var imageBitmap: ImageBitmap? = null
+        repeat(10) {
+            if (imageBitmap == null) {
+                imageBitmap = withTimeoutOrNull(3000) {
+                    return@withTimeoutOrNull try {
+                        getImageBitmap(contentSourceType)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        externalImageResource("src/main/resources/${Icons.Err}")
                     }
-                } else {
-                    return@async imageBitmap
                 }
+            } else {
+                return@async imageBitmap
             }
-            externalImageResource("src/main/resources/${Icons.Err}")
         }
+        externalImageResource("src/main/resources/${Icons.Err}")
+    }
 
 
     private fun getImageBitmap(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
@@ -105,11 +106,15 @@ object ImageLoader : KoinComponent {
     ) {
         val (imageAsset, setImageAsset) = remember(content) { mutableStateOf<ImageBitmap?>(null) }
         val scope = rememberCoroutineScope()
+        onCommit {
+            if (imageAsset == null && content !is ContentSourceType.Empty) {
+                scope.launch { setImageAsset(loadImageAsync(content).await()) }
+            }
+        }
         Box(
             modifier = Modifier.then(modifier)
         ) {
             if (imageAsset == null) {
-                scope.launch { setImageAsset(loadImageAsync(content, this).await()) }
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
                     color = progressIndicatorColor
