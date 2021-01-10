@@ -46,6 +46,14 @@ class WingmanAddController : BaseAddController<WingmanAddState>() {
         )
     }
 
+    fun onClear(){
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(state.item)
+    }
+
     override suspend fun upload(stateItem: WingmanAddState) {
         service.uploadEntity(
             Wingman(

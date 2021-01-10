@@ -15,6 +15,14 @@ class WeaponEditController : BaseEditController<WeaponEditState>() {
         )
     )
 
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
+
     override suspend fun setEntity() {
 //        TODO("Not yet implemented")
     }

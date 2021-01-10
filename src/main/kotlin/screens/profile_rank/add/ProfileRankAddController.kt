@@ -54,6 +54,13 @@ class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
             )
         )
     }
+    fun onClear(){
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(state.item)
+    }
 
     override suspend fun upload(stateItem: ProfileRankAddState) {
         service.uploadEntity(

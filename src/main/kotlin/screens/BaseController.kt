@@ -4,7 +4,6 @@ import data.types.StateType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import providers.ServiceProvider
@@ -22,7 +21,7 @@ abstract class BaseController<I : State> : KoinComponent, CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
 
-    open fun onClear() {
+    open fun setDefaultState() {
         setItemState(defaultItemState)
     }
 

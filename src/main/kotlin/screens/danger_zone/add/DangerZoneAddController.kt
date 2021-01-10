@@ -3,7 +3,6 @@ package screens.danger_zone.add
 import androidx.compose.runtime.*
 import data.entitys.DangerZone
 import data.types.FileType
-import org.koin.core.component.KoinApiExtension
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -45,6 +44,14 @@ class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
                 order = order.toValidOrder()
             )
         )
+    }
+
+    fun onClear() {
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(state.item)
     }
 
     override suspend fun upload(stateItem: DangerZoneAddState) {

@@ -38,6 +38,14 @@ class WingmanEditController : BaseEditController<WingmanEditState>() {
         )
     }
 
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
+
     override suspend fun setEntity() {
         service.getEntity(documentName, Wingman::class).let { entity ->
             state = state.copy(title = "Edit ${entity.name}")

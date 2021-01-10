@@ -61,6 +61,14 @@ class ProfileRankEditController : BaseEditController<ProfileRankEditState>() {
         }
     }
 
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
+
     override suspend fun update(stateItem: ProfileRankEditState) {
         service.updateEntity(
             ProfileRank(

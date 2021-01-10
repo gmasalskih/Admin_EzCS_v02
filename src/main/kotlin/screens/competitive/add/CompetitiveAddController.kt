@@ -3,8 +3,6 @@ package screens.competitive.add
 import androidx.compose.runtime.*
 import data.entitys.Competitive
 import data.types.FileType
-import kotlinx.coroutines.launch
-import org.koin.core.component.KoinApiExtension
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -46,6 +44,14 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
                 )
             )
         }
+    }
+
+    fun onClear(){
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(state.item)
     }
 
     override suspend fun upload(stateItem: CompetitiveAddState) {

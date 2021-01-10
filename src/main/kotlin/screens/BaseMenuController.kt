@@ -9,7 +9,7 @@ abstract class BaseMenuController<I : State> : BaseController<I>() {
     override fun onViewCreate() {
         super.onViewCreate()
         showLoading()
-        onClear()
+        setDefaultState()
         launch {
             try {
                 setEntity()

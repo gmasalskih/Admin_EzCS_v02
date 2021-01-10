@@ -6,13 +6,12 @@ abstract class BaseAddController<I : State> : BaseController<I>() {
 
     protected abstract suspend fun upload(stateItem: I)
 
-    fun onSubmit() = launch {
-        showLoading()
-        val item = state.item
+    protected fun launchUploadingEntityOnServer(stateItem: I) = launch {
         try {
-            if (!item.isValid()) throw Exception("The entity ${state.item} is not valid!")
-            upload(item)
-            onClear()
+            showLoading()
+            if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
+            upload(stateItem)
+            setDefaultState()
             showData()
         } catch (e: Exception) {
             showError(e)
@@ -21,6 +20,6 @@ abstract class BaseAddController<I : State> : BaseController<I>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-        onClear()
+        setDefaultState()
     }
 }

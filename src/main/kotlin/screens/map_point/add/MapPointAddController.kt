@@ -5,7 +5,6 @@ import data.entitys.MapHolder
 import data.entitys.MapPoint
 import data.types.*
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinApiExtension
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -144,9 +143,13 @@ class MapPointAddController : BaseAddController<MapPointAddState>() {
         )
     }
 
-    override fun onClear() {
-        super.onClear()
+    fun onClear(){
         selectedMapHolder = null
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(state.item)
     }
 
     override suspend fun upload(stateItem: MapPointAddState) {
@@ -166,6 +169,6 @@ class MapPointAddController : BaseAddController<MapPointAddState>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-//        launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
+        launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
     }
 }

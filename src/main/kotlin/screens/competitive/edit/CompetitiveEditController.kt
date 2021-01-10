@@ -51,6 +51,14 @@ class CompetitiveEditController : BaseEditController<CompetitiveEditState>() {
         }
     }
 
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
+
     override suspend fun update(stateItem: CompetitiveEditState) {
         service.updateEntity(
             Competitive(

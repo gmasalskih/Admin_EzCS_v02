@@ -76,4 +76,12 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
             )
         )
     }
+
+    fun onClear(){
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(state.item)
+    }
 }

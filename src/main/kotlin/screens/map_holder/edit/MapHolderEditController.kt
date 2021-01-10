@@ -83,4 +83,12 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
             )
         }
     }
+
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
 }

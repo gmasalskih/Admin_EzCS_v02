@@ -99,6 +99,14 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
         )
     }
 
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
+
     override suspend fun setEntity() {
         service.getEntity(documentName, MapPoint::class).let { mapPoint ->
             state = state.copy(title = mapPoint.getDocumentName().substringAfter("/"))

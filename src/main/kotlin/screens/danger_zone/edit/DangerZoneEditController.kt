@@ -51,6 +51,14 @@ class DangerZoneEditController : BaseEditController<DangerZoneEditSate>() {
         }
     }
 
+    fun onDelete(){
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(state.item)
+    }
+
     override suspend fun update(stateItem: DangerZoneEditSate) {
         service.updateEntity(
             DangerZone(

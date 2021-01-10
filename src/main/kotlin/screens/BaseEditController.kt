@@ -9,11 +9,7 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-        showLoading()
-        launch {
-            setEntity()
-            showData()
-        }
+        launchSetInitState()
     }
 
     @JvmName("documentName")
@@ -21,11 +17,16 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         this.documentName = documentName
     }
 
-    fun onSubmit() = launch {
+    private fun launchSetInitState() = launch {
         showLoading()
-        val stateItem = state.item
+        setEntity()
+        showData()
+    }
+
+    protected fun launchUpdatingEntityOnServer(stateItem: I) = launch {
         try {
-            if (!stateItem.isValid()) throw Exception("The entity ${state.item} is not valid!")
+            showLoading()
+            if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
             update(stateItem)
             router.back()
         } catch (e: Exception) {
@@ -33,12 +34,9 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         }
     }
 
-
-    fun onDelete(){
-        launch {
-            showLoading()
-            service.deleteEntity(documentName)
-            router.back()
-        }
+    protected fun launchDeletingEntityOnServer() = launch {
+        showLoading()
+        service.deleteEntity(documentName)
+        router.back()
     }
 }
