@@ -21,6 +21,15 @@ class ServiceProviderImpl(
         this.job = job
     }
 
+    override suspend fun test() {
+        launch {
+            while (true){
+                println("test")
+                delay(1000)
+            }
+        }
+    }
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
 

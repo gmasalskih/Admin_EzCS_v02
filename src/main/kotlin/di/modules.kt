@@ -41,8 +41,8 @@ import screens.wingman.edit.WingmanEditController
 import screens.wingman.menu.WingmanMenuController
 
 val appModule = module {
-    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
-//    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
+//    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
+    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
 val providerModule = module {

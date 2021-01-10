@@ -15,7 +15,7 @@ class TestView : BaseView<TestController>() {
         CardImage(
             label = "",
             pathToFile = controller.getViewState().item.content,
-            onClick = controller::onVideoAdd
+            onClick = controller::test
         )
     }
 }

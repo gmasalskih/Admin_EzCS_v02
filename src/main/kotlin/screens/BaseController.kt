@@ -4,10 +4,9 @@ import data.types.StateType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import org.koin.core.component.KoinApiExtension
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
 import providers.ServiceProvider
 import router.Router
 import kotlin.coroutines.CoroutineContext
@@ -18,7 +17,7 @@ abstract class BaseController<I : State> : KoinComponent, CoroutineScope {
     protected abstract val defaultItemState: I
     private var job: Job = Job()
     protected val router by inject<Router>()
-    protected val service by inject<ServiceProvider> { parametersOf(job) }
+    protected val service by inject<ServiceProvider>()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job

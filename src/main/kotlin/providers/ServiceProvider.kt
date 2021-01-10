@@ -11,4 +11,5 @@ interface ServiceProvider {
     suspend fun <T : Entity> updateEntity(entity: T)
     suspend fun deleteEntity(documentName: String)
     fun setJob(job: Job)
+    suspend fun test()
 }

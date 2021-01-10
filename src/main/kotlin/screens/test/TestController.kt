@@ -2,6 +2,7 @@ package screens.test
 
 import androidx.compose.runtime.*
 import data.types.FileType
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.inject
 import providers.content_provider.ContentProviderImpl
@@ -23,13 +24,9 @@ class TestController : BaseController<TestState>() {
     private val dropbox by inject<ContentProviderImpl>()
     private val firestore by inject<DataProviderImpl>()
 
-    fun onVideoAdd() {
-        fileChooser("Select content", FileType.PNG, state.item.content) { newItem ->
-            setItemState(
-                state.item.copy(
-                    content = newItem
-                )
-            )
+    fun test() {
+        launch {
+            service.test()
         }
     }
 }
