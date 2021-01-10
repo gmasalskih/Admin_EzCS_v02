@@ -49,7 +49,6 @@ abstract class BaseController<I : State> : KoinComponent, CoroutineScope {
 
     open fun onViewCreate() {
         job = Job()
-        service.setJob(job)
     }
 
     open fun onViewDestroy() {

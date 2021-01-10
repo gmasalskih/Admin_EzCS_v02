@@ -3,6 +3,7 @@ package screens.map_holder.add
 import androidx.compose.runtime.*
 import data.entitys.MapHolder
 import data.types.FileType
+import kotlinx.coroutines.launch
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
@@ -78,6 +79,7 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     }
 
     fun onClear(){
+        launch { service.test() }
         setDefaultState()
     }
 

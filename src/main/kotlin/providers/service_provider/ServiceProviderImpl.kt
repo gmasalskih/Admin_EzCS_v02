@@ -6,32 +6,25 @@ import providers.ContentProvider
 import providers.ServiceProvider
 import providers.DataProvider
 import utils.*
-import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 
 class ServiceProviderImpl(
     private val dataProvider: DataProvider,
     private val contentProvider: ContentProvider
-) : ServiceProvider, CoroutineScope {
+) : ServiceProvider {
 
-    private lateinit var job: Job
-
-    override fun setJob(job: Job) {
-        this.job = job
-    }
+    private val cs: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     override suspend fun test() {
-        launch {
-            while (true){
+        cs.launch(coroutineContext.job) {
+            while (true) {
                 println("test")
                 delay(1000)
             }
         }
     }
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO + job
 
     override suspend fun <T : Entity> updateEntity(entity: T) {
         checkEntity(entity, true)
@@ -71,7 +64,7 @@ class ServiceProviderImpl(
                 }
             }
         }
-        launch {
+        cs.launch(coroutineContext.job) {
             launch { dataProvider.updateDocument(entityMap, entity.getDocumentName()) }
             uploadContentSet.forEach { fullPathToFile ->
                 launch {
@@ -126,7 +119,7 @@ class ServiceProviderImpl(
                 }
             }
         }
-        launch {
+        cs.launch(coroutineContext.job) {
             launch { dataProvider.uploadDocument(entityMap, entity.getDocumentName()) }
             uploadContentSet.forEach { fullPathToFile ->
                 launch {
@@ -147,8 +140,8 @@ class ServiceProviderImpl(
         withContext(Dispatchers.IO) { dataProvider.getListDocuments(collectionName, clazz.java) }
 
     override suspend fun deleteEntity(documentName: String) {
-        val contentDel = launch { contentProvider.deleteFolder(documentName) }
-        val dataDel = launch { dataProvider.deleteDocument(documentName) }
+        val contentDel = cs.launch(coroutineContext.job) { contentProvider.deleteFolder(documentName) }
+        val dataDel = cs.launch(coroutineContext.job) { dataProvider.deleteDocument(documentName) }
         joinAll(contentDel, dataDel)
     }
 
@@ -163,10 +156,10 @@ class ServiceProviderImpl(
     }
 
     private suspend fun <T : Entity> checkEntity(entity: T, isEntityHaveToExist: Boolean) {
-        val deferredData = async {
+        val deferredData = cs.async(coroutineContext.job) {
             dataProvider.isDocumentExist(entity.getDocumentName())
         }
-        val deferredContent = async {
+        val deferredContent = cs.async(coroutineContext.job) {
             dataProvider.isDocumentExist(entity.getDocumentName())
         }
         val isEntityOnDataProviderExist = deferredData.await()

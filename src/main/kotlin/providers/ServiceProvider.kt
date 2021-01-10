@@ -10,6 +10,5 @@ interface ServiceProvider {
     suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>): List<T>
     suspend fun <T : Entity> updateEntity(entity: T)
     suspend fun deleteEntity(documentName: String)
-    fun setJob(job: Job)
     suspend fun test()
 }
