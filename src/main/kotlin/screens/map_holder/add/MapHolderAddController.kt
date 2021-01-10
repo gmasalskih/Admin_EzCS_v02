@@ -79,7 +79,6 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     }
 
     fun onClear(){
-        launch { service.test() }
         setDefaultState()
     }
 
