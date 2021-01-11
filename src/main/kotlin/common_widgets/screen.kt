@@ -15,7 +15,7 @@ import data.types.StateType
 import ui.*
 
 @Composable
-inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable () -> Unit) {
+inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable () -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -52,7 +52,7 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable 
                 }
                 is StateType.Error -> {
                     Dialog(
-                        onDismissRequest = {}
+                        onDismissRequest = viewComponent.controller::showData
                     ) {
                         Container(
                             modifier = Modifier.fillMaxSize(),
@@ -83,8 +83,6 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable 
                             }
                         }
                     }
-                }
-                else -> {
                 }
             }
         }

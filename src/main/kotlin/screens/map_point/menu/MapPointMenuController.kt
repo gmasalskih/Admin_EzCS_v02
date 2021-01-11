@@ -4,7 +4,6 @@ import androidx.compose.runtime.*
 import data.entitys.MapHolder
 import data.entitys.MapPoint
 import data.types.*
-import kotlinx.coroutines.launch
 import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
@@ -146,11 +145,11 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     private fun getCorrespondingMapHolder(mapPoint: MapPoint): MapHolder? {
+        println("getCorrespondingMapHolder")
         return try {
             defaultListMapHolder.find { it.getDocumentName() == mapPoint.mapDocumentName }
                 ?: throw Exception("Map point $mapPoint can't find corresponding map holder")
         } catch (e: Exception) {
-            launch { showError(e) }
             null
         }
     }
