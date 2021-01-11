@@ -25,7 +25,6 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
     }
 
     protected fun launchUpdatingEntityOnServer(stateItem: I) = controllerScope.launch {
-        throw Exception("launchUpdatingEntityOnServer")
         showLoading()
         if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
         update(stateItem)
