@@ -25,7 +25,7 @@ class TestController : BaseController<TestState>() {
     private val firestore by inject<DataProviderImpl>()
 
     fun test() {
-        launch {
+        controllerScope.launch {
             service.test()
         }
     }

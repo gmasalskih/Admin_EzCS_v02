@@ -17,21 +17,22 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         this.documentName = documentName
     }
 
-    private fun launchSetInitState() = launch {
+    private fun launchSetInitState() = controllerScope.launch {
         setDefaultState()
         showLoading()
         setEntity()
         showData()
     }
 
-    protected fun launchUpdatingEntityOnServer(stateItem: I) = launch {
+    protected fun launchUpdatingEntityOnServer(stateItem: I) = controllerScope.launch {
+        throw Exception("launchUpdatingEntityOnServer")
         showLoading()
         if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
         update(stateItem)
         router.back()
     }
 
-    protected fun launchDeletingEntityOnServer() = launch {
+    protected fun launchDeletingEntityOnServer() = controllerScope.launch {
         showLoading()
         service.deleteEntity(documentName)
         router.back()

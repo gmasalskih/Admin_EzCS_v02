@@ -10,13 +10,9 @@ abstract class BaseMenuController<I : State> : BaseController<I>() {
         super.onViewCreate()
         showLoading()
         setDefaultState()
-        launch {
-            try {
-                setEntity()
-                showData()
-            } catch (e: Exception) {
-                showError(e)
-            }
+        controllerScope.launch {
+            setEntity()
+            showData()
         }
     }
 }

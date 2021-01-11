@@ -6,7 +6,7 @@ abstract class BaseAddController<I : State> : BaseController<I>() {
 
     protected abstract suspend fun upload(stateItem: I)
 
-    protected fun launchUploadingEntityOnServer(stateItem: I) = launch {
+    protected fun launchUploadingEntityOnServer(stateItem: I) = controllerScope.launch {
         showLoading()
         if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
         upload(stateItem)

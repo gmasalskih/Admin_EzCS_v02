@@ -170,6 +170,6 @@ class MapPointAddController : BaseAddController<MapPointAddState>() {
 
     override fun onViewCreate() {
         super.onViewCreate()
-        launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
+        controllerScope.launch { listMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class) }
     }
 }
