@@ -1,15 +1,15 @@
 package screens.test
 
 import androidx.compose.runtime.*
-import data.types.FileType
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.inject
+import providers.RealtimeDatabaseProvider
 import providers.content_provider.ContentProviderImpl
 import providers.data_provider.DataProviderImpl
+import providers.parser_provider.ParserItemsGameFileProviderImpl
 import screens.BaseController
 import screens.ViewState
-import utils.fileChooser
+import utils.PATH_TO_ITEMS_GAME
 
 class TestController : BaseController<TestState>() {
 
@@ -23,10 +23,11 @@ class TestController : BaseController<TestState>() {
     )
     private val dropbox by inject<ContentProviderImpl>()
     private val firestore by inject<DataProviderImpl>()
+    private val db by inject<RealtimeDatabaseProvider>()
 
     fun test() {
         controllerScope.launch {
-            service.test()
+
         }
     }
 }

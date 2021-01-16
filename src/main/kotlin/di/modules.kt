@@ -1,17 +1,15 @@
 package di
 
 import com.google.firebase.FirebaseApp
-import kotlinx.coroutines.Job
-import org.koin.core.component.KoinApiExtension
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
-import providers.ContentProvider
-import providers.ServiceProvider
+import providers.*
 import providers.content_provider.ContentProviderImpl
-import providers.DataProvider
 import providers.data_provider.FirebaseAppProvider
 import providers.data_provider.DataProviderImpl
+import providers.parser_provider.ParserItemsGameFileProviderImpl
+import providers.realtime_database.RealtimeDatabaseProviderImpl
 import providers.service_provider.ServiceProviderImpl
 import router.NavigationTargets
 import router.Router
@@ -39,10 +37,11 @@ import screens.weapon.menu.WeaponMenuController
 import screens.wingman.add.WingmanAddController
 import screens.wingman.edit.WingmanEditController
 import screens.wingman.menu.WingmanMenuController
+import utils.PATH_TO_ITEMS_GAME
 
 val appModule = module {
-//    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
-    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
+    single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
+//    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
 val providerModule = module {
@@ -55,6 +54,8 @@ val providerModule = module {
     }
     single<DataProvider> { DataProviderImpl(get()) }
     single<ServiceProvider> { ServiceProviderImpl(get(), get()) }
+    single<RealtimeDatabaseProvider> { RealtimeDatabaseProviderImpl(get()) }
+    single<ParserItemsGameFileProvider> { ParserItemsGameFileProviderImpl.getInstance(PATH_TO_ITEMS_GAME) }
 }
 
 val competitiveModule = module {
