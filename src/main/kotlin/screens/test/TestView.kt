@@ -14,7 +14,7 @@ class TestView : BaseView<TestController>() {
     ) {
         CardImage(
             label = "",
-            pathToFile = controller.getViewState().item.content,
+            pathToFile = controller.viewState.item.content,
             onClick = controller::test
         )
     }

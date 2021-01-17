@@ -9,22 +9,22 @@ import screens.ViewState
 import utils.fileChooser
 import utils.toValidOrder
 
-class CompetitiveEditController : BaseEditController<CompetitiveEditState>() {
+class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEditItemViewState>() {
 
-    override val defaultItemState: CompetitiveEditState = CompetitiveEditState()
+    override val defaultItemViewState: CompetitiveEditItemViewState = CompetitiveEditItemViewState()
 
-    override var state: ViewState<CompetitiveEditState> by mutableStateOf(
+    override var viewState: ViewState<CompetitiveEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     override suspend fun setEntity() {
-        service.getEntity(documentName, Competitive::class).let { entity ->
-            state = state.copy(title = "Edit ${entity.name}")
-            setItemState(
-                CompetitiveEditState(
+        service.getEntityAsync(documentName, Competitive::class).await().let { entity ->
+            viewState = viewState.copy(title = "Edit ${entity.name}")
+            setItemViewState(
+                CompetitiveEditItemViewState(
                     name = entity.name,
                     logo = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.logo),
                     order = entity.order
@@ -34,38 +34,36 @@ class CompetitiveEditController : BaseEditController<CompetitiveEditState>() {
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
     fun onLogoChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
         }
     }
 
-    fun onDelete(){
+    fun onDelete() {
         launchDeletingEntityOnServer()
     }
 
     fun onSubmit() {
-        launchUpdatingEntityOnServer(state.item)
+        launchUpdatingEntityOnServer(viewState.item)
     }
 
-    override suspend fun update(stateItem: CompetitiveEditState) {
-        service.updateEntity(
-            Competitive(
-                name = stateItem.name,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    override fun mapper(itemViewState: CompetitiveEditItemViewState): Competitive {
+        return Competitive(
+            name = itemViewState.name,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

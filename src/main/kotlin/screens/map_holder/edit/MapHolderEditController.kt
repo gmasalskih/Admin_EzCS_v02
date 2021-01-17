@@ -8,22 +8,22 @@ import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
 
-class MapHolderEditController : BaseEditController<MapHolderEditState>() {
+class MapHolderEditController : BaseEditController<MapHolder, MapHolderEditItemViewState>() {
 
-    override val defaultItemState: MapHolderEditState = MapHolderEditState()
+    override val defaultItemViewState: MapHolderEditItemViewState = MapHolderEditItemViewState()
 
-    override var state: ViewState<MapHolderEditState> by mutableStateOf(
+    override var viewState: ViewState<MapHolderEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit map",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     override suspend fun setEntity() {
-        service.getEntity(documentName, MapHolder::class).let { entity ->
-            state = state.copy(title = "Edit ${entity.name}")
-            setItemState(
-                MapHolderEditState(
+        service.getEntityAsync(documentName, MapHolder::class).await().let { entity ->
+            viewState = viewState.copy(title = "Edit ${entity.name}")
+            setItemViewState(
+                MapHolderEditItemViewState(
                     name = entity.name,
                     isCompetitive = entity.isCompetitive,
                     logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
@@ -34,30 +34,18 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
         }
     }
 
-    override suspend fun update(stateItem: MapHolderEditState) {
-        service.updateEntity(
-            MapHolder(
-                name = stateItem.name,
-                isCompetitive = stateItem.isCompetitive,
-                logo = stateItem.logo.value,
-                map = stateItem.map.value,
-                wallpaper = stateItem.wallpaper.value
-            )
-        )
-    }
-
     fun onCompetitiveChange(value: Boolean) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 isCompetitive = value
             )
         )
     }
 
     fun onWallpaperChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.wallpaper) { newWallpaper ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.wallpaper) { newWallpaper ->
+            setItemViewState(
+                viewState.item.copy(
                     wallpaper = newWallpaper
                 )
             )
@@ -65,9 +53,9 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
     }
 
     fun onMapChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.map) { newMap ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.map) { newMap ->
+            setItemViewState(
+                viewState.item.copy(
                     map = newMap
                 )
             )
@@ -75,20 +63,30 @@ class MapHolderEditController : BaseEditController<MapHolderEditState>() {
     }
 
     fun onLogoChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
         }
     }
 
-    fun onDelete(){
+    fun onDelete() {
         launchDeletingEntityOnServer()
     }
 
     fun onSubmit() {
-        launchUpdatingEntityOnServer(state.item)
+        launchUpdatingEntityOnServer(viewState.item)
+    }
+
+    override fun mapper(itemViewState: MapHolderEditItemViewState): MapHolder {
+        return MapHolder(
+            name = itemViewState.name,
+            isCompetitive = itemViewState.isCompetitive,
+            logo = itemViewState.logo.value,
+            map = itemViewState.map.value,
+            wallpaper = itemViewState.wallpaper.value
+        )
     }
 }

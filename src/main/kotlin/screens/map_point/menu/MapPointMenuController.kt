@@ -9,24 +9,24 @@ import screens.BaseMenuController
 import screens.ViewState
 import utils.containsOnly
 
-class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
+class MapPointMenuController : BaseMenuController<MapPointMenuItemViewState>() {
 
-    override val defaultItemState: MapPointMenuState = MapPointMenuState()
+    override val defaultItemViewState: MapPointMenuItemViewState = MapPointMenuItemViewState()
     private lateinit var defaultListMapPoint: List<MapPoint>
     private lateinit var defaultListMapHolder: List<MapHolder>
 
-    override var state: ViewState<MapPointMenuState> by mutableStateOf(
+    override var viewState: ViewState<MapPointMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Map point",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     override suspend fun setEntity() {
-        defaultListMapPoint = service.getListEntities(EntityType.MAP_POINT.name, MapPoint::class)
-        defaultListMapHolder = service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class)
-        setItemState(
-            MapPointMenuState(
+        defaultListMapPoint = service.getListEntitiesAsync(EntityType.MAP_POINT.name, MapPoint::class).await()
+        defaultListMapHolder = service.getListEntitiesAsync(EntityType.MAP_HOLDER.name, MapHolder::class).await()
+        setItemViewState(
+            MapPointMenuItemViewState(
                 listMapPoint = defaultListMapPoint
             )
         )
@@ -45,8 +45,8 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     fun onMapPointNameFilterChange(mapPointName: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 mapPointName = mapPointName.toLowerCase()
             )
         )
@@ -54,8 +54,8 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     fun onMapNameFilterChange(mapName: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 mapName = mapName.toLowerCase()
             )
         )
@@ -63,8 +63,8 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     fun onGrenadeFilterChange(grenadeFilterType: GrenadeFilterType) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 grenadeFilterType = grenadeFilterType
             )
         )
@@ -72,8 +72,8 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     fun onTickrateFilterChange(tickrateFilterType: TickrateFilterType) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 tickrateFilterType = tickrateFilterType
             )
         )
@@ -81,8 +81,8 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     fun onCompetitiveFilterChange(competitiveFilterType: CompetitiveFilterType) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 competitiveFilterType = competitiveFilterType
             )
         )
@@ -90,45 +90,45 @@ class MapPointMenuController : BaseMenuController<MapPointMenuState>() {
     }
 
     fun onResetFilters() {
-        setItemState(
-            defaultItemState.copy(
+        setItemViewState(
+            defaultItemViewState.copy(
                 listMapPoint = defaultListMapPoint
             )
         )
     }
 
     private fun applyMapNameFilter(mapPoint: MapPoint): Boolean {
-        if (state.item.mapName.isBlank()) return true
-        return (getCorrespondingMapHolder(mapPoint)?.name ?: "Unknown").contains(state.item.mapName, true)
+        if (viewState.item.mapName.isBlank()) return true
+        return (getCorrespondingMapHolder(mapPoint)?.name ?: "Unknown").contains(viewState.item.mapName, true)
     }
 
     private fun applyMapPointNameFilter(mapPoint: MapPoint): Boolean {
-        if (state.item.mapPointName.isBlank()) return true
-        return mapPoint.name.contains(state.item.mapPointName, true)
+        if (viewState.item.mapPointName.isBlank()) return true
+        return mapPoint.name.contains(viewState.item.mapPointName, true)
     }
 
-    private fun applyGrenadeFilter(mapPoint: MapPoint): Boolean = when (state.item.grenadeFilterType) {
+    private fun applyGrenadeFilter(mapPoint: MapPoint): Boolean = when (viewState.item.grenadeFilterType) {
         GrenadeFilterType.All -> true
         GrenadeFilterType.Smoke -> mapPoint.grenadeType === GrenadeType.SMOKE
         GrenadeFilterType.Molotov -> mapPoint.grenadeType === GrenadeType.MOLOTOV
         GrenadeFilterType.Flash -> mapPoint.grenadeType === GrenadeType.FLASH
     }
 
-    private fun applyTickrateFilter(mapPoint: MapPoint): Boolean = when (state.item.tickrateFilterType) {
+    private fun applyTickrateFilter(mapPoint: MapPoint): Boolean = when (viewState.item.tickrateFilterType) {
         TickrateFilterType.All -> true
         TickrateFilterType.Tickrate64 -> mapPoint.tickrateTypes.containsOnly(TickrateType.TICKRATE_64)
         TickrateFilterType.Tickrate128 -> mapPoint.tickrateTypes.containsOnly(TickrateType.TICKRATE_128)
     }
 
-    private fun applyCompetitiveFilter(mapPoint: MapPoint): Boolean = when (state.item.competitiveFilterType) {
+    private fun applyCompetitiveFilter(mapPoint: MapPoint): Boolean = when (viewState.item.competitiveFilterType) {
         CompetitiveFilterType.All -> true
         CompetitiveFilterType.Yes -> getCorrespondingMapHolder(mapPoint)?.isCompetitive ?: false
         CompetitiveFilterType.No -> !(getCorrespondingMapHolder(mapPoint)?.isCompetitive ?: true)
     }
 
     private fun applyFilters() {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 listMapPoint = defaultListMapPoint
                     //Entered map name
                     .filter { applyMapNameFilter(it) }

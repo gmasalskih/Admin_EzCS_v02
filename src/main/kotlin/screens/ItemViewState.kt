@@ -1,5 +1,5 @@
 package screens
 
-interface State {
+interface ItemViewState {
     fun isValid(): Boolean
 }

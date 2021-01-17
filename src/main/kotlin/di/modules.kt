@@ -1,6 +1,7 @@
 package di
 
 import com.google.firebase.FirebaseApp
+import com.google.gson.Gson
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
@@ -30,14 +31,12 @@ import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
 import screens.test.TestController
-import screens.test.TestView
 import screens.weapon.add.WeaponAddController
 import screens.weapon.edit.WeaponEditController
 import screens.weapon.menu.WeaponMenuController
 import screens.wingman.add.WingmanAddController
 import screens.wingman.edit.WingmanEditController
 import screens.wingman.menu.WingmanMenuController
-import utils.PATH_TO_ITEMS_GAME
 
 val appModule = module {
     single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
@@ -53,9 +52,10 @@ val providerModule = module {
         ).getApp()
     }
     single<DataProvider> { DataProviderImpl(get()) }
-    single<ServiceProvider> { ServiceProviderImpl(get(), get()) }
     single<RealtimeDatabaseProvider> { RealtimeDatabaseProviderImpl(get()) }
-    single<ParserItemsGameFileProvider> { ParserItemsGameFileProviderImpl.getInstance(PATH_TO_ITEMS_GAME) }
+    single<Gson> { Gson() }
+    single<ParserItemsGameFileProvider> { ParserItemsGameFileProviderImpl(get()) }
+    single<ServiceProvider> { ServiceProviderImpl(get(), get(), get(), get()) }
 }
 
 val competitiveModule = module {

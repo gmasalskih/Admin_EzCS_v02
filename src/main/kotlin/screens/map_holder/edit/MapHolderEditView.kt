@@ -33,23 +33,23 @@ class MapHolderEditView(documentName: String) : BaseView<MapHolderEditController
                 ) {
                     CardImage(
                         label = "add logo",
-                        pathToFile = controller.getViewState().item.logo,
+                        pathToFile = controller.viewState.item.logo,
                         onClick = controller::onLogoChange
                     )
                     CardImage(
                         label = "add map",
-                        pathToFile = controller.getViewState().item.map,
+                        pathToFile = controller.viewState.item.map,
                         onClick = controller::onMapChange
                     )
                     CardImage(
                         label = "add wallpaper",
-                        pathToFile = controller.getViewState().item.wallpaper,
+                        pathToFile = controller.viewState.item.wallpaper,
                         onClick = controller::onWallpaperChange
                     )
                 }
                 SwitchLable(
                     label = "Competitive",
-                    isChecked = controller.getViewState().item.isCompetitive,
+                    isChecked = controller.viewState.item.isCompetitive,
                     modifier = Modifier.fillMaxWidth(),
                     onCheckedChange = controller::onCompetitiveChange
                 )
@@ -65,7 +65,7 @@ class MapHolderEditView(documentName: String) : BaseView<MapHolderEditController
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )

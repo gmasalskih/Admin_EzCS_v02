@@ -24,7 +24,7 @@ data class Weapon(
     val teamTypes: List<TeamType> = listOf(),
 
     @ContentType /** Ссылка на лого */
-    val image: String = "",
+    val logo: String = "",
 
     @ContentType /** Ссылка на файл отдачи. (gif формат) */
     val spray: String = "",

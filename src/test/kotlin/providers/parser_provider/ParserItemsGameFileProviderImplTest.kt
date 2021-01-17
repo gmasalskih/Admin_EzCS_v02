@@ -26,26 +26,5 @@ internal class ParserItemsGameFileProviderImplTest : KoinTest {
         modules(providerModule)
     }
 
-    @Test
-    fun saveAsFile() {
-        val path = "D://123.json"
-        parserItemsGameFileProvider.saveAsFile(path)
-        assertTrue {
-            File(path).exists()
-        }
-        val txtOfFile = File(path).readText()
-        assertTrue(
-            txtOfFile.isJSON()
-        )
-    }
 
-    @Test
-    fun getMapOfWeaponRaw() {
-        assertTrue(
-            parserItemsGameFileProvider.getMapOfWeaponRaw().isNotEmpty()
-        )
-        assertTrue(
-            parserItemsGameFileProvider.getMapOfWeaponRaw().containsKey("ak47")
-        )
-    }
 }

@@ -2,7 +2,7 @@ package screens
 
 import kotlinx.coroutines.launch
 
-abstract class BaseMenuController<I : State> : BaseController<I>() {
+abstract class BaseMenuController<I : ItemViewState> : BaseController<I>() {
 
     protected abstract suspend fun setEntity()
 

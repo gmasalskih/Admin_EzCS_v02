@@ -9,29 +9,29 @@ import utils.fileChooser
 import utils.toValidName
 import utils.toValidOrder
 
-class WingmanAddController : BaseAddController<WingmanAddState>() {
+class WingmanAddController : BaseAddController<Wingman, WingmanAddItemViewState>() {
 
-    override val defaultItemState: WingmanAddState = WingmanAddState()
+    override val defaultItemViewState: WingmanAddItemViewState = WingmanAddItemViewState()
 
-    override var state: ViewState<WingmanAddState> by mutableStateOf(
+    override var viewState: ViewState<WingmanAddItemViewState> by mutableStateOf(
         ViewState(
             title = "new wingman rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     fun onNameChange(name: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 name = name.toValidName()
             )
         )
     }
 
     fun onLogoAdd() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
@@ -39,28 +39,26 @@ class WingmanAddController : BaseAddController<WingmanAddState>() {
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
-    fun onClear(){
+    fun onClear() {
         setDefaultState()
     }
 
     fun onSubmit() {
-        launchUploadingEntityOnServer(state.item)
+        launchUploadingEntityOnServer(viewState.item)
     }
 
-    override suspend fun upload(stateItem: WingmanAddState) {
-        service.uploadEntity(
-            Wingman(
-                name = stateItem.name,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    override fun mapper(itemViewState: WingmanAddItemViewState): Wingman {
+        return Wingman(
+            name = itemViewState.name,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

@@ -1,12 +1,11 @@
 package screens.map_point.edit
 
 import data.types.ContentSourceType
-import data.types.EntityType
 import data.types.GrenadeType
 import data.types.TickrateType
-import screens.State
+import screens.ItemViewState
 
-data class MapPointEditState(
+data class MapPointEditItemViewState(
     val name: String = "",
     val mapDocumentName: String = "",
     val grenadeType: GrenadeType = GrenadeType.SMOKE,
@@ -15,7 +14,7 @@ data class MapPointEditState(
     val previewEnd: ContentSourceType = ContentSourceType.Empty,
     val contentImages: List<ContentSourceType> = listOf(),
     val contentVideos: List<ContentSourceType> = listOf()
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = name.isNotEmpty() &&
             mapDocumentName.isNotEmpty() &&
             tickrateTypes.isNotEmpty() &&

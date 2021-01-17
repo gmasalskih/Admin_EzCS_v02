@@ -17,7 +17,7 @@ class DangerZoneMenuView : BaseView<DangerZoneMenuController>() {
     override fun setContent(controller: DangerZoneMenuController) {
         ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item.listDangerZone,
+            items = controller.viewState.item.listDangerZone,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToDangerZoneAdd) },
             cardItem = { dangerZone ->
                 CardRank(

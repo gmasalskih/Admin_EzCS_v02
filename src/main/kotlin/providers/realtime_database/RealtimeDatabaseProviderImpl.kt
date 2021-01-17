@@ -11,21 +11,21 @@ import kotlin.coroutines.suspendCoroutine
 class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider {
     private val db = FirebaseDatabase.getInstance(app).reference
 
-    override suspend fun saveDocument(document: Map<String, Any>) = suspendCoroutine<Boolean> { cont ->
+    override suspend fun saveDocuments(document: Map<String, Any>) = suspendCoroutine<Unit> { cont ->
         db.setValue(document) { err, _ ->
             err?.let {
                 cont.resumeWith(Result.failure(it.toException()))
             }
-            cont.resumeWith(Result.success(true))
+            cont.resumeWith(Result.success(Unit))
         }
     }
 
-    override suspend fun clear() = suspendCoroutine<Boolean> { cont ->
+    override suspend fun clear() = suspendCoroutine<Unit> { cont ->
         db.setValue(null) { err, _ ->
             err?.let {
                 cont.resumeWith(Result.failure(it.toException()))
             }
-            cont.resumeWith(Result.success(true))
+            cont.resumeWith(Result.success(Unit))
         }
     }
 
@@ -55,12 +55,16 @@ class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider 
         })
     }
 
-    override suspend fun getDocuments(): Map<*, *> = suspendCoroutine {cont->
+    override suspend fun getListNameOfDocuments(): List<String> = suspendCoroutine { cont ->
         db.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot?) {
-                snapshot?.let {
+                snapshot?.let { dataSnapshot ->
+                    val listNameOfDocuments = (dataSnapshot.value as Map<*, *>).keys
+                        .filterNotNull()
+                        .map { key -> key.toString() }
+                        .toList()
                     cont.resumeWith(
-                        Result.success(it.value as HashMap<*, *>)
+                        Result.success(listNameOfDocuments)
                     )
                 }
                 cont.resumeWith(

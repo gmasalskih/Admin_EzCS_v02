@@ -9,21 +9,21 @@ import screens.ViewState
 import utils.fileChooser
 import utils.toValidOrder
 
-class WingmanEditController : BaseEditController<WingmanEditState>() {
+class WingmanEditController : BaseEditController<Wingman, WingmanEditItemViewState>() {
 
-    override val defaultItemState: WingmanEditState = WingmanEditState()
+    override val defaultItemViewState: WingmanEditItemViewState = WingmanEditItemViewState()
 
-    override var state: ViewState<WingmanEditState> by mutableStateOf(
+    override var viewState: ViewState<WingmanEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     fun onLogoChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
@@ -31,26 +31,26 @@ class WingmanEditController : BaseEditController<WingmanEditState>() {
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
-    fun onDelete(){
+    fun onDelete() {
         launchDeletingEntityOnServer()
     }
 
     fun onSubmit() {
-        launchUpdatingEntityOnServer(state.item)
+        launchUpdatingEntityOnServer(viewState.item)
     }
 
     override suspend fun setEntity() {
-        service.getEntity(documentName, Wingman::class).let { entity ->
-            state = state.copy(title = "Edit ${entity.name}")
-            setItemState(
-                WingmanEditState(
+        service.getEntityAsync(documentName, Wingman::class).await().let { entity ->
+            viewState = viewState.copy(title = "Edit ${entity.name}")
+            setItemViewState(
+                WingmanEditItemViewState(
                     name = entity.name,
                     logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
                     order = entity.order
@@ -59,13 +59,11 @@ class WingmanEditController : BaseEditController<WingmanEditState>() {
         }
     }
 
-    override suspend fun update(stateItem: WingmanEditState) {
-        service.updateEntity(
-            Wingman(
-                name = stateItem.name,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    override fun mapper(itemViewState: WingmanEditItemViewState): Wingman {
+        return Wingman(
+            name = itemViewState.name,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

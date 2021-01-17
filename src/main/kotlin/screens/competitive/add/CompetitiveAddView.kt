@@ -29,19 +29,19 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                     horizontalArrangement = spacedBy20dp
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.name,
+                        value = controller.viewState.item.name,
                         label = "Enter rank name",
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order.toOrderString(),
+                        value = controller.viewState.item.order.toOrderString(),
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    image = controller.getViewState().item.logo,
+                    image = controller.viewState.item.logo,
                     onClick = controller::onLogoAdd
                 )
             }
@@ -56,7 +56,7 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

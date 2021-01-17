@@ -7,14 +7,14 @@ import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class WeaponMenuController : BaseMenuController<WeaponMenuState>() {
+class WeaponMenuController : BaseMenuController<WeaponMenuItemViewState>() {
 
-    override val defaultItemState: WeaponMenuState = WeaponMenuState()
+    override val defaultItemViewState: WeaponMenuItemViewState = WeaponMenuItemViewState()
 
-    override var state: ViewState<WeaponMenuState> by mutableStateOf(
+    override var viewState: ViewState<WeaponMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Weapons",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
@@ -27,9 +27,9 @@ class WeaponMenuController : BaseMenuController<WeaponMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(
-            WeaponMenuState(
-                service.getListEntities(EntityType.WEAPON.name, Weapon::class)
+        setItemViewState(
+            WeaponMenuItemViewState(
+                service.getListEntitiesAsync(EntityType.WEAPON.name, Weapon::class).await()
             )
         )
     }

@@ -41,19 +41,19 @@ class ProfileRankEditView(documentName: String) : BaseView<ProfileRankEditContro
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.xp.toXPString(),
+                        value = controller.viewState.item.xp.toXPString(),
                         label = "Change XP",
                         onTextChanged = controller::onXPChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order.toOrderString(),
+                        value = controller.viewState.item.order.toOrderString(),
                         label = "Change order",
                         onTextChanged = controller::onOrderChange
                     )
                 }
                 CardImage(
                     label = "Change logo",
-                    pathToFile = controller.getViewState().item.logo,
+                    pathToFile = controller.viewState.item.logo,
                     onClick = controller::onLogoChange
                 )
             }
@@ -68,7 +68,7 @@ class ProfileRankEditView(documentName: String) : BaseView<ProfileRankEditContro
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )

@@ -17,7 +17,7 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
     override fun setContent(controller: CompetitiveMenuController) {
         ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item.listCompetitive,
+            items = controller.viewState.item.listCompetitive,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToCompetitiveAdd) },
             cardItem = { competitive ->
                 CardRank(

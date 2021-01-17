@@ -1,11 +1,10 @@
 package screens.map_holder.menu
 
 import data.entitys.MapHolder
-import data.types.ContentSourceType
-import screens.State
+import screens.ItemViewState
 
-data class MapHolderMenuState(
+data class MapHolderMenuItemViewState(
     val listMapHolder: List<MapHolder> = listOf(),
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = true
 }

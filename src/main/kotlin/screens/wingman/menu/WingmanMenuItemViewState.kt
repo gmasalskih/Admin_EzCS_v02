@@ -1,10 +1,10 @@
 package screens.wingman.menu
 
 import data.entitys.Wingman
-import screens.State
+import screens.ItemViewState
 
-data class WingmanMenuState(
+data class WingmanMenuItemViewState(
     val listWingman: List<Wingman> = listOf()
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = true
 }

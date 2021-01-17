@@ -1,34 +1,36 @@
 package screens.weapon.edit
 
 import androidx.compose.runtime.*
+import data.entitys.Weapon
 import screens.BaseEditController
 import screens.ViewState
 
-class WeaponEditController : BaseEditController<WeaponEditState>() {
+class WeaponEditController : BaseEditController<Weapon, WeaponEditItemViewState>() {
 
-    override val defaultItemState: WeaponEditState = WeaponEditState()
+    override val defaultItemViewState: WeaponEditItemViewState = WeaponEditItemViewState()
 
-    override var state: ViewState<WeaponEditState> by mutableStateOf(
+    override var viewState: ViewState<WeaponEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit weapon",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
-    fun onDelete(){
+    fun onDelete() {
         launchDeletingEntityOnServer()
     }
 
     fun onSubmit() {
-        launchUpdatingEntityOnServer(state.item)
+        launchUpdatingEntityOnServer(viewState.item)
     }
 
     override suspend fun setEntity() {
 //        TODO("Not yet implemented")
     }
 
-    override suspend fun update(stateItem: WeaponEditState) {
-//        TODO("Not yet implemented")
+    override fun mapper(itemViewState: WeaponEditItemViewState): Weapon {
+        TODO("Not yet implemented")
     }
+
 
 }

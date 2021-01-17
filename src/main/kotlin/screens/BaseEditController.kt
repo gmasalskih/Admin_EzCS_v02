@@ -1,11 +1,13 @@
 package screens
 
+import data.entitys.Entity
 import kotlinx.coroutines.launch
 
-abstract class BaseEditController<I : State> : BaseController<I>() {
+abstract class BaseEditController<E : Entity, I : ItemViewState> : BaseController<I>() {
     protected lateinit var documentName: String
     protected abstract suspend fun setEntity()
-    protected abstract suspend fun update(stateItem: I)
+
+    protected abstract fun mapper(itemViewState: I): E
 
     override fun onViewCreate() {
         super.onViewCreate()
@@ -17,6 +19,7 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         this.documentName = documentName
     }
 
+
     private fun launchSetInitState() = controllerScope.launch {
         setDefaultState()
         showLoading()
@@ -24,10 +27,10 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         showData()
     }
 
-    protected fun launchUpdatingEntityOnServer(stateItem: I) = controllerScope.launch {
+    protected fun launchUpdatingEntityOnServer(itemViewState: I) = controllerScope.launch {
         showLoading()
-        if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
-        update(stateItem)
+        if (!itemViewState.isValid()) throw Exception("The entity $itemViewState is not valid!")
+        service.updateEntity(mapper(itemViewState))
         router.back()
     }
 

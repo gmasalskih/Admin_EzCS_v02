@@ -1,10 +1,9 @@
 package providers.service_provider
 
 import data.entitys.Entity
+import data.entitys.blueprint_weapon.BlueprintWeapon
 import kotlinx.coroutines.*
-import providers.ContentProvider
-import providers.ServiceProvider
-import providers.DataProvider
+import providers.*
 import utils.*
 import kotlin.coroutines.coroutineContext
 import kotlin.reflect.KClass
@@ -12,20 +11,12 @@ import kotlin.reflect.full.declaredMemberProperties
 
 class ServiceProviderImpl(
     private val dataProvider: DataProvider,
-    private val contentProvider: ContentProvider
+    private val contentProvider: ContentProvider,
+    private val parserItemsGameFileProvider: ParserItemsGameFileProvider,
+    private val realtimeDatabaseProvider: RealtimeDatabaseProvider
 ) : ServiceProvider {
-
     private val serviceDispatcher = Dispatchers.IO
     private val cs: CoroutineScope = CoroutineScope(serviceDispatcher)
-
-    override suspend fun test() {
-        cs.launch(coroutineContext.job) {
-            while (true) {
-                println("test")
-                delay(1000)
-            }
-        }
-    }
 
     override suspend fun <T : Entity> updateEntity(entity: T) {
         checkEntity(entity, true)
@@ -139,11 +130,11 @@ class ServiceProviderImpl(
         }
     }
 
-    override suspend fun <T : Entity> getEntity(documentName: String, clazz: KClass<T>) =
-        withContext(serviceDispatcher) { dataProvider.downloadDocument(documentName, clazz.java) }
+    override suspend fun <T : Entity> getEntityAsync(documentName: String, clazz: KClass<T>) =
+        cs.async(coroutineContext.job) { dataProvider.downloadDocument(documentName, clazz.java) }
 
-    override suspend fun <T : Entity> getListEntities(collectionName: String, clazz: KClass<T>) =
-        withContext(serviceDispatcher) { dataProvider.getListDocuments(collectionName, clazz.java) }
+    override suspend fun <T : Entity> getListEntitiesAsync(collectionName: String, clazz: KClass<T>) =
+        cs.async(coroutineContext.job) { dataProvider.getListDocuments(collectionName, clazz.java) }
 
     override suspend fun deleteEntity(documentName: String) {
         withContext(NonCancellable + serviceDispatcher) {
@@ -151,6 +142,23 @@ class ServiceProviderImpl(
             launch { dataProvider.deleteDocument(documentName) }
         }
     }
+
+    override suspend fun getListNameOfBlueprintWeaponAsync(): Deferred<List<String>> =
+        cs.async(coroutineContext.job + serviceDispatcher) {
+            realtimeDatabaseProvider.getListNameOfDocuments()
+        }
+
+    override suspend fun updateMapOfBlueprintWeaponFromSourceFile(pathToSourceFile: String) {
+        val mapOfBlueprintWeapon = withContext(Dispatchers.Default) {
+            parserItemsGameFileProvider.getMapOfBlueprintWeapon(pathToSourceFile)
+        }
+        withContext(NonCancellable) {
+            realtimeDatabaseProvider.clear()
+            realtimeDatabaseProvider.saveDocuments(mapOfBlueprintWeapon)
+        }
+
+    }
+
 
     private fun addToFullContentSet(content: String, contentSet: MutableSet<String>) {
         if (!contentSet.add(content.toValidFileName()))

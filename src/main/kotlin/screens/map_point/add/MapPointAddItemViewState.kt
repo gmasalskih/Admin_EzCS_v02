@@ -3,9 +3,9 @@ package screens.map_point.add
 import data.types.ContentSourceType
 import data.types.GrenadeType
 import data.types.TickrateType
-import screens.State
+import screens.ItemViewState
 
-data class MapPointAddState(
+data class MapPointAddItemViewState(
     val name: String = "",
     val mapDocumentName: String = "",
     val grenadeType: GrenadeType = GrenadeType.SMOKE,
@@ -14,7 +14,7 @@ data class MapPointAddState(
     val previewEnd: ContentSourceType = ContentSourceType.Empty,
     val contentImages: List<ContentSourceType> = listOf(),
     val contentVideos: List<ContentSourceType> = listOf(),
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = name.isNotBlank() &&
             mapDocumentName.isNotEmpty() &&
             tickrateTypes.isNotEmpty() &&

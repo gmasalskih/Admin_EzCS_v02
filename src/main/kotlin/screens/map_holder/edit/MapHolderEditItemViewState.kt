@@ -1,15 +1,15 @@
-package screens.map_holder.add
+package screens.map_holder.edit
 
 import data.types.ContentSourceType
-import screens.State
+import screens.ItemViewState
 
-data class MapHolderAddState(
+data class MapHolderEditItemViewState(
     val name: String = "",
     val isCompetitive: Boolean = false,
     val logo: ContentSourceType = ContentSourceType.Empty,
     val map: ContentSourceType = ContentSourceType.Empty,
     val wallpaper: ContentSourceType = ContentSourceType.Empty,
-) : State {
+) : ItemViewState {
     override fun isValid() = name.isNotBlank() &&
             logo !is ContentSourceType.Empty &&
             map !is ContentSourceType.Empty &&

@@ -6,6 +6,7 @@ import com.google.gson.JsonParser
 import java.io.File
 import java.io.FileInputStream
 import java.net.URL
+import javax.swing.text.html.parser.Entity
 import org.jetbrains.skija.Image as ImageLoader
 
 fun String.toValidId() = this.replace("[^a-zA-Z0-9_\\s]".toRegex(), "")
@@ -127,4 +128,12 @@ fun String.toCamelCase(): String {
                 it
             }
         }.reduce { acc, c -> "$acc$c" }
+}
+
+fun String.prepareToPrintDataClass(): String {
+    return this.replace("((.+\\()|(\\)))".toRegex(), "")
+        .split(",")
+        .map { "${it.trim()}\n" }
+        .map { it.replace("=", " = ") }
+        .reduce { acc, s -> "$acc$s" }
 }

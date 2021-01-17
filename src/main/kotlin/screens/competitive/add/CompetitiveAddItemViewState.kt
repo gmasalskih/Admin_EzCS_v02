@@ -1,12 +1,12 @@
 package screens.competitive.add
 
 import data.types.ContentSourceType
-import screens.State
+import screens.ItemViewState
 
-data class CompetitiveAddState(
+data class CompetitiveAddItemViewState(
     val name: String = "",
     val logo: ContentSourceType = ContentSourceType.Empty,
     val order: Int = 0,
-) : State {
+) : ItemViewState {
     override fun isValid() = name.isNotBlank() && logo !is ContentSourceType.Empty && order > 0
 }

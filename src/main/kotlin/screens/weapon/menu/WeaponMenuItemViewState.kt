@@ -1,10 +1,10 @@
 package screens.weapon.menu
 
 import data.entitys.Weapon
-import screens.State
+import screens.ItemViewState
 
-data class WeaponMenuState(
+data class WeaponMenuItemViewState(
     val listWeapon: List<Weapon> = listOf()
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = true
 }

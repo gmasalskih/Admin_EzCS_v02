@@ -3,47 +3,34 @@ package screens.map_holder.add
 import androidx.compose.runtime.*
 import data.entitys.MapHolder
 import data.types.FileType
-import kotlinx.coroutines.launch
 import screens.BaseAddController
 import screens.ViewState
 import utils.fileChooser
 import utils.toValidName
 
-class MapHolderAddController : BaseAddController<MapHolderAddState>() {
+class MapHolderAddController : BaseAddController<MapHolder, MapHolderAddItemViewState>() {
 
-    override val defaultItemState: MapHolderAddState = MapHolderAddState()
+    override val defaultItemViewState: MapHolderAddItemViewState = MapHolderAddItemViewState()
 
-    override var state: ViewState<MapHolderAddState> by mutableStateOf(
+    override var viewState: ViewState<MapHolderAddItemViewState> by mutableStateOf(
         ViewState(
             title = "new map",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
-    override suspend fun upload(stateItem: MapHolderAddState) {
-        service.uploadEntity(
-            MapHolder(
-                name = stateItem.name,
-                isCompetitive = stateItem.isCompetitive,
-                logo = stateItem.logo.value,
-                map = stateItem.map.value,
-                wallpaper = stateItem.wallpaper.value
-            )
-        )
-    }
-
     fun onNameChange(name: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 name = name.toValidName()
             )
         )
     }
 
     fun onLogoAdd() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
@@ -51,9 +38,9 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     }
 
     fun onMapAdd() {
-        fileChooser("Select map", FileType.PNG, state.item.map) { newMap ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select map", FileType.PNG, viewState.item.map) { newMap ->
+            setItemViewState(
+                viewState.item.copy(
                     map = newMap
                 )
             )
@@ -61,9 +48,9 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     }
 
     fun onWallpaperAdd() {
-        fileChooser("Select wallpaper", FileType.PNG, state.item.wallpaper) { newWallpaper ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select wallpaper", FileType.PNG, viewState.item.wallpaper) { newWallpaper ->
+            setItemViewState(
+                viewState.item.copy(
                     wallpaper = newWallpaper
                 )
             )
@@ -71,18 +58,28 @@ class MapHolderAddController : BaseAddController<MapHolderAddState>() {
     }
 
     fun onCompetitiveChange(value: Boolean) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 isCompetitive = value
             )
         )
     }
 
-    fun onClear(){
+    fun onClear() {
         setDefaultState()
     }
 
     fun onSubmit() {
-        launchUploadingEntityOnServer(state.item)
+        launchUploadingEntityOnServer(viewState.item)
+    }
+
+    override fun mapper(itemViewState: MapHolderAddItemViewState): MapHolder {
+        return MapHolder(
+            name = itemViewState.name,
+            isCompetitive = itemViewState.isCompetitive,
+            logo = itemViewState.logo.value,
+            map = itemViewState.map.value,
+            wallpaper = itemViewState.wallpaper.value
+        )
     }
 }

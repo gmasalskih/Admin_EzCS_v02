@@ -1,10 +1,10 @@
 package screens.competitive.menu
 
 import data.entitys.Competitive
-import screens.State
+import screens.ItemViewState
 
-data class CompetitiveMenuState(
+data class CompetitiveMenuItemViewState(
     val listCompetitive: List<Competitive> = listOf()
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = true
 }

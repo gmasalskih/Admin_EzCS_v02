@@ -10,22 +10,22 @@ import utils.fileChooser
 import utils.toValidOrder
 import utils.toValidXP
 
-class ProfileRankEditController : BaseEditController<ProfileRankEditState>() {
+class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEditItemViewState>() {
 
-    override val defaultItemState: ProfileRankEditState = ProfileRankEditState()
+    override val defaultItemViewState: ProfileRankEditItemViewState = ProfileRankEditItemViewState()
 
-    override var state: ViewState<ProfileRankEditState> by mutableStateOf(
+    override var viewState: ViewState<ProfileRankEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit profile rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     override suspend fun setEntity() {
-        service.getEntity(documentName, ProfileRank::class).let { entity ->
-            state = state.copy(title = "Edit ${entity.name}")
-            setItemState(
-                ProfileRankEditState(
+        service.getEntityAsync(documentName, ProfileRank::class).await().let { entity ->
+            viewState = viewState.copy(title = "Edit ${entity.name}")
+            setItemViewState(
+                ProfileRankEditItemViewState(
                     name = entity.name,
                     xp = entity.xp,
                     logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
@@ -36,47 +36,45 @@ class ProfileRankEditController : BaseEditController<ProfileRankEditState>() {
     }
 
     fun onXPChange(xp: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 xp = xp.toValidXP()
             )
         )
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
     fun onLogoChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
         }
     }
 
-    fun onDelete(){
+    fun onDelete() {
         launchDeletingEntityOnServer()
     }
 
     fun onSubmit() {
-        launchUpdatingEntityOnServer(state.item)
+        launchUpdatingEntityOnServer(viewState.item)
     }
 
-    override suspend fun update(stateItem: ProfileRankEditState) {
-        service.updateEntity(
-            ProfileRank(
-                name = stateItem.name,
-                xp = stateItem.xp,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    override fun mapper(itemViewState: ProfileRankEditItemViewState): ProfileRank {
+        return ProfileRank(
+            name = itemViewState.name,
+            xp = itemViewState.xp,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

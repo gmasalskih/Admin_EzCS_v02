@@ -1,10 +1,10 @@
 package screens.profile_rank.menu
 
 import data.entitys.ProfileRank
-import screens.State
+import screens.ItemViewState
 
-data class ProfileRankMenuState(
+data class ProfileRankMenuItemViewState(
     val listProfileRank: List<ProfileRank> = listOf()
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = true
 }

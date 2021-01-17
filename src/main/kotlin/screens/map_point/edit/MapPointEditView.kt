@@ -36,16 +36,16 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                 ) {
                     CardImage(
                         onClick = controller::onPreviewStartChange,
-                        pathToFile = controller.getViewState().item.previewStart
+                        pathToFile = controller.viewState.item.previewStart
                     )
                     CardImage(
                         onClick = controller::onPreviewEndChange,
-                        pathToFile = controller.getViewState().item.previewEnd
+                        pathToFile = controller.viewState.item.previewEnd
                     )
                 }
                 ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
-                    items = controller.getViewState().item.contentVideos,
+                    items = controller.viewState.item.contentVideos,
                     cardAdd = {
                         CardAdd(
                             label = "Add video",
@@ -62,7 +62,7 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                 )
                 ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
-                    items = controller.getViewState().item.contentImages,
+                    items = controller.viewState.item.contentImages,
                     cardAdd = {
                         CardAdd(
                             label = "Add image",
@@ -89,7 +89,7 @@ class MapPointEditView(documentName: String) : BaseView<MapPointEditController>(
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )

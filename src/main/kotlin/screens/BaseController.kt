@@ -7,9 +7,10 @@ import org.koin.core.component.inject
 import providers.ServiceProvider
 import router.Router
 
-abstract class BaseController<I : State> : KoinComponent {
-    protected abstract var state: ViewState<I>
-    protected abstract val defaultItemState: I
+abstract class BaseController<I : ItemViewState> : KoinComponent {
+    abstract var viewState: ViewState<I>
+        protected set
+    protected abstract val defaultItemViewState: I
     protected val router by inject<Router>()
     protected val service by inject<ServiceProvider>()
     private var job: Job = SupervisorJob()
@@ -17,13 +18,11 @@ abstract class BaseController<I : State> : KoinComponent {
     protected val controllerScope: CoroutineScope = CoroutineScope(Dispatchers.Default + job + ceh)
 
     open fun setDefaultState() {
-        setItemState(defaultItemState)
+        setItemViewState(defaultItemViewState)
     }
 
-    fun getViewState() = state
-
-    protected fun setItemState(item: I) {
-        state = state.copy(item = item)
+    protected fun setItemViewState(itemViewState: I) {
+        viewState = viewState.copy(item = itemViewState)
     }
 
     fun isNavigableBack() = router.isNavigableBack()
@@ -31,15 +30,15 @@ abstract class BaseController<I : State> : KoinComponent {
     fun back() = router.back()
 
     fun showLoading() {
-        state = state.copy(stateType = StateType.Loading)
+        viewState = viewState.copy(stateType = StateType.Loading)
     }
 
     fun showData() {
-        state = state.copy(stateType = StateType.Data)
+        viewState = viewState.copy(stateType = StateType.Data)
     }
 
     fun showError(e: Throwable) {
-        state = state.copy(stateType = StateType.Error(err = e))
+        viewState = viewState.copy(stateType = StateType.Error(err = e))
     }
 
     open fun onViewCreate() {

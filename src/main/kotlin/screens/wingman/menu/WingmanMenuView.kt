@@ -17,7 +17,7 @@ class WingmanMenuView : BaseView<WingmanMenuController>() {
     override fun setContent(controller: WingmanMenuController) {
         ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item.listWingman,
+            items = controller.viewState.item.listWingman,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToWingmanAdd) },
             cardItem = { wingman ->
                 CardRank(

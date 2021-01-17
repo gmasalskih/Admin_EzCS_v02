@@ -31,12 +31,12 @@ class MapPointMenuView : BaseView<MapPointMenuController>() {
                     horizontalArrangement = spacedBy20dp
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.mapName,
+                        value = controller.viewState.item.mapName,
                         label = "Enter map name",
                         onTextChanged = controller::onMapNameFilterChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.mapPointName,
+                        value = controller.viewState.item.mapPointName,
                         label = "Enter map point name",
                         onTextChanged = controller::onMapPointNameFilterChange
                     )
@@ -46,22 +46,22 @@ class MapPointMenuView : BaseView<MapPointMenuController>() {
                 ) {
                     RadioGroupFilter(
                         label = "Grenade:",
-                        filterSelected = controller.getViewState().item.grenadeFilterType,
+                        filterSelected = controller.viewState.item.grenadeFilterType,
                         onFilterSelected = controller::onGrenadeFilterChange
                     )
                     RadioGroupFilter(
                         label = "Tickrate:",
-                        filterSelected = controller.getViewState().item.tickrateFilterType,
+                        filterSelected = controller.viewState.item.tickrateFilterType,
                         onFilterSelected = controller::onTickrateFilterChange
                     )
                     RadioGroupFilter(
                         label = "Competitive:",
-                        filterSelected = controller.getViewState().item.competitiveFilterType,
+                        filterSelected = controller.viewState.item.competitiveFilterType,
                         onFilterSelected = controller::onCompetitiveFilterChange
                     )
                 }
                 ScrollableAddRow(
-                    items = controller.getViewState().item.listMapPoint,
+                    items = controller.viewState.item.listMapPoint,
                     cardAdd = { CardAdd(label = "add map point", onClick = controller::navigateToMapPointsAdd) },
                     cardItem = { mapPoint ->
                         CardMapPoint(

@@ -17,7 +17,7 @@ class ProfileRankMenuView : BaseView<ProfileRankMenuController>() {
     override fun setContent(controller: ProfileRankMenuController) {
         ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item.listProfileRank,
+            items = controller.viewState.item.listProfileRank,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToProfileRankAdd) },
             cardItem = { profileRank ->
                 CardRank(

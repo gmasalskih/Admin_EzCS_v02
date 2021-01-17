@@ -6,19 +6,17 @@ import org.koin.core.component.inject
 import providers.RealtimeDatabaseProvider
 import providers.content_provider.ContentProviderImpl
 import providers.data_provider.DataProviderImpl
-import providers.parser_provider.ParserItemsGameFileProviderImpl
 import screens.BaseController
 import screens.ViewState
-import utils.PATH_TO_ITEMS_GAME
 
-class TestController : BaseController<TestState>() {
+class TestController : BaseController<TestItemViewState>() {
 
-    override val defaultItemState: TestState = TestState()
+    override val defaultItemViewState: TestItemViewState = TestItemViewState()
 
-    override var state: ViewState<TestState> by mutableStateOf(
+    override var viewState: ViewState<TestItemViewState> by mutableStateOf(
         ViewState(
             title = "Test",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
     private val dropbox by inject<ContentProviderImpl>()

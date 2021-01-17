@@ -1,15 +1,16 @@
 package screens
 
+import data.entitys.Entity
 import kotlinx.coroutines.launch
 
-abstract class BaseAddController<I : State> : BaseController<I>() {
+abstract class BaseAddController<E : Entity, I : ItemViewState> : BaseController<I>() {
 
-    protected abstract suspend fun upload(stateItem: I)
+    protected abstract fun mapper(itemViewState: I): E
 
-    protected fun launchUploadingEntityOnServer(stateItem: I) = controllerScope.launch {
+    protected fun launchUploadingEntityOnServer(itemViewState: I) = controllerScope.launch {
         showLoading()
-        if (!stateItem.isValid()) throw Exception("The entity $stateItem is not valid!")
-        upload(stateItem)
+        if (!itemViewState.isValid()) throw Exception("The entity $itemViewState is not valid!")
+        service.uploadEntity(mapper(itemViewState))
         setDefaultState()
         showData()
     }

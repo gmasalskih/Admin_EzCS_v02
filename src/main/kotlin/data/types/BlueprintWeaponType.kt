@@ -3,6 +3,7 @@ package data.types
 enum class BlueprintWeaponType(val value: String) {
     BreachCharge("Breach Charge"),
     BumpMine("Bump Mine"),
+    Empty(""),
     Fists("Fists"),
     Grenade("Grenade"),
     Knife("Knife"),

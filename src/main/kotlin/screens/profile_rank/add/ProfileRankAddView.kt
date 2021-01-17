@@ -37,24 +37,24 @@ class ProfileRankAddView : BaseView<ProfileRankAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.name,
+                        value = controller.viewState.item.name,
                         label = "Enter rank name",
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.xp.toXPString(),
+                        value = controller.viewState.item.xp.toXPString(),
                         label = "Enter rank XP",
                         onTextChanged = controller::onXPChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order.toOrderString(),
+                        value = controller.viewState.item.order.toOrderString(),
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    image = controller.getViewState().item.logo,
+                    image = controller.viewState.item.logo,
                     onClick = controller::onLogoAdd
                 )
             }
@@ -69,7 +69,7 @@ class ProfileRankAddView : BaseView<ProfileRankAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

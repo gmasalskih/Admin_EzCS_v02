@@ -1,10 +1,10 @@
 package screens.danger_zone.menu
 
 import data.entitys.DangerZone
-import screens.State
+import screens.ItemViewState
 
-data class DangerZoneMenuState(
+data class DangerZoneMenuItemViewState(
     val listDangerZone: List<DangerZone> = listOf()
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = true
 }

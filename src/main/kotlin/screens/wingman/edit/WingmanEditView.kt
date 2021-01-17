@@ -34,13 +34,13 @@ class WingmanEditView(documentName: String) : BaseView<WingmanEditController>() 
                 verticalArrangement = spacedBy20dp
             ) {
                 TextFieldApp(
-                    value = controller.getViewState().item.order.toOrderString(),
+                    value = controller.viewState.item.order.toOrderString(),
                     label = "Change order",
                     onTextChanged = controller::onOrderChange
                 )
                 CardImage(
                     label = "Change logo",
-                    pathToFile = controller.getViewState().item.logo,
+                    pathToFile = controller.viewState.item.logo,
                     onClick = controller::onLogoChange
                 )
             }
@@ -55,7 +55,7 @@ class WingmanEditView(documentName: String) : BaseView<WingmanEditController>() 
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )

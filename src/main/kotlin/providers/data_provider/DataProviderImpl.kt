@@ -2,7 +2,6 @@ package providers.data_provider
 
 import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.FirestoreClient
-import com.google.firebase.database.FirebaseDatabase
 import providers.DataProvider
 
 class DataProviderImpl(app: FirebaseApp) : DataProvider {

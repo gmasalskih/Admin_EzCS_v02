@@ -1,13 +1,13 @@
 package screens.profile_rank.edit
 
 import data.types.ContentSourceType
-import screens.State
+import screens.ItemViewState
 
-data class ProfileRankEditState(
+data class ProfileRankEditItemViewState(
     val name: String = "",
     val xp: Int = 0,
     val logo: ContentSourceType = ContentSourceType.Empty,
     val order: Int = 0
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = name.isNotBlank() && xp > 0 && logo !is ContentSourceType.Empty && order > 0
 }

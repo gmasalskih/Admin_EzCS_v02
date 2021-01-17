@@ -1,10 +1,10 @@
 package screens.test
 
 import data.types.ContentSourceType
-import screens.State
+import screens.ItemViewState
 
-data class TestState(
+data class TestItemViewState(
     val content: ContentSourceType = ContentSourceType.Empty
-) : State {
+) : ItemViewState {
     override fun isValid(): Boolean = content !is ContentSourceType.Empty
 }

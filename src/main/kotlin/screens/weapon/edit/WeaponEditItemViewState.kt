@@ -3,9 +3,9 @@ package screens.weapon.edit
 import data.types.EntityType
 import data.types.TeamType
 import data.types.WeaponType
-import screens.State
+import screens.ItemViewState
 
-data class WeaponEditState(
+data class WeaponEditItemViewState(
     val name: String = "",
     val entityType: EntityType = EntityType.WEAPON,
 
@@ -104,7 +104,7 @@ data class WeaponEditState(
 
     /** Дополнительная погрешность, рассчитанная на пулю доп */
     val spreadAlt: Double = 0.0,
-):State {
+):ItemViewState {
     override fun isValid(): Boolean {
 //        TODO("Not yet implemented")
         return false

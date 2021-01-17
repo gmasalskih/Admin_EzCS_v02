@@ -9,37 +9,37 @@ import utils.fileChooser
 import utils.toValidName
 import utils.toValidOrder
 
-class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
+class CompetitiveAddController : BaseAddController<Competitive,CompetitiveAddItemViewState>() {
 
-    override val defaultItemState: CompetitiveAddState = CompetitiveAddState()
+    override val defaultItemViewState: CompetitiveAddItemViewState = CompetitiveAddItemViewState()
 
-    override var state: ViewState<CompetitiveAddState> by mutableStateOf(
+    override var viewState: ViewState<CompetitiveAddItemViewState> by mutableStateOf(
         ViewState(
             title = "new competitive rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     fun onNameChange(name: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 name = name.toValidName()
             )
         )
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
     fun onLogoAdd() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
@@ -51,16 +51,14 @@ class CompetitiveAddController : BaseAddController<CompetitiveAddState>() {
     }
 
     fun onSubmit() {
-        launchUploadingEntityOnServer(state.item)
+        launchUploadingEntityOnServer(viewState.item)
     }
 
-    override suspend fun upload(stateItem: CompetitiveAddState) {
-        service.uploadEntity(
-            Competitive(
-                name = stateItem.name,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    override fun mapper(itemViewState: CompetitiveAddItemViewState): Competitive {
+        return Competitive(
+            name = itemViewState.name,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

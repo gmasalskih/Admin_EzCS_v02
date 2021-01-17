@@ -23,7 +23,7 @@ class MapHolderMenuView : BaseView<MapHolderMenuController>() {
         ) {
             ScrollableAddRow(
                 modifier = Modifier.fillMaxWidth().zIndex(2f),
-                items = controller.getViewState().item.listMapHolder,
+                items = controller.viewState.item.listMapHolder,
                 cardAdd = { CardAdd(label = "add map holder", onClick = controller::navigateToMapHolderAdd) },
                 cardItem = { mapHolder ->
                     CardMapHolder(
