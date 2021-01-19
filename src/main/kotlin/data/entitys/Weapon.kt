@@ -5,6 +5,7 @@ import data.types.TeamType
 import data.types.WeaponType
 import utils.ContentType
 import utils.DataType
+import utils.toValidId
 
 data class Weapon(
 
@@ -109,4 +110,8 @@ data class Weapon(
 
     @DataType /** Дополнительная погрешность, рассчитанная на пулю доп */
     val spreadAlt: Double = 0.0,
-) : Entity
+) : Entity{
+    override fun getDocumentName(): String {
+        return "${entityType.name}/${externalId.toValidId()}"
+    }
+}

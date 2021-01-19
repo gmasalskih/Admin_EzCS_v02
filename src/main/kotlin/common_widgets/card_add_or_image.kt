@@ -6,14 +6,14 @@ import data.types.ContentSourceType
 @Composable
 fun CardAddOrImage(
     label: String,
-    image: ContentSourceType,
+    pathToFile: ContentSourceType,
     onClick: () -> Unit,
 ) {
-    when (image) {
+    when (pathToFile) {
         is ContentSourceType.File -> {
             CardImage(
                 label = label,
-                pathToFile = image,
+                pathToFile = pathToFile,
                 onClick = onClick,
             )
         }
@@ -25,7 +25,7 @@ fun CardAddOrImage(
         }
         else -> {
             TextApp(
-                text = "Err: ${image.value}",
+                text = "Err: ${pathToFile.value}",
             )
         }
     }

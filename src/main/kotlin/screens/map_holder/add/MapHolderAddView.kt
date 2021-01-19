@@ -32,17 +32,17 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 ) {
                     CardAddOrImage(
                         label = "add logo",
-                        image = controller.viewState.item.logo,
+                        pathToFile = controller.viewState.item.logo,
                         onClick = controller::onLogoAdd
                     )
                     CardAddOrImage(
                         label = "add map",
-                        image = controller.viewState.item.map,
+                        pathToFile = controller.viewState.item.map,
                         onClick = controller::onMapAdd
                     )
                     CardAddOrImage(
                         label = "add wallpaper",
-                        image = controller.viewState.item.wallpaper,
+                        pathToFile = controller.viewState.item.wallpaper,
                         onClick = controller::onWallpaperAdd
                     )
                 }

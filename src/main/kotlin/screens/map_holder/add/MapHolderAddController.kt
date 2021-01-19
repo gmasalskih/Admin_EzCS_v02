@@ -73,7 +73,7 @@ class MapHolderAddController : BaseAddController<MapHolder, MapHolderAddItemView
         launchUploadingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: MapHolderAddItemViewState): MapHolder {
+    override fun convertItemViewSateToEntity(itemViewState: MapHolderAddItemViewState): MapHolder {
         return MapHolder(
             name = itemViewState.name,
             isCompetitive = itemViewState.isCompetitive,

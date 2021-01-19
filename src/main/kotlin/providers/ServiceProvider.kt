@@ -12,6 +12,6 @@ interface ServiceProvider {
     suspend fun <T : Entity> getListEntitiesAsync(collectionName: String, clazz: KClass<T>): Deferred<List<T>>
     suspend fun <T : Entity> updateEntity(entity: T)
     suspend fun deleteEntity(documentName: String)
-    suspend fun getListNameOfBlueprintWeaponAsync(): Deferred<List<String>>
+    suspend fun getMapOfBlueprintWeaponAsync(): Deferred<Map<String, BlueprintWeapon>>
     suspend fun updateMapOfBlueprintWeaponFromSourceFile(pathToSourceFile: String)
 }

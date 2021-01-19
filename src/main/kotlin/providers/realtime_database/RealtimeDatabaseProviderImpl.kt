@@ -1,10 +1,8 @@
 package providers.realtime_database
 
 import com.google.firebase.FirebaseApp
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import com.google.firebase.database.utilities.encoding.CustomClassMapper
 import providers.RealtimeDatabaseProvider
 import kotlin.coroutines.suspendCoroutine
 
@@ -55,17 +53,15 @@ class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider 
         })
     }
 
-    override suspend fun getListNameOfDocuments(): List<String> = suspendCoroutine { cont ->
+    override suspend fun <T : Any> getMapOfDocuments(type: Class<T>): Map<String, T> = suspendCoroutine { cont ->
         db.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot?) {
                 snapshot?.let { dataSnapshot ->
-                    val listNameOfDocuments = (dataSnapshot.value as Map<*, *>).keys
-                        .filterNotNull()
-                        .map { key -> key.toString() }
-                        .toList()
-                    cont.resumeWith(
-                        Result.success(listNameOfDocuments)
-                    )
+                    val map = mutableMapOf<String, T>()
+                    (dataSnapshot.value as Map<*, *>).forEach { (key, value) ->
+                        map[key.toString()] = CustomClassMapper.convertToCustomClass(value, type)
+                    }
+                    cont.resumeWith(Result.success(map))
                 }
                 cont.resumeWith(
                     Result.failure(Exception("Snapshot is null"))

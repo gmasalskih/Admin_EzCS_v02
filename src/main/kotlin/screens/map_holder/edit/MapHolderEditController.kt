@@ -20,16 +20,10 @@ class MapHolderEditController : BaseEditController<MapHolder, MapHolderEditItemV
     )
 
     override suspend fun setEntity() {
-        service.getEntityAsync(documentName, MapHolder::class).await().let { entity ->
-            viewState = viewState.copy(title = "Edit ${entity.name}")
+        service.getEntityAsync(documentName, MapHolder::class).await().let { mapHolder ->
+            viewState = viewState.copy(title = "Edit ${mapHolder.name}")
             setItemViewState(
-                MapHolderEditItemViewState(
-                    name = entity.name,
-                    isCompetitive = entity.isCompetitive,
-                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
-                    map = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.map),
-                    wallpaper = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.wallpaper)
-                )
+                convertEntityToItemViewSate(mapHolder)
             )
         }
     }
@@ -80,13 +74,23 @@ class MapHolderEditController : BaseEditController<MapHolder, MapHolderEditItemV
         launchUpdatingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: MapHolderEditItemViewState): MapHolder {
+    override fun convertItemViewSateToEntity(itemViewState: MapHolderEditItemViewState): MapHolder {
         return MapHolder(
             name = itemViewState.name,
             isCompetitive = itemViewState.isCompetitive,
             logo = itemViewState.logo.value,
             map = itemViewState.map.value,
             wallpaper = itemViewState.wallpaper.value
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: MapHolder): MapHolderEditItemViewState {
+        return MapHolderEditItemViewState(
+            name = entity.name,
+            isCompetitive = entity.isCompetitive,
+            logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
+            map = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.map),
+            wallpaper = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.wallpaper)
         )
     }
 }

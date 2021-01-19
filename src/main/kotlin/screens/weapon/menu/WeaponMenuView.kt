@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import common_widgets.CardAdd
 import common_widgets.CardWeapon
 import common_widgets.ScrollableAddRow
+import data.types.ContentSourceType
 import org.koin.core.component.inject
 import screens.BaseView
 
@@ -18,7 +19,7 @@ class WeaponMenuView : BaseView<WeaponMenuController>() {
             cardItem = { weapon ->
                 CardWeapon(
                     name = weapon.name,
-                    image = weapon.logo,
+                    image = ContentSourceType.ContentStorageOriginal(weapon.getDocumentName(), weapon.logo),
                     teamTypes = weapon.teamTypes,
                     onClick = { controller.navigateToWeaponsEdit(weapon.getDocumentName()) }
                 )

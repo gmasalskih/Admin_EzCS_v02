@@ -54,7 +54,7 @@ class DangerZoneAddController : BaseAddController<DangerZone, DangerZoneAddItemV
         launchUploadingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: DangerZoneAddItemViewState): DangerZone {
+    override fun convertItemViewSateToEntity(itemViewState: DangerZoneAddItemViewState): DangerZone {
         return DangerZone(
             name = itemViewState.name,
             logo = itemViewState.logo.value,

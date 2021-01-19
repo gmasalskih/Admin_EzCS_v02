@@ -54,7 +54,7 @@ class CompetitiveAddController : BaseAddController<Competitive,CompetitiveAddIte
         launchUploadingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: CompetitiveAddItemViewState): Competitive {
+    override fun convertItemViewSateToEntity(itemViewState: CompetitiveAddItemViewState): Competitive {
         return Competitive(
             name = itemViewState.name,
             logo = itemViewState.logo.value,

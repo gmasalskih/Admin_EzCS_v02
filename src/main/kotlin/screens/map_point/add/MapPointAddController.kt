@@ -160,7 +160,7 @@ class MapPointAddController : BaseAddController<MapPoint, MapPointAddItemViewSta
         }
     }
 
-    override fun mapper(itemViewState: MapPointAddItemViewState): MapPoint {
+    override fun convertItemViewSateToEntity(itemViewState: MapPointAddItemViewState): MapPoint {
         return MapPoint(
             name = itemViewState.name,
             mapDocumentName = itemViewState.mapDocumentName,

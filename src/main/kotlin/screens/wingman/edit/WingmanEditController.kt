@@ -47,23 +47,27 @@ class WingmanEditController : BaseEditController<Wingman, WingmanEditItemViewSta
     }
 
     override suspend fun setEntity() {
-        service.getEntityAsync(documentName, Wingman::class).await().let { entity ->
-            viewState = viewState.copy(title = "Edit ${entity.name}")
+        service.getEntityAsync(documentName, Wingman::class).await().let { wingman ->
+            viewState = viewState.copy(title = "Edit ${wingman.name}")
             setItemViewState(
-                WingmanEditItemViewState(
-                    name = entity.name,
-                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
-                    order = entity.order
-                )
+                convertEntityToItemViewSate(wingman)
             )
         }
     }
 
-    override fun mapper(itemViewState: WingmanEditItemViewState): Wingman {
+    override fun convertItemViewSateToEntity(itemViewState: WingmanEditItemViewState): Wingman {
         return Wingman(
             name = itemViewState.name,
             logo = itemViewState.logo.value,
             order = itemViewState.order
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: Wingman): WingmanEditItemViewState {
+        return WingmanEditItemViewState(
+            name = entity.name,
+            logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
+            order = entity.order
         )
     }
 }

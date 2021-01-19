@@ -41,7 +41,7 @@ class CompetitiveAddView : BaseView<CompetitiveAddController>() {
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    image = controller.viewState.item.logo,
+                    pathToFile = controller.viewState.item.logo,
                     onClick = controller::onLogoAdd
                 )
             }

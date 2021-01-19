@@ -63,7 +63,7 @@ class ProfileRankAddController : BaseAddController<ProfileRank, ProfileRankAddIt
         launchUploadingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: ProfileRankAddItemViewState): ProfileRank {
+    override fun convertItemViewSateToEntity(itemViewState: ProfileRankAddItemViewState): ProfileRank {
         return ProfileRank(
             name = itemViewState.name,
             xp = itemViewState.xp,

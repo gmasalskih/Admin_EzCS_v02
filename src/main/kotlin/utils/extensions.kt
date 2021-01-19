@@ -131,7 +131,7 @@ fun String.toCamelCase(): String {
 }
 
 fun String.prepareToPrintDataClass(): String {
-    return this.replace("((.+\\()|(\\)))".toRegex(), "")
+    return this.replace("((^[a-zA-Z0-9]+\\()|(\\)$))".toRegex(), "")
         .split(",")
         .map { "${it.trim()}\n" }
         .map { it.replace("=", " = ") }

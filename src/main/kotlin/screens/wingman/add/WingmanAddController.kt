@@ -54,7 +54,7 @@ class WingmanAddController : BaseAddController<Wingman, WingmanAddItemViewState>
         launchUploadingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: WingmanAddItemViewState): Wingman {
+    override fun convertItemViewSateToEntity(itemViewState: WingmanAddItemViewState): Wingman {
         return Wingman(
             name = itemViewState.name,
             logo = itemViewState.logo.value,

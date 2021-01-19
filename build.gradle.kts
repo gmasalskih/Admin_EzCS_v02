@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "me.gmasalskih"
-version = "1.0-SNAPSHOT"
+version = "1"
 
 repositories {
     jcenter()
@@ -55,7 +55,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "15"
+    kotlinOptions.jvmTarget = "14"
 }
 
 compose.desktop {

@@ -66,12 +66,12 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                     CardAddOrImage(
                         label = "add preview start",
                         onClick = controller::onPreviewStartChange,
-                        image = controller.viewState.item.previewStart
+                        pathToFile = controller.viewState.item.previewStart
                     )
                     CardAddOrImage(
                         label = "add preview end",
                         onClick = controller::onPreviewEndChange,
-                        image = controller.viewState.item.previewEnd
+                        pathToFile = controller.viewState.item.previewEnd
                     )
                 }
                 ScrollableAddRow(

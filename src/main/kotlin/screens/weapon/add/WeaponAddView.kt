@@ -12,6 +12,7 @@ import common_widgets.*
 import org.koin.core.component.inject
 import screens.BaseView
 import ui.*
+import utils.prepareToPrintDataClass
 
 class WeaponAddView : BaseView<WeaponAddController>() {
     override val controller by inject<WeaponAddController>()
@@ -32,7 +33,7 @@ class WeaponAddView : BaseView<WeaponAddController>() {
                 )
                 ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
-                    items = controller.getListOfNameBlueprintWeapon(),
+                    items = controller.getListNameOfBlueprintWeapon(),
                     cardAdd = { CardAdd(label = "Browse file", onClick = controller::onItemsGameFileSelect) },
                     cardItem = { nameOfBlueprintWeapon ->
                         CardBlueprintWeapon(
@@ -47,22 +48,26 @@ class WeaponAddView : BaseView<WeaponAddController>() {
                 ) {
                     CardAddOrImage(
                         label = "add logo",
-                        image = controller.viewState.item.logo,
+                        pathToFile = controller.viewState.item.logo,
                         onClick = controller::onLogoAdd
                     )
                     CardAddOrImage(
                         label = "add spray",
-                        image = controller.viewState.item.spray,
+                        pathToFile = controller.viewState.item.spray,
                         onClick = controller::onSprayAdd
                     )
                     CardAddOrImage(
                         label = "add recoil",
-                        image = controller.viewState.item.recoil,
+                        pathToFile = controller.viewState.item.recoil,
                         onClick = controller::onRecoilAdd
                     )
                 }
                 TextApp(
-                    text = controller.viewState.item.weaponDescription
+                    text = controller.viewState.item.selectedBlueprintWeapon.second?.let {
+                        it.attributes.toString().prepareToPrintDataClass() +
+                                it.usedByClasses.toString().prepareToPrintDataClass() +
+                                it.visuals.toString().prepareToPrintDataClass()
+                    } ?: ""
                 )
             }
             Row(

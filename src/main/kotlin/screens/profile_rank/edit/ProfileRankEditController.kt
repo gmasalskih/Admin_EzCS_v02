@@ -22,15 +22,10 @@ class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEdi
     )
 
     override suspend fun setEntity() {
-        service.getEntityAsync(documentName, ProfileRank::class).await().let { entity ->
-            viewState = viewState.copy(title = "Edit ${entity.name}")
+        service.getEntityAsync(documentName, ProfileRank::class).await().let { profileRank ->
+            viewState = viewState.copy(title = "Edit ${profileRank.name}")
             setItemViewState(
-                ProfileRankEditItemViewState(
-                    name = entity.name,
-                    xp = entity.xp,
-                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
-                    order = entity.order,
-                )
+                convertEntityToItemViewSate(profileRank)
             )
         }
     }
@@ -69,12 +64,21 @@ class ProfileRankEditController : BaseEditController<ProfileRank, ProfileRankEdi
         launchUpdatingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: ProfileRankEditItemViewState): ProfileRank {
+    override fun convertItemViewSateToEntity(itemViewState: ProfileRankEditItemViewState): ProfileRank {
         return ProfileRank(
             name = itemViewState.name,
             xp = itemViewState.xp,
             logo = itemViewState.logo.value,
             order = itemViewState.order
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: ProfileRank): ProfileRankEditItemViewState {
+        return ProfileRankEditItemViewState(
+            name = entity.name,
+            xp = entity.xp,
+            logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
+            order = entity.order,
         )
     }
 }

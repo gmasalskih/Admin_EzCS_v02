@@ -33,44 +33,19 @@ internal class RealtimeDatabaseProviderImplTest : KoinTest {
     @Test
     @Order(1)
     fun `clear db`() = runBlocking {
-//        val res = try {
-//            realtimeDatabaseProvider.clear()
-//            null
-//        } catch (e: Throwable) {
-//            assertDoesNotThrow { throw e }
-//        }
     }
 
     @Test
     @Order(2)
     fun `save document`() = runBlocking {
-//        val res = try {
-//            realtimeDatabaseProvider.saveDocuments(parserItemsGameFileProvider.getMapOfBlueprintWeapon())
-//            null
-//        } catch (e: Throwable) {
-//            assertDoesNotThrow { throw e }
-//        }
     }
 
     @Test
     fun `get document`() = runBlocking {
-        val res = realtimeDatabaseProvider.getDocument("ak47", BlueprintWeapon::class.java)
-        assertTrue(
-            res.visuals.weaponType == BlueprintWeaponType.Rifle
-        )
-
-        assertEquals(res.usedByClasses.terrorists, 1, "terrorists")
-        assertEquals(res.usedByClasses.counterTerrorists, 0, "counterTerrorists")
     }
 
     @Test
     fun `get documents`() = runBlocking {
+
     }
-
-//    @Test
-//    fun a(){
-//        println(
-
-//        )
-//    }
 }

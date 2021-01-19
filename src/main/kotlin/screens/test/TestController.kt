@@ -1,6 +1,7 @@
 package screens.test
 
 import androidx.compose.runtime.*
+import data.entitys.blueprint_weapon.BlueprintWeapon
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import providers.RealtimeDatabaseProvider
@@ -25,7 +26,9 @@ class TestController : BaseController<TestItemViewState>() {
 
     fun test() {
         controllerScope.launch {
-
+            db.getMapOfDocuments(BlueprintWeapon::class.java).forEach { t, u ->
+                println("$t ${u.visuals.weaponType}")
+            }
         }
     }
 }

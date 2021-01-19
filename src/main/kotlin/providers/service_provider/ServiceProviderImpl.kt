@@ -143,9 +143,9 @@ class ServiceProviderImpl(
         }
     }
 
-    override suspend fun getListNameOfBlueprintWeaponAsync(): Deferred<List<String>> =
+    override suspend fun getMapOfBlueprintWeaponAsync(): Deferred<Map<String, BlueprintWeapon>> =
         cs.async(coroutineContext.job + serviceDispatcher) {
-            realtimeDatabaseProvider.getListNameOfDocuments()
+            realtimeDatabaseProvider.getMapOfDocuments(BlueprintWeapon::class.java)
         }
 
     override suspend fun updateMapOfBlueprintWeaponFromSourceFile(pathToSourceFile: String) {

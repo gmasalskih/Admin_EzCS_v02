@@ -21,14 +21,10 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
     )
 
     override suspend fun setEntity() {
-        service.getEntityAsync(documentName, Competitive::class).await().let { entity ->
-            viewState = viewState.copy(title = "Edit ${entity.name}")
+        service.getEntityAsync(documentName, Competitive::class).await().let { competitive ->
+            viewState = viewState.copy(title = "Edit ${competitive.name}")
             setItemViewState(
-                CompetitiveEditItemViewState(
-                    name = entity.name,
-                    logo = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.logo),
-                    order = entity.order
-                )
+                convertEntityToItemViewSate(competitive)
             )
         }
     }
@@ -59,11 +55,19 @@ class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEdi
         launchUpdatingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: CompetitiveEditItemViewState): Competitive {
+    override fun convertItemViewSateToEntity(itemViewState: CompetitiveEditItemViewState): Competitive {
         return Competitive(
             name = itemViewState.name,
             logo = itemViewState.logo.value,
             order = itemViewState.order
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: Competitive): CompetitiveEditItemViewState {
+        return CompetitiveEditItemViewState(
+            name = entity.name,
+            logo = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.logo),
+            order = entity.order
         )
     }
 }

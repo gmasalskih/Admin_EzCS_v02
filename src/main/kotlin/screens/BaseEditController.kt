@@ -7,7 +7,8 @@ abstract class BaseEditController<E : Entity, I : ItemViewState> : BaseControlle
     protected lateinit var documentName: String
     protected abstract suspend fun setEntity()
 
-    protected abstract fun mapper(itemViewState: I): E
+    protected abstract fun convertItemViewSateToEntity(itemViewState: I): E
+    protected abstract fun convertEntityToItemViewSate(entity: E): I
 
     override fun onViewCreate() {
         super.onViewCreate()
@@ -30,7 +31,7 @@ abstract class BaseEditController<E : Entity, I : ItemViewState> : BaseControlle
     protected fun launchUpdatingEntityOnServer(itemViewState: I) = controllerScope.launch {
         showLoading()
         if (!itemViewState.isValid()) throw Exception("The entity $itemViewState is not valid!")
-        service.updateEntity(mapper(itemViewState))
+        service.updateEntity(convertItemViewSateToEntity(itemViewState))
         router.back()
     }
 

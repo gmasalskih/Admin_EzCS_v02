@@ -111,37 +111,12 @@ class MapPointEditController : BaseEditController<MapPoint, MapPointEditItemView
         service.getEntityAsync(documentName, MapPoint::class).await().let { mapPoint ->
             viewState = viewState.copy(title = mapPoint.getDocumentName().substringAfter("/"))
             setItemViewState(
-                MapPointEditItemViewState(
-                    name = mapPoint.name,
-                    mapDocumentName = mapPoint.mapDocumentName,
-                    grenadeType = mapPoint.grenadeType,
-                    tickrateTypes = mapPoint.tickrateTypes,
-                    previewStart = ContentSourceType.ContentStorageThumbnail(
-                        mapPoint.getDocumentName(),
-                        mapPoint.previewStart
-                    ),
-                    previewEnd = ContentSourceType.ContentStorageThumbnail(
-                        mapPoint.getDocumentName(),
-                        mapPoint.previewEnd
-                    ),
-                    contentImages = mapPoint.contentImages.map { img ->
-                        ContentSourceType.ContentStorageThumbnail(
-                            mapPoint.getDocumentName(),
-                            img
-                        )
-                    },
-                    contentVideos = mapPoint.contentVideos.map { video ->
-                        ContentSourceType.ContentStorageThumbnail(
-                            mapPoint.getDocumentName(),
-                            video
-                        )
-                    }
-                )
+                convertEntityToItemViewSate(mapPoint)
             )
         }
     }
 
-    override fun mapper(itemViewState: MapPointEditItemViewState): MapPoint {
+    override fun convertItemViewSateToEntity(itemViewState: MapPointEditItemViewState): MapPoint {
         return MapPoint(
             name = itemViewState.name,
             mapDocumentName = itemViewState.mapDocumentName,
@@ -151,6 +126,35 @@ class MapPointEditController : BaseEditController<MapPoint, MapPointEditItemView
             previewEnd = itemViewState.previewEnd.value,
             contentImages = itemViewState.contentImages.map { it.value },
             contentVideos = itemViewState.contentVideos.map { it.value }
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: MapPoint): MapPointEditItemViewState {
+        return MapPointEditItemViewState(
+            name = entity.name,
+            mapDocumentName = entity.mapDocumentName,
+            grenadeType = entity.grenadeType,
+            tickrateTypes = entity.tickrateTypes,
+            previewStart = ContentSourceType.ContentStorageThumbnail(
+                entity.getDocumentName(),
+                entity.previewStart
+            ),
+            previewEnd = ContentSourceType.ContentStorageThumbnail(
+                entity.getDocumentName(),
+                entity.previewEnd
+            ),
+            contentImages = entity.contentImages.map { img ->
+                ContentSourceType.ContentStorageThumbnail(
+                    entity.getDocumentName(),
+                    img
+                )
+            },
+            contentVideos = entity.contentVideos.map { video ->
+                ContentSourceType.ContentStorageThumbnail(
+                    entity.getDocumentName(),
+                    video
+                )
+            }
         )
     }
 }

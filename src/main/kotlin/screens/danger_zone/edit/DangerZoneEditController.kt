@@ -21,14 +21,10 @@ class DangerZoneEditController : BaseEditController<DangerZone, DangerZoneEditSa
     )
 
     override suspend fun setEntity() {
-        service.getEntityAsync(documentName, DangerZone::class).await().let { entity ->
-            viewState = viewState.copy(title = "Edit ${entity.name}")
+        service.getEntityAsync(documentName, DangerZone::class).await().let { dangerZone ->
+            viewState = viewState.copy(title = "Edit ${dangerZone.name}")
             setItemViewState(
-                DangerZoneEditSate(
-                    name = entity.name,
-                    logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
-                    order = entity.order,
-                )
+                convertEntityToItemViewSate(dangerZone)
             )
         }
     }
@@ -59,11 +55,19 @@ class DangerZoneEditController : BaseEditController<DangerZone, DangerZoneEditSa
         launchUpdatingEntityOnServer(viewState.item)
     }
 
-    override fun mapper(itemViewState: DangerZoneEditSate): DangerZone {
+    override fun convertItemViewSateToEntity(itemViewState: DangerZoneEditSate): DangerZone {
         return DangerZone(
             name = itemViewState.name,
             logo = itemViewState.logo.value,
             order = itemViewState.order
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: DangerZone): DangerZoneEditSate {
+        return DangerZoneEditSate(
+            name = entity.name,
+            logo = ContentSourceType.ContentStorageOriginal(entity.getDocumentName(), entity.logo),
+            order = entity.order,
         )
     }
 }
