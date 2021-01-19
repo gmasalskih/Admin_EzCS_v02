@@ -10,7 +10,7 @@ import common_widgets.CardAdd
 import common_widgets.CardMapHolder
 import common_widgets.ScrollableAddRow
 import data.types.ContentSourceType
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 
 class MapHolderMenuView : BaseView<MapHolderMenuController>() {
@@ -23,7 +23,7 @@ class MapHolderMenuView : BaseView<MapHolderMenuController>() {
         ) {
             ScrollableAddRow(
                 modifier = Modifier.fillMaxWidth().zIndex(2f),
-                items = controller.getViewState().item.listMapHolder,
+                items = controller.viewState.item.listMapHolder,
                 cardAdd = { CardAdd(label = "add map holder", onClick = controller::navigateToMapHolderAdd) },
                 cardItem = { mapHolder ->
                     CardMapHolder(

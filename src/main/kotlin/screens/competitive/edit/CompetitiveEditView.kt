@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
@@ -30,13 +30,13 @@ class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditContro
                 verticalArrangement = spacedBy20dp
             ) {
                 TextFieldApp(
-                    value = controller.getViewState().item.order.toOrderString(),
+                    value = controller.viewState.item.order.toOrderString(),
                     label = "Change order",
                     onTextChanged = controller::onOrderChange
                 )
                 CardImage(
                     label = "Change logo",
-                    pathToFile = controller.getViewState().item.logo,
+                    pathToFile = controller.viewState.item.logo,
                     onClick = controller::onLogoChange
                 )
             }
@@ -52,7 +52,7 @@ class CompetitiveEditView(documentName: String) : BaseView<CompetitiveEditContro
                 ButtonApp(
                     label = "submit",
                     color = orangeAccent,
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     onClick = controller::onSubmit,
                 )
             }

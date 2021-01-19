@@ -8,21 +8,21 @@ import screens.BaseEditController
 import screens.ViewState
 import utils.fileChooser
 
-class MapPointEditController : BaseEditController<MapPointEditState>() {
+class MapPointEditController : BaseEditController<MapPoint, MapPointEditItemViewState>() {
 
-    override val defaultItemState: MapPointEditState = MapPointEditState()
+    override val defaultItemViewState: MapPointEditItemViewState = MapPointEditItemViewState()
 
-    override var state: ViewState<MapPointEditState> by mutableStateOf(
+    override var viewState: ViewState<MapPointEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit map point",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     fun onPreviewStartChange() {
-        fileChooser("Select preview start", FileType.PNG, state.item.previewStart) { newPreviewStart ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select preview start", FileType.PNG, viewState.item.previewStart) { newPreviewStart ->
+            setItemViewState(
+                viewState.item.copy(
                     previewStart = newPreviewStart
                 )
             )
@@ -30,9 +30,9 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
     }
 
     fun onPreviewEndChange() {
-        fileChooser("Select preview end", FileType.PNG, state.item.previewEnd) { newPreviewEnd ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select preview end", FileType.PNG, viewState.item.previewEnd) { newPreviewEnd ->
+            setItemViewState(
+                viewState.item.copy(
                     previewEnd = newPreviewEnd
                 )
             )
@@ -40,20 +40,20 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
     }
 
     fun onVideoAdd() {
-        fileChooser("Select video", FileType.MP4, state.item.contentVideos) { newVideo ->
-            setItemState(
-                state.item.copy(
-                    contentVideos = state.item.contentVideos + listOf(newVideo)
+        fileChooser("Select video", FileType.MP4, viewState.item.contentVideos) { newVideo ->
+            setItemViewState(
+                viewState.item.copy(
+                    contentVideos = viewState.item.contentVideos + listOf(newVideo)
                 )
             )
         }
     }
 
     fun onVideoChange(oldVideo: ContentSourceType) {
-        fileChooser("Select video", FileType.MP4, state.item.contentVideos) { newVideo ->
-            setItemState(
-                state.item.copy(
-                    contentVideos = state.item.contentVideos.map { video ->
+        fileChooser("Select video", FileType.MP4, viewState.item.contentVideos) { newVideo ->
+            setItemViewState(
+                viewState.item.copy(
+                    contentVideos = viewState.item.contentVideos.map { video ->
                         if (video == oldVideo) newVideo else video
                     }
                 )
@@ -62,20 +62,20 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
     }
 
     fun onImageAdd() {
-        fileChooser("Select image", FileType.PNG, state.item.contentImages) { newImage ->
-            setItemState(
-                state.item.copy(
-                    contentImages = state.item.contentImages + listOf(newImage)
+        fileChooser("Select image", FileType.PNG, viewState.item.contentImages) { newImage ->
+            setItemViewState(
+                viewState.item.copy(
+                    contentImages = viewState.item.contentImages + listOf(newImage)
                 )
             )
         }
     }
 
     fun onImageChange(oldImage: ContentSourceType) {
-        fileChooser("Select image", FileType.PNG, state.item.contentImages) { newImage ->
-            setItemState(
-                state.item.copy(
-                    contentImages = state.item.contentImages.map { image ->
+        fileChooser("Select image", FileType.PNG, viewState.item.contentImages) { newImage ->
+            setItemViewState(
+                viewState.item.copy(
+                    contentImages = viewState.item.contentImages.map { image ->
                         if (image == oldImage) newImage else image
                     }
                 )
@@ -84,67 +84,77 @@ class MapPointEditController : BaseEditController<MapPointEditState>() {
     }
 
     fun onImageDelete(image: ContentSourceType) {
-        setItemState(
-            state.item.copy(
-                contentImages = state.item.contentImages.filter { it != image }
+        setItemViewState(
+            viewState.item.copy(
+                contentImages = viewState.item.contentImages.filter { it != image }
             )
         )
     }
 
     fun onVideoDelete(video: ContentSourceType) {
-        setItemState(
-            state.item.copy(
-                contentVideos = state.item.contentVideos.filter { it != video }
+        setItemViewState(
+            viewState.item.copy(
+                contentVideos = viewState.item.contentVideos.filter { it != video }
             )
         )
     }
 
+    fun onDelete() {
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(viewState.item)
+    }
+
     override suspend fun setEntity() {
-        service.getEntity(documentName, MapPoint::class).let { mapPoint ->
-            state = state.copy(title = mapPoint.getDocumentName().substringAfter("/"))
-            setItemState(
-                MapPointEditState(
-                    name = mapPoint.name,
-                    mapDocumentName = mapPoint.mapDocumentName,
-                    grenadeType = mapPoint.grenadeType,
-                    tickrateTypes = mapPoint.tickrateTypes,
-                    previewStart = ContentSourceType.ContentStorageThumbnail(
-                        mapPoint.getDocumentName(),
-                        mapPoint.previewStart
-                    ),
-                    previewEnd = ContentSourceType.ContentStorageThumbnail(
-                        mapPoint.getDocumentName(),
-                        mapPoint.previewEnd
-                    ),
-                    contentImages = mapPoint.contentImages.map { img ->
-                        ContentSourceType.ContentStorageThumbnail(
-                            mapPoint.getDocumentName(),
-                            img
-                        )
-                    },
-                    contentVideos = mapPoint.contentVideos.map { video ->
-                        ContentSourceType.ContentStorageThumbnail(
-                            mapPoint.getDocumentName(),
-                            video
-                        )
-                    }
-                )
+        service.getEntityAsync(documentName, MapPoint::class).await().let { mapPoint ->
+            viewState = viewState.copy(title = mapPoint.getDocumentName().substringAfter("/"))
+            setItemViewState(
+                convertEntityToItemViewSate(mapPoint)
             )
         }
     }
 
-    override suspend fun update(stateItem: MapPointEditState) {
-        service.updateEntity(
-            MapPoint(
-                name = stateItem.name,
-                mapDocumentName = stateItem.mapDocumentName,
-                grenadeType = stateItem.grenadeType,
-                tickrateTypes = stateItem.tickrateTypes,
-                previewStart = stateItem.previewStart.value,
-                previewEnd = stateItem.previewEnd.value,
-                contentImages = stateItem.contentImages.map { it.value },
-                contentVideos = stateItem.contentVideos.map { it.value }
-            )
+    override fun convertItemViewSateToEntity(itemViewState: MapPointEditItemViewState): MapPoint {
+        return MapPoint(
+            name = itemViewState.name,
+            mapDocumentName = itemViewState.mapDocumentName,
+            grenadeType = itemViewState.grenadeType,
+            tickrateTypes = itemViewState.tickrateTypes,
+            previewStart = itemViewState.previewStart.value,
+            previewEnd = itemViewState.previewEnd.value,
+            contentImages = itemViewState.contentImages.map { it.value },
+            contentVideos = itemViewState.contentVideos.map { it.value }
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: MapPoint): MapPointEditItemViewState {
+        return MapPointEditItemViewState(
+            name = entity.name,
+            mapDocumentName = entity.mapDocumentName,
+            grenadeType = entity.grenadeType,
+            tickrateTypes = entity.tickrateTypes,
+            previewStart = ContentSourceType.ContentStorageThumbnail(
+                entity.getDocumentName(),
+                entity.previewStart
+            ),
+            previewEnd = ContentSourceType.ContentStorageThumbnail(
+                entity.getDocumentName(),
+                entity.previewEnd
+            ),
+            contentImages = entity.contentImages.map { img ->
+                ContentSourceType.ContentStorageThumbnail(
+                    entity.getDocumentName(),
+                    img
+                )
+            },
+            contentVideos = entity.contentVideos.map { video ->
+                ContentSourceType.ContentStorageThumbnail(
+                    entity.getDocumentName(),
+                    video
+                )
+            }
         )
     }
 }

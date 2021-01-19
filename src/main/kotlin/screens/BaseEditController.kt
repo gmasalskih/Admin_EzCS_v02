@@ -1,19 +1,18 @@
 package screens
 
+import data.entitys.Entity
 import kotlinx.coroutines.launch
 
-abstract class BaseEditController<I : State> : BaseController<I>() {
+abstract class BaseEditController<E : Entity, I : ItemViewState> : BaseController<I>() {
     protected lateinit var documentName: String
     protected abstract suspend fun setEntity()
-    protected abstract suspend fun update(stateItem: I)
+
+    protected abstract fun convertItemViewSateToEntity(itemViewState: I): E
+    protected abstract fun convertEntityToItemViewSate(entity: E): I
 
     override fun onViewCreate() {
         super.onViewCreate()
-        showLoading()
-        cs.launch {
-            setEntity()
-            showData()
-        }
+        launchSetInitState()
     }
 
     @JvmName("documentName")
@@ -21,19 +20,22 @@ abstract class BaseEditController<I : State> : BaseController<I>() {
         this.documentName = documentName
     }
 
-    fun onSubmit() = cs.launch {
+
+    private fun launchSetInitState() = controllerScope.launch {
+        setDefaultState()
         showLoading()
-        val stateItem = state.item
-        try {
-            if (!stateItem.isValid()) throw Exception("The entity ${state.item} is not valid!")
-            update(stateItem)
-            router.back()
-        } catch (e: Exception) {
-            showError(e)
-        }
+        setEntity()
+        showData()
     }
 
-    fun onDelete() = cs.launch {
+    protected fun launchUpdatingEntityOnServer(itemViewState: I) = controllerScope.launch {
+        showLoading()
+        if (!itemViewState.isValid()) throw Exception("The entity $itemViewState is not valid!")
+        service.updateEntity(convertItemViewSateToEntity(itemViewState))
+        router.back()
+    }
+
+    protected fun launchDeletingEntityOnServer() = controllerScope.launch {
         showLoading()
         service.deleteEntity(documentName)
         router.back()

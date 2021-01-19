@@ -12,79 +12,87 @@ import data.types.ContentSourceType
 import data.types.FileType
 import kotlinx.coroutines.*
 import org.jetbrains.skija.Image
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import providers.ContentStorage
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
+import providers.ContentProvider
 import ui.dark
 import ui.Icons
 import utils.externalImageResource
 import java.io.BufferedInputStream
 import java.net.URL
+import kotlin.coroutines.coroutineContext
 
 object ImageLoader : KoinComponent {
-    private val dropbox by inject<ContentStorage>()
+    private val contentProvider by inject<ContentProvider>()
+    private val cs: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun loadImage(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
-        is ContentSourceType.ContentStorageThumbnail -> {
-            dropbox.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
-                Image.makeFromEncoded(byteArray).asImageBitmap()
+    private suspend fun loadImageAsync(contentSourceType: ContentSourceType) = cs.async(coroutineContext.job) {
+        var imageBitmap: ImageBitmap? = null
+        repeat(10) {
+            if (imageBitmap == null) {
+                imageBitmap = withTimeoutOrNull(3000) {
+                    return@withTimeoutOrNull try {
+                        getImageBitmap(contentSourceType)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        externalImageResource("src/main/resources/${Icons.Err}")
+                    }
+                }
+            } else {
+                return@async imageBitmap
             }
         }
+        externalImageResource("src/main/resources/${Icons.Err}")
+    }
+
+
+    private fun getImageBitmap(contentSourceType: ContentSourceType): ImageBitmap? = when (contentSourceType) {
+        is ContentSourceType.ContentStorageThumbnail -> {
+            contentProvider.getFileThumbnail(contentSourceType.pathToFolder, contentSourceType.fileName)
+                ?.let { byteArray ->
+                    Image.makeFromEncoded(byteArray).asImageBitmap()
+                }
+        }
         is ContentSourceType.ContentStorageOriginal -> {
-            dropbox.getFile(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
+            contentProvider.getFile(contentSourceType.pathToFolder, contentSourceType.fileName)?.let { byteArray ->
                 Image.makeFromEncoded(byteArray).asImageBitmap()
             }
         }
         is ContentSourceType.URL -> {
-            withContext(Dispatchers.IO) {
-                URL(contentSourceType.url).openStream().use { inputStream ->
-                    BufferedInputStream(inputStream).use { bufferedInputStream ->
-                        bufferedInputStream.readAllBytes()?.let { byteArray ->
-                            Image.makeFromEncoded(byteArray).asImageBitmap()
-                        }
+            URL(contentSourceType.url).openStream().use { inputStream ->
+                BufferedInputStream(inputStream).use { bufferedInputStream ->
+                    bufferedInputStream.readAllBytes()?.let { byteArray ->
+                        Image.makeFromEncoded(byteArray).asImageBitmap()
                     }
                 }
             }
         }
         is ContentSourceType.File -> {
-            when(contentSourceType.fileType){
+            when (contentSourceType.fileType) {
                 FileType.PNG -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource(contentSourceType.pathToFile)
-                    }
+                    externalImageResource(contentSourceType.pathToFile)
                 }
                 FileType.GIF -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource(contentSourceType.pathToFile)
-                    }
+                    externalImageResource(contentSourceType.pathToFile)
                 }
                 FileType.MP4 -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource("src/main/resources/${Icons.Video}")
-                    }
+                    externalImageResource("src/main/resources/${Icons.Video}")
                 }
                 FileType.SVG -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource("src/main/resources/${Icons.SVG}")
-                    }
+                    externalImageResource("src/main/resources/${Icons.SVG}")
                 }
                 FileType.TXT -> {
-                    withContext(Dispatchers.IO) {
-                        externalImageResource("src/main/resources/${Icons.TextFile}")
-                    }
+                    externalImageResource("src/main/resources/${Icons.TextFile}")
                 }
             }
         }
         is ContentSourceType.Resource -> {
-            withContext(Dispatchers.IO) {
-                externalImageResource("src/main/resources/${contentSourceType.pathToResource}")
-            }
+            externalImageResource("src/main/resources/${contentSourceType.pathToResource}")
         }
         is ContentSourceType.Empty -> {
-            withContext(Dispatchers.IO) {
-                externalImageResource("src/main/resources/${Icons.Err}")
-            }
+            externalImageResource("src/main/resources/${Icons.Err}")
         }
     }
 
@@ -98,6 +106,11 @@ object ImageLoader : KoinComponent {
     ) {
         val (imageAsset, setImageAsset) = remember(content) { mutableStateOf<ImageBitmap?>(null) }
         val scope = rememberCoroutineScope()
+        onCommit {
+            if (imageAsset == null && content !is ContentSourceType.Empty) {
+                scope.launch { setImageAsset(loadImageAsync(content).await()) }
+            }
+        }
         Box(
             modifier = Modifier.then(modifier)
         ) {
@@ -106,7 +119,6 @@ object ImageLoader : KoinComponent {
                     modifier = Modifier.align(Alignment.Center),
                     color = progressIndicatorColor
                 )
-                scope.launch { setImageAsset(loadImage(content)) }
             } else {
                 Image(
                     modifier = Modifier.then(modifier),

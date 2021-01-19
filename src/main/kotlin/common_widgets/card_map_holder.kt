@@ -53,7 +53,7 @@ fun CardMapHolder(
                 if (isCompetitive) {
                     Icon(
                         modifier = Modifier.size(10.dp).align(Alignment.TopEnd).offset((-5).dp, 5.dp),
-                        bitmap = imageResource("icons/icon_competitive.png"),
+                        bitmap = imageResource(Icons.Competitive),
                         tint = greyAccent
                     )
                 }

@@ -1,1 +1,3 @@
-fun main() = App.runApp(title = "Admin_EzCS")
+fun main(): Unit {
+    App.runApp(title = "Admin_EzCS")
+}

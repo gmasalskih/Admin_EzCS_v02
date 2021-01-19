@@ -7,14 +7,14 @@ import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class CompetitiveMenuController : BaseMenuController<CompetitiveMenuState>() {
+class CompetitiveMenuController : BaseMenuController<CompetitiveMenuItemViewState>() {
 
-    override val defaultItemState: CompetitiveMenuState = CompetitiveMenuState()
+    override val defaultItemViewState: CompetitiveMenuItemViewState = CompetitiveMenuItemViewState()
 
-    override var state: ViewState<CompetitiveMenuState> by mutableStateOf(
+    override var viewState: ViewState<CompetitiveMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Competitive",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
@@ -27,9 +27,9 @@ class CompetitiveMenuController : BaseMenuController<CompetitiveMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(
-            CompetitiveMenuState(
-                service.getListEntities(EntityType.COMPETITIVE.name, Competitive::class).sortedBy { it.order }
+        setItemViewState(
+            CompetitiveMenuItemViewState(
+                service.getListEntitiesAsync(EntityType.COMPETITIVE.name, Competitive::class).await().sortedBy { it.order }
             )
         )
     }

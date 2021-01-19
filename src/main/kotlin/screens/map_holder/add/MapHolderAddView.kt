@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.*
 
@@ -22,7 +22,7 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 verticalArrangement = spacedBy20dp
             ) {
                 TextFieldApp(
-                    value = controller.getViewState().item.name,
+                    value = controller.viewState.item.name,
                     label = "Enter map name",
                     onTextChanged = controller::onNameChange
                 )
@@ -32,24 +32,24 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 ) {
                     CardAddOrImage(
                         label = "add logo",
-                        image = controller.getViewState().item.logo,
+                        pathToFile = controller.viewState.item.logo,
                         onClick = controller::onLogoAdd
                     )
                     CardAddOrImage(
                         label = "add map",
-                        image = controller.getViewState().item.map,
+                        pathToFile = controller.viewState.item.map,
                         onClick = controller::onMapAdd
                     )
                     CardAddOrImage(
                         label = "add wallpaper",
-                        image = controller.getViewState().item.wallpaper,
+                        pathToFile = controller.viewState.item.wallpaper,
                         onClick = controller::onWallpaperAdd
                     )
                 }
                 SwitchLable(
                     modifier = Modifier.fillMaxWidth(),
                     label = "Competitive",
-                    isChecked = controller.getViewState().item.isCompetitive,
+                    isChecked = controller.viewState.item.isCompetitive,
                     onCheckedChange = controller::onCompetitiveChange
                 )
             }
@@ -64,7 +64,7 @@ class MapHolderAddView : BaseView<MapHolderAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

@@ -1,17 +1,17 @@
 package di
 
 import com.google.firebase.FirebaseApp
-import com.google.firebase.cloud.StorageClient
+import com.google.gson.Gson
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
 import org.koin.dsl.module
-import providers.ContentStorage
-import providers.Service
-import providers.content_provider.DropboxProvider
-import providers.DataStorage
+import providers.*
+import providers.content_provider.ContentProviderImpl
 import providers.data_provider.FirebaseAppProvider
-import providers.data_provider.FirestoreProvider
-import providers.service_provider.ServiceProvider
+import providers.data_provider.DataProviderImpl
+import providers.parser_provider.ParserItemsGameFileProviderImpl
+import providers.realtime_database.RealtimeDatabaseProviderImpl
+import providers.service_provider.ServiceProviderImpl
 import router.NavigationTargets
 import router.Router
 import screens.competitive.add.CompetitiveAddController
@@ -24,9 +24,9 @@ import screens.map_point.menu.MapPointMenuController
 import screens.map_point.add.MapPointAddController
 import screens.map_point.edit.MapPointEditController
 import screens.map_holder.menu.MapHolderMenuController
-import screens.map_holder.menu.MapHolderMenuView
 import screens.map_holder.add.MapHolderAddController
 import screens.map_holder.edit.MapHolderEditController
+import screens.map_holder.menu.MapHolderMenuView
 import screens.profile_rank.add.ProfileRankAddController
 import screens.profile_rank.edit.ProfileRankEditController
 import screens.profile_rank.menu.ProfileRankMenuController
@@ -44,23 +44,19 @@ val appModule = module {
 //    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
-val dropboxModule = module {
-    single<ContentStorage> { DropboxProvider() }
-}
-
-val fbModules = module {
+val providerModule = module {
+    single<ContentProvider> { ContentProviderImpl() }
     single<FirebaseApp> {
         FirebaseAppProvider(
             fullPathToSecretKey = FULL_PATH_TO_SECRET_KEY,
             databaseUrl = DATABASE_URL
         ).getApp()
     }
-    single<StorageClient> { StorageClient.getInstance(get()) }
-    single<DataStorage> { FirestoreProvider(get()) }
-}
-
-val serviceModule = module {
-    single<Service> { ServiceProvider(get(), get()) }
+    single<DataProvider> { DataProviderImpl(get()) }
+    single<RealtimeDatabaseProvider> { RealtimeDatabaseProviderImpl(get()) }
+    single<Gson> { Gson() }
+    single<ParserItemsGameFileProvider> { ParserItemsGameFileProviderImpl(get()) }
+    single<ServiceProvider> { ServiceProviderImpl(get(), get(), get(), get()) }
 }
 
 val competitiveModule = module {
@@ -81,7 +77,7 @@ val mapPointsModule = module {
     single<MapPointMenuController> { MapPointMenuController() }
 }
 
-val mapsModule = module {
+val mapHolderModule = module {
     single<MapHolderAddController> { MapHolderAddController() }
     single<MapHolderEditController> { MapHolderEditController() }
     single<MapHolderMenuController> { MapHolderMenuController() }
@@ -93,7 +89,7 @@ val profileRankModule = module {
     single<ProfileRankMenuController> { ProfileRankMenuController() }
 }
 
-val weaponsModule = module {
+val weaponModule = module {
     single<WeaponAddController> { WeaponAddController() }
     single<WeaponEditController> { WeaponEditController() }
     single<WeaponMenuController> { WeaponMenuController() }

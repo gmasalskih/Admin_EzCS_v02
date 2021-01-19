@@ -13,13 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import data.types.ContentSourceType
 import data.types.TeamType
 import ui.*
 
 @Composable
 fun CardWeapon(
     name: String,
-    image: String,
+    image: ContentSourceType,
     teamTypes: List<TeamType>,
     modifier: Modifier = Modifier,
     progressIndicatorColor: Color = orangeAccent,
@@ -54,14 +55,14 @@ fun CardWeapon(
 
             }
             Box(
-                modifier = Modifier.fillMaxWidth().aspectRatio(1f).align(Alignment.TopCenter).padding(10.dp)
+                modifier = Modifier.fillMaxWidth().aspectRatio(1f).align(Alignment.Center).padding(10.dp)
             ) {
-//                ImageUrl(
-//                    modifier = Modifier.align(Alignment.Center).fillMaxSize(),
-//                    url = image,
-//                    contentScale = ContentScale.FillWidth,
-//                    progressIndicatorColor = progressIndicatorColor
-//                )
+                ImageLoader.Image(
+                    modifier = Modifier.align(Alignment.Center).fillMaxSize(),
+                    content = image,
+                    contentScale = ContentScale.FillWidth,
+                    progressIndicatorColor = progressIndicatorColor
+                )
             }
             Text(
                 text = name.toUpperCase(),

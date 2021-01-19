@@ -10,37 +10,37 @@ import utils.toValidName
 import utils.toValidOrder
 import utils.toValidXP
 
-class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
+class ProfileRankAddController : BaseAddController<ProfileRank, ProfileRankAddItemViewState>() {
 
-    override val defaultItemState: ProfileRankAddState = ProfileRankAddState()
+    override val defaultItemViewState: ProfileRankAddItemViewState = ProfileRankAddItemViewState()
 
-    override var state: ViewState<ProfileRankAddState> by mutableStateOf(
+    override var viewState: ViewState<ProfileRankAddItemViewState> by mutableStateOf(
         ViewState(
             title = "new profile rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     fun onNameChange(name: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 name = name.toValidName()
             )
         )
     }
 
     fun onXPChange(xp: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 xp = xp.toValidXP()
             )
         )
     }
 
     fun onLogoAdd() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
@@ -48,21 +48,27 @@ class ProfileRankAddController : BaseAddController<ProfileRankAddState>() {
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
-    override suspend fun upload(stateItem: ProfileRankAddState) {
-        service.uploadEntity(
-            ProfileRank(
-                name = stateItem.name,
-                xp = stateItem.xp,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    fun onClear() {
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(viewState.item)
+    }
+
+    override fun convertItemViewSateToEntity(itemViewState: ProfileRankAddItemViewState): ProfileRank {
+        return ProfileRank(
+            name = itemViewState.name,
+            xp = itemViewState.xp,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

@@ -7,14 +7,14 @@ import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class DangerZoneMenuController : BaseMenuController<DangerZoneMenuState>() {
+class DangerZoneMenuController : BaseMenuController<DangerZoneMenuItemViewState>() {
 
-    override val defaultItemState: DangerZoneMenuState = DangerZoneMenuState()
+    override val defaultItemViewState: DangerZoneMenuItemViewState = DangerZoneMenuItemViewState()
 
-    override var state: ViewState<DangerZoneMenuState> by mutableStateOf(
+    override var viewState: ViewState<DangerZoneMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Danger Zone",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
@@ -27,9 +27,9 @@ class DangerZoneMenuController : BaseMenuController<DangerZoneMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(
-            DangerZoneMenuState(
-                service.getListEntities(EntityType.DANGER_ZONE.name, DangerZone::class).sortedBy { it.order }
+        setItemViewState(
+            DangerZoneMenuItemViewState(
+                service.getListEntitiesAsync(EntityType.DANGER_ZONE.name, DangerZone::class).await().sortedBy { it.order }
             )
         )
     }

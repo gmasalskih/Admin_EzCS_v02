@@ -11,7 +11,7 @@ import common_widgets.ButtonApp
 import common_widgets.CardImage
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
@@ -34,13 +34,13 @@ class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditControll
                 verticalArrangement = spacedBy20dp
             ) {
                 TextFieldApp(
-                    value = controller.getViewState().item.order.toOrderString(),
+                    value = controller.viewState.item.order.toOrderString(),
                     label = "Change order",
                     onTextChanged = controller::onOrderChange
                 )
                 CardImage(
                     label = "Change logo",
-                    pathToFile = controller.getViewState().item.logo,
+                    pathToFile = controller.viewState.item.logo,
                     onClick = controller::onLogoChange
                 )
             }
@@ -55,7 +55,7 @@ class DangerZoneEditView(documentName: String) : BaseView<DangerZoneEditControll
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit,
                 )

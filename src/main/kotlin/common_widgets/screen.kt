@@ -15,21 +15,21 @@ import data.types.StateType
 import ui.*
 
 @Composable
-inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable () -> Unit) {
+inline fun Screen(viewComponent: BaseView<*>, crossinline content: @Composable () -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         //AppBar
         TopBarApp(
-            viewComponent.controller.getViewState().title.toUpperCase(),
+            viewComponent.controller.viewState.title.toUpperCase(),
             viewComponent.controller.isNavigableBack(),
             viewComponent.controller::back
         )
         //Content
         Box(modifier = Modifier.fillMaxSize()) {
             content()
-            when (val typeScreenState = viewComponent.controller.getViewState().stateType) {
+            when (val typeScreenState = viewComponent.controller.viewState.stateType) {
                 is StateType.Loading -> {
                     Container(
                         modifier = Modifier.fillMaxSize(),
@@ -52,7 +52,7 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable 
                 }
                 is StateType.Error -> {
                     Dialog(
-                        onDismissRequest = {}
+                        onDismissRequest = viewComponent.controller::showData
                     ) {
                         Container(
                             modifier = Modifier.fillMaxSize(),
@@ -83,8 +83,6 @@ inline fun Screen(viewComponent: BaseView<*>, crossinline  content: @Composable 
                             }
                         }
                     }
-                }
-                else -> {
                 }
             }
         }

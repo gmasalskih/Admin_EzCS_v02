@@ -5,12 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import common_widgets.MenuApp
 import di.*
-import org.koin.core.KoinComponent
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.context.startKoin
-import org.koin.core.inject
 import router.Router
 import ui.*
 
+@KoinApiExtension
 object App : KoinComponent {
     private val router: Router by inject()
 
@@ -18,15 +20,13 @@ object App : KoinComponent {
         startKoin {
             modules(
                 appModule,
-                dropboxModule,
-                fbModules,
-                serviceModule,
+                providerModule,
                 competitiveModule,
                 dangerZoneModule,
                 mapPointsModule,
-                mapsModule,
+                mapHolderModule,
                 profileRankModule,
-                weaponsModule,
+                weaponModule,
                 wingmanModule,
                 testModule
             )

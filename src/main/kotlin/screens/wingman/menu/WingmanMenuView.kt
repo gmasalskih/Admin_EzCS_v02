@@ -7,7 +7,7 @@ import common_widgets.CardAdd
 import common_widgets.CardRank
 import common_widgets.ScrollableAddRow
 import data.types.ContentSourceType
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 
 class WingmanMenuView : BaseView<WingmanMenuController>() {
@@ -17,7 +17,7 @@ class WingmanMenuView : BaseView<WingmanMenuController>() {
     override fun setContent(controller: WingmanMenuController) {
         ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item.listWingman,
+            items = controller.viewState.item.listWingman,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToWingmanAdd) },
             cardItem = { wingman ->
                 CardRank(

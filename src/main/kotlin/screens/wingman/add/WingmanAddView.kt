@@ -12,12 +12,11 @@ import common_widgets.ButtonApp
 import common_widgets.CardAddOrImage
 import common_widgets.TextFieldApp
 import ui.spacedBy20dp
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
 import utils.toOrderString
-import utils.toValidName
 
 class WingmanAddView : BaseView<WingmanAddController>() {
     override val controller by inject<WingmanAddController>()
@@ -37,19 +36,19 @@ class WingmanAddView : BaseView<WingmanAddController>() {
 
                 ) {
                     TextFieldApp(
-                        value = controller.getViewState().item.name,
+                        value = controller.viewState.item.name,
                         label = "Enter rank name",
                         onTextChanged = controller::onNameChange
                     )
                     TextFieldApp(
-                        value = controller.getViewState().item.order.toOrderString(),
+                        value = controller.viewState.item.order.toOrderString(),
                         label = "Enter order",
                         onTextChanged = controller::onOrderChange
                     )
                 }
                 CardAddOrImage(
                     label = "add logo",
-                    image = controller.getViewState().item.logo,
+                    pathToFile = controller.viewState.item.logo,
                     onClick = controller::onLogoAdd
                 )
             }
@@ -64,7 +63,7 @@ class WingmanAddView : BaseView<WingmanAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

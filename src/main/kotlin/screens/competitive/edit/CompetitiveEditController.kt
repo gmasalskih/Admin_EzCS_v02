@@ -9,55 +9,65 @@ import screens.ViewState
 import utils.fileChooser
 import utils.toValidOrder
 
-class CompetitiveEditController : BaseEditController<CompetitiveEditState>() {
+class CompetitiveEditController : BaseEditController<Competitive, CompetitiveEditItemViewState>() {
 
-    override val defaultItemState: CompetitiveEditState = CompetitiveEditState()
+    override val defaultItemViewState: CompetitiveEditItemViewState = CompetitiveEditItemViewState()
 
-    override var state: ViewState<CompetitiveEditState> by mutableStateOf(
+    override var viewState: ViewState<CompetitiveEditItemViewState> by mutableStateOf(
         ViewState(
             title = "Edit rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
     override suspend fun setEntity() {
-        service.getEntity(documentName, Competitive::class).let { entity ->
-            state = state.copy(title = "Edit ${entity.name}")
-            setItemState(
-                CompetitiveEditState(
-                    name = entity.name,
-                    logo = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.logo),
-                    order = entity.order
-                )
+        service.getEntityAsync(documentName, Competitive::class).await().let { competitive ->
+            viewState = viewState.copy(title = "Edit ${competitive.name}")
+            setItemViewState(
+                convertEntityToItemViewSate(competitive)
             )
         }
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
     fun onLogoChange() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
         }
     }
 
-    override suspend fun update(stateItem: CompetitiveEditState) {
-        service.updateEntity(
-            Competitive(
-                name = stateItem.name,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    fun onDelete() {
+        launchDeletingEntityOnServer()
+    }
+
+    fun onSubmit() {
+        launchUpdatingEntityOnServer(viewState.item)
+    }
+
+    override fun convertItemViewSateToEntity(itemViewState: CompetitiveEditItemViewState): Competitive {
+        return Competitive(
+            name = itemViewState.name,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
+        )
+    }
+
+    override fun convertEntityToItemViewSate(entity: Competitive): CompetitiveEditItemViewState {
+        return CompetitiveEditItemViewState(
+            name = entity.name,
+            logo = ContentSourceType.ContentStorageThumbnail(entity.getDocumentName(), entity.logo),
+            order = entity.order
         )
     }
 }

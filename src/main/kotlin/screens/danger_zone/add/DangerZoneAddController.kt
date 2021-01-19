@@ -2,7 +2,6 @@ package screens.danger_zone.add
 
 import androidx.compose.runtime.*
 import data.entitys.DangerZone
-import data.types.ContentSourceType
 import data.types.FileType
 import screens.BaseAddController
 import screens.ViewState
@@ -10,21 +9,21 @@ import utils.fileChooser
 import utils.toValidName
 import utils.toValidOrder
 
-class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
+class DangerZoneAddController : BaseAddController<DangerZone, DangerZoneAddItemViewState>() {
 
-    override val defaultItemState: DangerZoneAddState = DangerZoneAddState()
+    override val defaultItemViewState: DangerZoneAddItemViewState = DangerZoneAddItemViewState()
 
-    override var state: ViewState<DangerZoneAddState> by mutableStateOf(
+    override var viewState: ViewState<DangerZoneAddItemViewState> by mutableStateOf(
         ViewState(
             title = "new competitive rank",
-            item = DangerZoneAddState()
+            item = DangerZoneAddItemViewState()
         )
     )
 
     fun onLogoAdd() {
-        fileChooser("Select logo", FileType.PNG, state.item.logo) { newLogo ->
-            setItemState(
-                state.item.copy(
+        fileChooser("Select logo", FileType.PNG, viewState.item.logo) { newLogo ->
+            setItemViewState(
+                viewState.item.copy(
                     logo = newLogo
                 )
             )
@@ -32,28 +31,34 @@ class DangerZoneAddController : BaseAddController<DangerZoneAddState>() {
     }
 
     fun onNameChange(name: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 name = name.toValidName()
             )
         )
     }
 
     fun onOrderChange(order: String) {
-        setItemState(
-            state.item.copy(
+        setItemViewState(
+            viewState.item.copy(
                 order = order.toValidOrder()
             )
         )
     }
 
-    override suspend fun upload(stateItem: DangerZoneAddState) {
-        service.uploadEntity(
-            DangerZone(
-                name = stateItem.name,
-                logo = stateItem.logo.value,
-                order = stateItem.order
-            )
+    fun onClear() {
+        setDefaultState()
+    }
+
+    fun onSubmit() {
+        launchUploadingEntityOnServer(viewState.item)
+    }
+
+    override fun convertItemViewSateToEntity(itemViewState: DangerZoneAddItemViewState): DangerZone {
+        return DangerZone(
+            name = itemViewState.name,
+            logo = itemViewState.logo.value,
+            order = itemViewState.order
         )
     }
 }

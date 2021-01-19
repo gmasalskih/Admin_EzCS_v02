@@ -7,14 +7,14 @@ import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class WingmanMenuController : BaseMenuController<WingmanMenuState>() {
+class WingmanMenuController : BaseMenuController<WingmanMenuItemViewState>() {
 
-    override val defaultItemState: WingmanMenuState = WingmanMenuState()
+    override val defaultItemViewState: WingmanMenuItemViewState = WingmanMenuItemViewState()
 
-    override var state: ViewState<WingmanMenuState> by mutableStateOf(
+    override var viewState: ViewState<WingmanMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Wingman",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
@@ -27,9 +27,9 @@ class WingmanMenuController : BaseMenuController<WingmanMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(
-            WingmanMenuState(
-                service.getListEntities(EntityType.WINGMAN.name, Wingman::class).sortedBy { it.order }
+        setItemViewState(
+            WingmanMenuItemViewState(
+                service.getListEntitiesAsync(EntityType.WINGMAN.name, Wingman::class).await().sortedBy { it.order }
             )
         )
     }

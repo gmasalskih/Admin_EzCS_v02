@@ -1,31 +1,28 @@
 package screens
 
 import data.types.StateType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import providers.Service
+import kotlinx.coroutines.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import providers.ServiceProvider
 import router.Router
 
-abstract class BaseController<I : State> : KoinComponent {
-
-    protected abstract var state: ViewState<I>
-    protected abstract val defaultItemState: I
+abstract class BaseController<I : ItemViewState> : KoinComponent {
+    abstract var viewState: ViewState<I>
+        protected set
+    protected abstract val defaultItemViewState: I
     protected val router by inject<Router>()
-    protected val service by inject<Service>()
-    protected lateinit var cs: CoroutineScope
-        private set
+    protected val service by inject<ServiceProvider>()
+    private var job: Job = SupervisorJob()
+    private val ceh = CoroutineExceptionHandler { _, throwable -> showError(throwable) }
+    protected val controllerScope: CoroutineScope = CoroutineScope(Dispatchers.Default + job + ceh)
 
-    open fun onClear() {
-        setItemState(defaultItemState)
+    open fun setDefaultState() {
+        setItemViewState(defaultItemViewState)
     }
 
-    fun getViewState() = state
-
-    protected fun setItemState(item: I) {
-        state = state.copy(item = item)
+    protected fun setItemViewState(itemViewState: I) {
+        viewState = viewState.copy(item = itemViewState)
     }
 
     fun isNavigableBack() = router.isNavigableBack()
@@ -33,23 +30,23 @@ abstract class BaseController<I : State> : KoinComponent {
     fun back() = router.back()
 
     fun showLoading() {
-        state = state.copy(stateType = StateType.Loading)
+        viewState = viewState.copy(stateType = StateType.Loading)
     }
 
     fun showData() {
-        state = state.copy(stateType = StateType.Data)
+        viewState = viewState.copy(stateType = StateType.Data)
     }
 
-    fun showError(e: Exception) {
-        state = state.copy(stateType = StateType.Error(err = e))
+    fun showError(e: Throwable) {
+        viewState = viewState.copy(stateType = StateType.Error(err = e))
     }
 
     open fun onViewCreate() {
-        cs = CoroutineScope(Dispatchers.Default)
+        job = SupervisorJob()
     }
 
     open fun onViewDestroy() {
-        cs.cancel()
+        job.cancel()
     }
 }
 

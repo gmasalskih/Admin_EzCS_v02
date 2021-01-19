@@ -2,21 +2,17 @@ package screens
 
 import kotlinx.coroutines.launch
 
-abstract class BaseMenuController<I : State> : BaseController<I>() {
+abstract class BaseMenuController<I : ItemViewState> : BaseController<I>() {
 
     protected abstract suspend fun setEntity()
 
     override fun onViewCreate() {
         super.onViewCreate()
         showLoading()
-        onClear()
-        cs.launch {
-            try {
-                setEntity()
-                showData()
-            } catch (e: Exception) {
-                showError(e)
-            }
+        setDefaultState()
+        controllerScope.launch {
+            setEntity()
+            showData()
         }
     }
 }

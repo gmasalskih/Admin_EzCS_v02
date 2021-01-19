@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import common_widgets.Screen
-import org.koin.core.KoinComponent
+import org.koin.core.component.KoinComponent
 
 abstract class BaseView<C : BaseController<*>> : KoinComponent {
 

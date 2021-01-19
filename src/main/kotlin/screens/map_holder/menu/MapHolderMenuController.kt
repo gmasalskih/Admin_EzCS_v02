@@ -7,14 +7,14 @@ import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class MapHolderMenuController : BaseMenuController<MapHolderMenuState>() {
+class MapHolderMenuController : BaseMenuController<MapHolderMenuItemViewState>() {
 
-    override val defaultItemState: MapHolderMenuState = MapHolderMenuState()
+    override val defaultItemViewState: MapHolderMenuItemViewState = MapHolderMenuItemViewState()
 
-    override var state: ViewState<MapHolderMenuState> by mutableStateOf(
+    override var viewState: ViewState<MapHolderMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Map holder",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
@@ -27,6 +27,10 @@ class MapHolderMenuController : BaseMenuController<MapHolderMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(MapHolderMenuState(service.getListEntities(EntityType.MAP_HOLDER.name, MapHolder::class)))
+        setItemViewState(
+            MapHolderMenuItemViewState(
+                service.getListEntitiesAsync(EntityType.MAP_HOLDER.name, MapHolder::class).await()
+            )
+        )
     }
 }

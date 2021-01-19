@@ -7,7 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import common_widgets.*
 import data.types.ContentSourceType
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 import ui.greyAccent
 import ui.orangeAccent
@@ -27,7 +27,7 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                 verticalArrangement = spacedBy20dp
             ) {
                 TextFieldApp(
-                    value = controller.getViewState().item.name,
+                    value = controller.viewState.item.name,
                     label = "Enter map point name",
                     onTextChanged = controller::onNameChange
                 )
@@ -53,10 +53,10 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                 ) {
                     RadioGroupGrenadeTypes(
                         onTypeSelected = controller::onGrenadeTypeChange,
-                        grenadeTypeSelected = controller.getViewState().item.grenadeType
+                        grenadeTypeSelected = controller.viewState.item.grenadeType
                     )
                     CheckboxGroupTickrateTypes(
-                        listTickrateTypes = controller.getViewState().item.tickrateTypes,
+                        listTickrateTypes = controller.viewState.item.tickrateTypes,
                         onTickrateTypeClick = controller::onTickrateChange
                     )
                 }
@@ -66,17 +66,17 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                     CardAddOrImage(
                         label = "add preview start",
                         onClick = controller::onPreviewStartChange,
-                        image = controller.getViewState().item.previewStart
+                        pathToFile = controller.viewState.item.previewStart
                     )
                     CardAddOrImage(
                         label = "add preview end",
                         onClick = controller::onPreviewEndChange,
-                        image = controller.getViewState().item.previewEnd
+                        pathToFile = controller.viewState.item.previewEnd
                     )
                 }
                 ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
-                    items = controller.getViewState().item.contentVideos,
+                    items = controller.viewState.item.contentVideos,
                     cardAdd = {
                         CardAdd(
                             label = "add video",
@@ -93,7 +93,7 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                 )
                 ScrollableAddRow(
                     modifier = Modifier.fillMaxWidth(),
-                    items = controller.getViewState().item.contentImages,
+                    items = controller.viewState.item.contentImages,
                     cardAdd = {
                         CardAdd(
                             label = "add image",
@@ -120,7 +120,7 @@ class MapPointAddView : BaseView<MapPointAddController>() {
                 )
                 ButtonApp(
                     label = "submit",
-                    isActive = controller.getViewState().item.isValid(),
+                    isActive = controller.viewState.item.isValid(),
                     color = orangeAccent,
                     onClick = controller::onSubmit
                 )

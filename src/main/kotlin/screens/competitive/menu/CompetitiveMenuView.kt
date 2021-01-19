@@ -7,7 +7,7 @@ import common_widgets.CardAdd
 import common_widgets.CardRank
 import common_widgets.ScrollableAddRow
 import data.types.ContentSourceType
-import org.koin.core.inject
+import org.koin.core.component.inject
 import screens.BaseView
 
 class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
@@ -17,7 +17,7 @@ class CompetitiveMenuView : BaseView<CompetitiveMenuController>() {
     override fun setContent(controller: CompetitiveMenuController) {
         ScrollableAddRow(
             modifier = Modifier.fillMaxWidth(),
-            items = controller.getViewState().item.listCompetitive,
+            items = controller.viewState.item.listCompetitive,
             cardAdd = { CardAdd(label = "Add new rank", onClick = controller::navigateToCompetitiveAdd) },
             cardItem = { competitive ->
                 CardRank(

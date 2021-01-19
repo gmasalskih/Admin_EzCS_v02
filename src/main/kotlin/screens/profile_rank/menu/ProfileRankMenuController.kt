@@ -7,14 +7,14 @@ import router.NavigationTargets
 import screens.BaseMenuController
 import screens.ViewState
 
-class ProfileRankMenuController : BaseMenuController<ProfileRankMenuState>() {
+class ProfileRankMenuController : BaseMenuController<ProfileRankMenuItemViewState>() {
 
-    override val defaultItemState: ProfileRankMenuState = ProfileRankMenuState()
+    override val defaultItemViewState: ProfileRankMenuItemViewState = ProfileRankMenuItemViewState()
 
-    override var state: ViewState<ProfileRankMenuState> by mutableStateOf(
+    override var viewState: ViewState<ProfileRankMenuItemViewState> by mutableStateOf(
         ViewState(
             title = "Profile Rank",
-            item = defaultItemState
+            item = defaultItemViewState
         )
     )
 
@@ -27,9 +27,9 @@ class ProfileRankMenuController : BaseMenuController<ProfileRankMenuState>() {
     }
 
     override suspend fun setEntity() {
-        setItemState(
-            ProfileRankMenuState(
-                service.getListEntities(EntityType.PROFILE_RANK.name, ProfileRank::class).sortedBy { it.order }
+        setItemViewState(
+            ProfileRankMenuItemViewState(
+                service.getListEntitiesAsync(EntityType.PROFILE_RANK.name, ProfileRank::class).await().sortedBy { it.order }
             )
         )
     }
