@@ -1,6 +1,12 @@
 package di
 
+import com.dropbox.core.DbxRequestConfig
+import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.files.DbxUserFilesRequests
+import com.google.cloud.firestore.Firestore
 import com.google.firebase.FirebaseApp
+import com.google.firebase.cloud.FirestoreClient
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import utils.DATABASE_URL
 import utils.FULL_PATH_TO_SECRET_KEY
@@ -38,23 +44,35 @@ import screens.weapon.menu.WeaponMenuController
 import screens.wingman.add.WingmanAddController
 import screens.wingman.edit.WingmanEditController
 import screens.wingman.menu.WingmanMenuController
+import utils.DROPBOX_TOKEN
 
 val appModule = module {
     single<Router> { Router(entryPoint = NavigationTargets.MapHolderMenu to MapHolderMenuView()) }
 //    single<Router> { Router(entryPoint = NavigationTargets.Test to TestView()) }
 }
 
-val providerModule = module {
-    single<ContentProvider> { ContentProviderImpl() }
+val dependencyForProviderModule = module {
+    single<Gson> { Gson() }
+    single<DbxUserFilesRequests> {
+        DbxClientV2(
+            DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(),
+            DROPBOX_TOKEN
+        ).files()
+    }
     single<FirebaseApp> {
         FirebaseAppProvider(
             fullPathToSecretKey = FULL_PATH_TO_SECRET_KEY,
             databaseUrl = DATABASE_URL
         ).getApp()
     }
+    single<Firestore> { FirestoreClient.getFirestore(get()) }
+    single<FirebaseDatabase> { FirebaseDatabase.getInstance(get<FirebaseApp>()) }
+}
+
+val providerModule = module {
+    single<ContentProvider> { ContentProviderImpl(get()) }
     single<DataProvider> { DataProviderImpl(get()) }
     single<RealtimeDatabaseProvider> { RealtimeDatabaseProviderImpl(get()) }
-    single<Gson> { Gson() }
     single<ParserItemsGameFileProvider> { ParserItemsGameFileProviderImpl(get()) }
     single<ServiceProvider> { ServiceProviderImpl(get(), get(), get(), get()) }
 }

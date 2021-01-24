@@ -1,11 +1,9 @@
 package providers.data_provider
 
-import com.google.firebase.FirebaseApp
-import com.google.firebase.cloud.FirestoreClient
+import com.google.cloud.firestore.Firestore
 import providers.DataProvider
 
-class DataProviderImpl(app: FirebaseApp) : DataProvider {
-    private val db = FirestoreClient.getFirestore(app)
+class DataProviderImpl(private val db: Firestore) : DataProvider {
 
     override fun isDocumentExist(documentName: String): Boolean {
         return db.document(documentName).get().get().exists()

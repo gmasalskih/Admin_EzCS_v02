@@ -20,6 +20,7 @@ object App : KoinComponent {
         startKoin {
             modules(
                 appModule,
+                dependencyForProviderModule,
                 providerModule,
                 competitiveModule,
                 dangerZoneModule,

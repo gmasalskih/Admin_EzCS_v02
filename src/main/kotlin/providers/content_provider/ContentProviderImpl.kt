@@ -1,18 +1,13 @@
 package providers.content_provider
 
-import com.dropbox.core.DbxRequestConfig
-import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.files.DbxUserFilesRequests
 import com.dropbox.core.v2.files.PathOrLink
 import com.dropbox.core.v2.files.ThumbnailFormat
 import com.dropbox.core.v2.files.ThumbnailSize
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import providers.ContentProvider
-import utils.DROPBOX_TOKEN
 import java.io.*
 
-class ContentProviderImpl : ContentProvider {
-    private val dropbox = DbxClientV2(DbxRequestConfig.newBuilder("Admin_EzCS/2.0").build(), DROPBOX_TOKEN).files()
+class ContentProviderImpl(private val dropbox: DbxUserFilesRequests) : ContentProvider {
 
     override fun isFolderExist(pathToFolder: String): Boolean {
         return try {

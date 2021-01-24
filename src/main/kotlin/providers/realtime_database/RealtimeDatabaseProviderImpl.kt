@@ -1,16 +1,14 @@
 package providers.realtime_database
 
-import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
 import com.google.firebase.database.utilities.encoding.CustomClassMapper
 import providers.RealtimeDatabaseProvider
 import kotlin.coroutines.suspendCoroutine
 
-class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider {
-    private val db = FirebaseDatabase.getInstance(app).reference
+class RealtimeDatabaseProviderImpl(private val fDb: FirebaseDatabase) : RealtimeDatabaseProvider {
 
     override suspend fun saveDocuments(document: Map<String, Any>) = suspendCoroutine<Unit> { cont ->
-        db.setValue(document) { err, _ ->
+        fDb.reference.setValue(document) { err, _ ->
             err?.let {
                 cont.resumeWith(Result.failure(it.toException()))
             }
@@ -19,7 +17,7 @@ class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider 
     }
 
     override suspend fun clear() = suspendCoroutine<Unit> { cont ->
-        db.setValue(null) { err, _ ->
+        fDb.reference.setValue(null) { err, _ ->
             err?.let {
                 cont.resumeWith(Result.failure(it.toException()))
             }
@@ -28,7 +26,7 @@ class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider 
     }
 
     override suspend fun <T : Any> getDocument(documentName: String, type: Class<T>): T = suspendCoroutine { cont ->
-        db.child(documentName).addListenerForSingleValueEvent(object : ValueEventListener {
+        fDb.reference.child(documentName).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot?) {
                 snapshot?.let {
                     cont.resumeWith(
@@ -54,7 +52,7 @@ class RealtimeDatabaseProviderImpl(app: FirebaseApp) : RealtimeDatabaseProvider 
     }
 
     override suspend fun <T : Any> getMapOfDocuments(type: Class<T>): Map<String, T> = suspendCoroutine { cont ->
-        db.addListenerForSingleValueEvent(object : ValueEventListener {
+        fDb.reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot?) {
                 snapshot?.let { dataSnapshot ->
                     val map = mutableMapOf<String, T>()
